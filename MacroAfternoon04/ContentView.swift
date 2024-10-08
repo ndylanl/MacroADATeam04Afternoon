@@ -14,7 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            Tab("Home", systemImage: "house.fill") {
+            Tab("Home", systemImage: "square.grid.2x2.fill") {
                 DashboardView()
             }
             
@@ -27,5 +27,4 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

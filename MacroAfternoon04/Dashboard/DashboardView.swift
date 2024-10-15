@@ -9,7 +9,39 @@ import SwiftUI
 
 struct DashboardView: View {
     var body: some View {
-        Text("This is Dashboard")
+        NavigationView {
+            VStack {
+                Spacer()
+                Text("This is Dashboard")
+                    .font(.largeTitle)
+                    .padding()
+                
+                // Button to open ReminderListView
+                NavigationLink(destination: ReminderListView()) {
+                    Text("Go to Reminders")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                .padding()
+                
+                Spacer()
+                
+                NavigationLink(destination: HealthView()) {
+                    Text("Go to Health")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                .padding()
+                
+                Spacer()
+                
+            }             }
     }
 }
 

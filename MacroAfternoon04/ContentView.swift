@@ -11,6 +11,8 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
+    @State private var healthManager = HealthManager()
+    
     var body: some View {
         TabView {
             Tab("Home", systemImage: "square.grid.2x2.fill") {
@@ -20,6 +22,8 @@ struct ContentView: View {
             Tab("History", systemImage: "hourglass") {
                 HistoryView()
             }
+        }.task {
+            await healthManager.requestAuthorization()
         }
     }
 }

@@ -9,10 +9,9 @@ import SwiftUI
 
 struct RoundedCornerComponentView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        RoundedRectangle(cornerRadius:18)
+            .fill(Color.white)
+            .shadow(radius: 4, x: 0, y: 4)
+            .opacity(0.5)
     }
-}
-
-#Preview {
-    RoundedCornerComponentView()
 }

@@ -9,10 +9,6 @@ import SwiftUI
 
 struct HistoryView: View {
     var body: some View {
-        Text("This is History")
+        Text("History View")
     }
-}
-
-#Preview {
-    HistoryView()
 }

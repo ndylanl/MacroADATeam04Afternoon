@@ -10,20 +10,17 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @State private var selectedTab: Int = 0
     
     var body: some View {
-        TabView {
-            Tab("Home", systemImage: "square.grid.2x2.fill") {
-                DashboardView()
+        TabView(selection: $selectedTab) {
+            Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
+                DashboardView(selectedTab: $selectedTab)
             }
             
-            Tab("History", systemImage: "hourglass") {
+            Tab("History", systemImage: "hourglass", value: 1) {
                 HistoryView()
             }
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

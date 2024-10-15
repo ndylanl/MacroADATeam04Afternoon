@@ -14,6 +14,7 @@ struct MacroAfternoon04App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: [TrackProgressModel.self])
         }
     }
 }

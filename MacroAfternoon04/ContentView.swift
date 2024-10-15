@@ -12,6 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var selectedTab: Int = 0
     
+    @State private var healthManager = HealthManager()
+    
     var body: some View {
         TabView(selection: $selectedTab) {
             Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
@@ -21,6 +23,8 @@ struct ContentView: View {
             Tab("History", systemImage: "hourglass", value: 1) {
                 HistoryView()
             }
+        }.task {
+            await healthManager.requestAuthorization()
         }
     }
 }

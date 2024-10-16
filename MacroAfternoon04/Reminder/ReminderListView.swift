@@ -42,7 +42,7 @@ struct ReminderListView: View {
                                 .tint(Color.blue) // Set the color of the toggle
                             }
                             
-                            Text(reminder.label) 
+                            Text(reminder.label)
                             
                         }
                         

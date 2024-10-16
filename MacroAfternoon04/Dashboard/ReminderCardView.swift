@@ -32,8 +32,6 @@ struct ReminderCardView: View {
                         .font(.body)
                 } else {
                     
-                    // Tampilan ketika ada reminder
-                    
                     if let nextReminder = reminders.sorted(by: { $0.reminderTime < $1.reminderTime }).first {
                         // Tampilkan reminder terdekat berdasarkan waktunya
                         Text(nextReminder.label)

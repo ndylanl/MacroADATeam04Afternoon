@@ -26,7 +26,7 @@ struct YourActivityCardView: View {
                     // Menampilkan data Sleep dari healthViewModel
                     VStack(alignment: .leading){
                         
-
+                        
                         if let sleepSample = healthViewModel.sleepData.first(where: {
                             Calendar.current.isDate($0.endDate, inSameDayAs: Date()) //ambil data yang end date nya hari ini
                         }) {
@@ -50,7 +50,7 @@ struct YourActivityCardView: View {
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
                         }
-
+                        
                     }
                     Spacer()
                     
@@ -82,10 +82,10 @@ struct YourActivityCardView: View {
                     
                     // Menampilkan data Movement dari healthViewModel
                     VStack(alignment: .leading){
-                        if let movementSample = healthViewModel.movementData.last {
-                            let energyBurned = movementSample.quantity.doubleValue(for: .kilocalorie())
-                            HStack{
-                                Text(String(format: "%.0f", energyBurned))
+                        if !healthViewModel.movementData.isEmpty {
+                            // Hanya menampilkan total movement hari ini
+                            HStack {
+                                Text(String(format: "%.2f", healthViewModel.totalMovementToday))
                                     .font(.title)
                                 Text("kcal")
                                     .font(.subheadline)
@@ -94,7 +94,7 @@ struct YourActivityCardView: View {
                                 .font(.caption2)
                         } else {
                             // Placeholder jika tidak ada data movement
-                            HStack{
+                            HStack {
                                 Text("--")
                                     .font(.title)
                                 Text("kcal")

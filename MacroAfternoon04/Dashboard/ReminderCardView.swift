@@ -13,7 +13,7 @@ struct ReminderCardView: View {
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
     
     var body: some View {
-        ZStack() {
+        ZStack {
             RoundedCornerComponentView()
             
             VStack(alignment: .leading) {
@@ -28,19 +28,32 @@ struct ReminderCardView: View {
                     Text("+ Add New Reminder")
                         .font(.title)
                     
-                    Text("You have no reminder yet")
+                    Text("You have no reminders yet")
                         .font(.body)
                 } else {
-                    
-                    if let nextReminder = reminders.sorted(by: { $0.reminderTime < $1.reminderTime }).first {
+                    // Filter reminders yang aktif dan sort berdasarkan waktu terdekat
+                    let nextReminder = reminders
+                        .filter { $0.isReminderOn }
+                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
+                        .first
+                    // Tampilkan reminder terdekat berdasarkan waktunya
+                    if let nextReminder = nextReminder {
                         // Tampilkan reminder terdekat berdasarkan waktunya
                         Text(nextReminder.label)
                             .font(.title)
                         Text("\(nextReminder.reminderTime, style: .time)")
                             .font(.body)
+                    } else {
+                        // Jika ada reminder tapi tidak ada yang aktif
+                        Text("+ Add New Reminder")
+                            .font(.title)
                         
+                        Text("You have no active reminders")
+                            .font(.body)
                     }
+
                 }
+       
             }
             .foregroundStyle(Color.primary)
             .frame(width: cardWidthSize() - 32, height: cardHeightSize() - 24)
@@ -56,6 +69,7 @@ struct ReminderCardView: View {
         (UIScreen.main.bounds.height * 142 / 985)
     }
 }
+
 
 #Preview {
     ReminderCardView()

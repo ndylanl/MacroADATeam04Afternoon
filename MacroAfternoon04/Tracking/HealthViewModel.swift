@@ -74,6 +74,8 @@ class HealthViewModel: ObservableObject {
             isAuthorized = false
         case .sharingAuthorized:
             isAuthorized = true
+        case .none:
+            break
         @unknown default:
             isAuthorized = false
         }

@@ -13,6 +13,7 @@ struct ReminderListView: View {
     @State private var label: String = ""
     @Environment(\.modelContext) private var modelContext // Fetch from SwiftData
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
+    @ObservedObject var reminderViewModel = ReminderViewModel()
     
     var body: some View {
         NavigationView {
@@ -36,7 +37,10 @@ struct ReminderListView: View {
                                     get: { reminder.isReminderOn },
                                     set: { newValue in
                                         // Update reminder's state in the modelContext
-                                        updateReminder(reminder, isOn: newValue)
+                                        
+                                        
+                                        reminderViewModel.updateReminder(reminder, isOn: newValue, context: modelContext)
+
                                     }
                                 ))
                                 .tint(Color.blue) // Set the color of the toggle
@@ -63,15 +67,22 @@ struct ReminderListView: View {
         }
     }
     
-    // Move this function outside of the body
-    func updateReminder(_ reminder: ReminderModel, isOn: Bool) {
-        reminder.isReminderOn = isOn
-        do {
-            try modelContext.save()  // Save changes to the database
-        } catch {
-            print("Error saving reminder state: \(error)")
-        }
-    }
+//    func updateReminder(_ reminder: ReminderModel, isOn: Bool) {
+//        reminder.isReminderOn = isOn
+//        do {
+//            try modelContext.save()  // Save changes to the database
+//            // Jika isOn adalah false, batalkan notifikasi
+//            if !isOn {
+//                // Batalkan notifikasi untuk reminder ini
+//                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
+//            } else {
+//                // Jika isOn adalah true, jadwalkan notifikasi baru jika diperlukan
+//                reminderViewModel.scheduleReminderNotification(for: reminder)
+//            }
+//        } catch {
+//            print("Error saving reminder state: \(error)")
+//        }
+//    }
 }
 
 #Preview {

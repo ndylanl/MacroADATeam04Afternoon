@@ -17,6 +17,7 @@ struct AddReminderView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) private var modelContext
+    @ObservedObject var reminderViewModel = ReminderViewModel()
     
     @Query var list: [ReminderModel] // For SwiftData insertion
     
@@ -72,7 +73,7 @@ struct AddReminderView: View {
                     modelContext.insert(newReminder)
                     
                     // Schedule the notification
-                    scheduleReminderNotification(for: newReminder)
+                    reminderViewModel.scheduleReminderNotification(for: newReminder)
                     
                     // Dismiss the view
                     presentationMode.wrappedValue.dismiss()
@@ -81,15 +82,15 @@ struct AddReminderView: View {
         }
     }
     
-    // Helper function to schedule the notification
-    func scheduleReminderNotification(for reminder: ReminderModel) {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: reminder.reminderTime)
-        let minute = calendar.component(.minute, from: reminder.reminderTime)
-        
-        // Call the dispatchNotification function to set the notification
-        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute)
-    }
+//    // Helper function to schedule the notification
+//    func scheduleReminderNotification(for reminder: ReminderModel) {
+//        let calendar = Calendar.current
+//        let hour = calendar.component(.hour, from: reminder.reminderTime)
+//        let minute = calendar.component(.minute, from: reminder.reminderTime)
+//        
+//        // Call the dispatchNotification function to set the notification
+//        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute)
+//    }
 }
 
 // For preview purposes

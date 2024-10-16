@@ -25,7 +25,11 @@ struct YourActivityCardView: View {
                 AnyLayout(HStackLayout()){
                     // Menampilkan data Sleep dari healthViewModel
                     VStack(alignment: .leading){
-                        if let sleepSample = healthViewModel.sleepData.last {
+                        
+
+                        if let sleepSample = healthViewModel.sleepData.first(where: {
+                            Calendar.current.isDate($0.endDate, inSameDayAs: Date()) //ambil data yang end date nya hari ini
+                        }) {
                             let sleepDuration = sleepSample.endDate.timeIntervalSince(sleepSample.startDate) / 3600 // convert to hours
                             HStack{
                                 Text(String(format: "%.1f", sleepDuration))
@@ -36,7 +40,7 @@ struct YourActivityCardView: View {
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
                         } else {
-                            // Placeholder jika tidak ada data sleep
+                            // Placeholder if no data for today
                             HStack{
                                 Text("--")
                                     .font(.title)
@@ -46,6 +50,7 @@ struct YourActivityCardView: View {
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
                         }
+
                     }
                     Spacer()
                     

@@ -398,7 +398,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MacroAfternoon04/Preview Content\"";
-				DEVELOPMENT_TEAM = PV62VMPQYM;
+				DEVELOPMENT_TEAM = J424AXQY5M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";
@@ -434,7 +434,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MacroAfternoon04/Preview Content\"";
-				DEVELOPMENT_TEAM = PV62VMPQYM;
+				DEVELOPMENT_TEAM = J424AXQY5M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";

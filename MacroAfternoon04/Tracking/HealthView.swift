@@ -1,3 +1,10 @@
+//
+//  HealthView.swift
+//  MacroAfternoon04
+//
+//  Created by Benedikta Anin on 15/10/24.
+//
+
 import SwiftUI
 
 struct HealthView: View {
@@ -5,40 +12,43 @@ struct HealthView: View {
 
     var body: some View {
         VStack {
-            Text("Latest Health Data")
+            Text("Health Data Dashboard")
                 .font(.title)
                 .padding()
 
-            // Display latest Sleep Data
-            if let latestSleep = healthViewModel.sleepData.last {
+            // Display Sleep Data
+            if !healthViewModel.sleepData.isEmpty {
                 VStack(alignment: .leading) {
-                    Text("Latest Sleep Data:")
+                    Text("Sleep Data:")
                         .font(.headline)
-                    Text("Sleep Date: \(formatDate(latestSleep.startDate))")
-                }
-                .padding()
+                    ForEach(healthViewModel.sleepData, id: \.uuid) { sleepSample in
+                        Text("Sleep Date: \(formatDate(sleepSample.startDate))")
+                    }
+                }.padding()
             }
 
-            // Display latest Movement (Active Energy Burned) Data
-            if let latestMovement = healthViewModel.movementData.last {
+            // Display Movement (Active Energy Burned) Data
+            if !healthViewModel.movementData.isEmpty {
                 VStack(alignment: .leading) {
-                    Text("Latest Active Energy Burned:")
+                    Text("Active Energy Burned Data:")
                         .font(.headline)
-                    let energyBurned = latestMovement.quantity.doubleValue(for: .kilocalorie())
-                    Text("Energy Burned: \(String(format: "%.2f", energyBurned)) kcal")
-                }
-                .padding()
+                    ForEach(healthViewModel.movementData, id: \.uuid) { movementSample in
+                        let energyBurned = movementSample.quantity.doubleValue(for: .kilocalorie())
+                        Text("Energy Burned: \(String(format: "%.2f", energyBurned)) kcal")
+                    }
+                }.padding()
             }
 
-            // Display latest Heart Rate Data
-            if let latestHeartRate = healthViewModel.heartRateData.last {
+            // Display Heart Rate Data
+            if !healthViewModel.heartRateData.isEmpty {
                 VStack(alignment: .leading) {
-                    Text("Latest Heart Rate:")
+                    Text("Heart Rate Data:")
                         .font(.headline)
-                    let heartRate = latestHeartRate.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
-                    Text("Heart Rate: \(String(format: "%.0f", heartRate)) bpm")
-                }
-                .padding()
+                    ForEach(healthViewModel.heartRateData, id: \.uuid) { heartRateSample in
+                        let heartRate = heartRateSample.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
+                        Text("Heart Rate: \(String(format: "%.0f", heartRate)) bpm")
+                    }
+                }.padding()
             }
 
             Spacer()

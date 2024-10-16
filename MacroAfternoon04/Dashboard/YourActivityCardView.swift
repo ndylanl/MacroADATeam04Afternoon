@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct YourActivityCardView: View {
+    @ObservedObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
+    
     var body: some View {
         ZStack(){
             Image("placeholderDashboardYourActivityCard")
@@ -21,38 +23,81 @@ struct YourActivityCardView: View {
                 Divider()
                 
                 AnyLayout(HStackLayout()){
+                    // Menampilkan data Sleep dari healthViewModel
+                    VStack(alignment: .leading){
+                        if let sleepSample = healthViewModel.sleepData.last {
+                            let sleepDuration = sleepSample.endDate.timeIntervalSince(sleepSample.startDate) / 3600 // convert to hours
+                            HStack{
+                                Text(String(format: "%.1f", sleepDuration))
+                                    .font(.title)
+                                Text("hrs")
+                                    .font(.subheadline)
+                            }
+                            Text("🌙 Sleep Time")
+                                .font(.caption2)
+                        } else {
+                            // Placeholder jika tidak ada data sleep
+                            HStack{
+                                Text("--")
+                                    .font(.title)
+                                Text("hrs")
+                                    .font(.subheadline)
+                            }
+                            Text("🌙 Sleep Time")
+                                .font(.caption2)
+                        }
+                    }
+                    Spacer()
                     
+                    // Menampilkan data Heart Rate dari healthViewModel
                     VStack(alignment: .leading){
-                        HStack{
-                            Text("42")
-                                .font(.title)
-                            Text("hrs")
-                                .font(.subheadline)
+                        if let heartRateSample = healthViewModel.heartRateData.last {
+                            let heartRate = heartRateSample.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
+                            HStack{
+                                Text(String(format: "%.0f", heartRate))
+                                    .font(.title)
+                                Text("bpm")
+                                    .font(.subheadline)
+                            }
+                            Text("❤️ Heart Rate")
+                                .font(.caption2)
+                        } else {
+                            // Placeholder jika tidak ada data heart rate
+                            HStack{
+                                Text("--")
+                                    .font(.title)
+                                Text("bpm")
+                                    .font(.subheadline)
+                            }
+                            Text("❤️ Heart Rate")
+                                .font(.caption2)
                         }
-                        Text("🌙 Sleep Time")
-                            .font(.caption2)
                     }
                     Spacer()
+                    
+                    // Menampilkan data Movement dari healthViewModel
                     VStack(alignment: .leading){
-                        HStack{
-                            Text("100")
-                                .font(.title)
-                            Text("pts")
-                                .font(.subheadline)
+                        if let movementSample = healthViewModel.movementData.last {
+                            let energyBurned = movementSample.quantity.doubleValue(for: .kilocalorie())
+                            HStack{
+                                Text(String(format: "%.0f", energyBurned))
+                                    .font(.title)
+                                Text("kcal")
+                                    .font(.subheadline)
+                            }
+                            Text("🏃 Movement")
+                                .font(.caption2)
+                        } else {
+                            // Placeholder jika tidak ada data movement
+                            HStack{
+                                Text("--")
+                                    .font(.title)
+                                Text("kcal")
+                                    .font(.subheadline)
+                            }
+                            Text("🏃 Movement")
+                                .font(.caption2)
                         }
-                        Text("😀 Stress Level")
-                            .font(.caption2)
-                    }
-                    Spacer()
-                    VStack(alignment: .leading){
-                        HStack{
-                            Text("100")
-                                .font(.title)
-                            Text("pts")
-                                .font(.subheadline)
-                        }
-                        Text("🏃 Movement")
-                            .font(.caption2)
                     }
                 }
                 
@@ -71,6 +116,9 @@ struct YourActivityCardView: View {
             .frame(width: cardWidthSize()-32, alignment: .center)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
+        .task {
+            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
+        }
     }
     
     func cardWidthSize() -> CGFloat{

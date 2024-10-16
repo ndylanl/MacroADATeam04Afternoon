@@ -30,6 +30,9 @@ class HealthViewModel: ObservableObject {
             if let data = data {
                 DispatchQueue.main.async {
                     self.sleepData = data
+                    print(data)
+                    print(data.last?.startDate)
+                    print(data.last?.endDate)
                 }
             }
         }

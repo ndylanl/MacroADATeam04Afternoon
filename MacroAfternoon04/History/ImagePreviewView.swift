@@ -15,7 +15,6 @@ struct ImagePreviewView: View {
             Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
         }
         .background(Color.black.opacity(0.8))

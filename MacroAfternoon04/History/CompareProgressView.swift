@@ -8,11 +8,44 @@
 import SwiftUI
 
 struct CompareProgressView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @Environment(\.modelContext) private var modelContext
+    @StateObject private var viewModel: CompareProgressViewModel
+    
+    init(viewModel: CompareProgressViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
-}
-
-#Preview {
-    CompareProgressView()
+    
+    var body: some View {
+        ScrollView {
+            VStack {
+                ForEach(viewModel.progressModels, id: \.id) { model in
+                    VStack {
+                        Text("Date: \(DateFormatter.localizedString(from: model.dateTaken, dateStyle: .short, timeStyle: .none))")
+                            .font(.subheadline)
+                        
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(model.hairPicture, id: \.self) { photoDataArray in
+                                    ForEach(photoDataArray, id: \.self) { photoData in
+                                        if let uiImage = UIImage(data: photoData) {
+                                            Image(uiImage: uiImage)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 100, height: 100)
+                                                .padding()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+        .padding()
+        .onAppear {
+            viewModel.fetchProgressData()
+        }
+    }
 }

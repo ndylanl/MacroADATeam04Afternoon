@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct DashboardView: View {
+    
     @State var showingAddProgressSheet = false
+    
     @Binding var selectedTab: Int
     
     var body: some View {
@@ -35,24 +37,6 @@ struct DashboardView: View {
                     NavigationLink(destination: ReminderListView(), label: {
                         ReminderCardView()
                     })
-                    
-                    //                    HStack{
-                    //                        Button {
-                    //                            showingAddProgressSheet.toggle()
-                    //                        } label: {
-                    //                            AddProgressCardView()
-                    //                        }
-                    //                        .sheet(isPresented: $showingAddProgressSheet){
-                    //                            AddProgressCameraSheetView()
-                    //                        }
-                    //
-                    //                        NavigationLink {
-                    //                            PlaceholderView()
-                    //                        } label: {
-                    //                            LastProgressCardView()
-                    //                        }
-                    //                    }
-                    //                    .padding()
                     
                     HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
                     

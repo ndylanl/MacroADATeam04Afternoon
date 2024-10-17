@@ -122,8 +122,14 @@ class CameraManager: NSObject {
         let rect = CGRect(x: posX, y: posY, width: width, height: height)
         
         guard let imageRef = image.cropping(to: rect) else { return nil }
-        
-        return imageRef
+            
+            let ciImage = CIImage(cgImage: imageRef)
+            let resizedCIImage = ciImage.transformed(by: CGAffineTransform(scaleX: 1024 / width, y: 1024 / height))
+            
+            let ciContext = CIContext()
+            guard let resizedCGImage = ciContext.createCGImage(resizedCIImage, from: CGRect(x: 0, y: 0, width: 1024, height: 1024)) else { return nil }
+            
+            return resizedCGImage
     }
 }
 

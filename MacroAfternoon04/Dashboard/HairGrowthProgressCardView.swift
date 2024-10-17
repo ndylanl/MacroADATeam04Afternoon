@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HairGrowthProgressCardView: View {
     
     @Binding var showingAddProgressSheet: Bool
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         ZStack(){
@@ -34,11 +36,10 @@ struct HairGrowthProgressCardView: View {
                     Spacer()
                     
                     NavigationLink{
-                        RecentProgressView()
+                        RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
                     } label: {
                         LastProgressCardView()
                     }
-                    
                     
                 }
             }
@@ -56,6 +57,6 @@ func cardHeightSize() ->CGFloat{
     (UIScreen.main.bounds.height * 193 / 985)
 }
 
-#Preview {
-    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
-}
+//#Preview {
+//    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
+//}

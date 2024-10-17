@@ -61,6 +61,6 @@ struct LastProgressCardView: View {
     }
 }
 
-#Preview {
-    LastProgressCardView()
-}
+//#Preview {
+//    LastProgressCardView()
+//}

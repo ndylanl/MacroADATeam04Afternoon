@@ -72,10 +72,17 @@ struct DashboardView: View {
             .toolbar{
                 
                 ToolbarItem(placement: .topBarTrailing){
-                    Button(action: {
-                        print("Settings button pressed")
-                    }){
-                        Image(systemName: "gear")
+                    HStack {
+                        Button(action: {
+                            print("Settings button pressed")
+                        }) {
+                            Image(systemName: "gear")
+                        }
+                        
+                        // Button untuk membuka HealthView
+//                        NavigationLink(destination: HealthView()) {
+//                            Image(systemName: "heart")
+//                        }
                     }
                 }
             }

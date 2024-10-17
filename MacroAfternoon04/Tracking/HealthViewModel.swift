@@ -18,11 +18,15 @@ class HealthViewModel: ObservableObject {
     
     @Published var totalMovementToday: Double = 0.0
     private var timer: Timer?
-//    
-//    init() {
-//       // calculateTotalMovementToday()
-//        //setupDailyResetTimer()
-//    }
+    
+    @Published var averageSleep: Double = 0.0
+    @Published var averageMovement: Double = 0.0
+    @Published var averageHeartRate: Double = 0.0
+    
+    
+    init() {
+        self.healthRequest()
+    }
     
     func healthRequest() {
         Task {
@@ -82,38 +86,92 @@ class HealthViewModel: ObservableObject {
     }
     
     // Calculate total movement for today
-        func calculateTotalMovementToday() {
-            let calendar = Calendar.current
-            let today = calendar.startOfDay(for: Date())
-
-            let totalMovement = movementData
-                .filter { calendar.isDate($0.startDate, inSameDayAs: today) } // Filter by today's date
-                .reduce(0) { total, sample in
-                    total + sample.quantity.doubleValue(for: .kilocalorie())
-                }
-            
-            totalMovementToday = totalMovement
-            print("Total Movement Today: \(movementData)")
+    func calculateTotalMovementToday() {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        let totalMovement = movementData
+            .filter { calendar.isDate($0.startDate, inSameDayAs: today) } // Filter by today's date
+            .reduce(0) { total, sample in
+                total + sample.quantity.doubleValue(for: .kilocalorie())
+            }
+        
+        totalMovementToday = totalMovement
+//        print("Total Movement Today: \(movementData)")
+    }
+    
+    func calculateAverageSleep(startDate: Date, endDate: Date) {
+        // Filter sleep data dalam jangka waktu yang ditentukan
+        let filteredSleepData = sleepData.filter { sample in
+            return sample.startDate >= startDate && sample.endDate <= endDate
         }
 
-        // Setup timer to reset the total at midnight (00:00)
-//        func setupDailyResetTimer() {
-//            let calendar = Calendar.current
-//            let now = Date()
-//            
-//            // Calculate the next midnight time
-//            let nextMidnight = calendar.nextDate(after: now, matching: DateComponents(hour: 0), matchingPolicy: .nextTime)!
-//            
-//            // Calculate time interval until the next midnight
-//            let timeIntervalUntilMidnight = nextMidnight.timeIntervalSince(now)
-//            
-//            // Schedule the timer
-//            timer = Timer.scheduledTimer(withTimeInterval: timeIntervalUntilMidnight, repeats: false) { [weak self] _ in
-//                // Reset the total movement at midnight
-//                self?.totalMovementToday = 0.0
-//                
-//                // Recalculate movement throughout the new day
-//                self?.setupDailyResetTimer() // Schedule again for the next day
-//            }
-//        }
+        // Hitung total durasi tidur dalam detik
+        let totalSleepDuration = filteredSleepData.reduce(0) { total, sample in
+            return total + sample.endDate.timeIntervalSince(sample.startDate)
+        }
+
+        // Hitung jumlah hari unik dari data tidur
+        let uniqueDays = Set(filteredSleepData.map { Calendar.current.startOfDay(for: $0.startDate) }).count
+
+        // Hitung rata-rata durasi tidur dalam jam
+        let averageSleep: Double
+        if uniqueDays > 0 {
+            averageSleep = totalSleepDuration / Double(uniqueDays) / 3600 // konversi ke jam
+        } else {
+            averageSleep = 0 // atau nilai default lainnya jika tidak ada hari
+        }
+        
+        // Update nilai rata-rata tidur
+        self.averageSleep = averageSleep
+        print("NOTICE ME :D")
+//        print(filteredSleepData)
+        print(totalSleepDuration)
+        print(averageSleep)
+
+    }
+    
+    func calculateAverageMovement(startDate: Date, endDate: Date) {
+        // Filter movement data within the specified time range
+        let filteredMovementData = movementData.filter { sample in
+            return sample.startDate >= startDate && sample.endDate <= endDate
+        }
+
+        // Calculate total calories burned
+        let totalMovement = filteredMovementData.reduce(0) { total, sample in
+            return total + sample.quantity.doubleValue(for: .kilocalorie())
+        }
+
+        // Calculate the number of unique days with recorded movement data
+        let uniqueDays = Set(filteredMovementData.map { Calendar.current.startOfDay(for: $0.startDate) })
+
+        // Calculate average movement based on total movement and unique days
+        let averageMovement = uniqueDays.count > 0 ? totalMovement / Double(uniqueDays.count) : 0
+
+        
+        // Update nilai rata-rata gerakan
+        self.averageMovement = averageMovement
+
+    }
+    
+    func calculateAverageHeartRate(startDate: Date, endDate: Date) {
+        // Filter heart rate data dalam jangka waktu yang ditentukan
+        let filteredHeartRateData = heartRateData.filter { sample in
+            return sample.startDate >= startDate && sample.endDate <= endDate
+        }
+        
+        // Hitung rata-rata detak jantung
+        let totalHeartRate = filteredHeartRateData.reduce(0) { total, sample in
+            return total + sample.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
+        }
+        
+        let averageHeartRate = totalHeartRate / Double(filteredHeartRateData.count)
+        
+        // Update nilai rata-rata detak jantung
+        self.averageHeartRate = averageHeartRate
+
+
+    }
+
 }
+

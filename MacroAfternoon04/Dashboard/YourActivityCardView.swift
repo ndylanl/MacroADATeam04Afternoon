@@ -23,15 +23,14 @@ struct YourActivityCardView: View {
                 Divider()
                 
                 AnyLayout(HStackLayout()){
-                    // Menampilkan data Sleep dari healthViewModel
+                    
                     VStack(alignment: .leading){
-                        
                         
                         if !healthViewModel.sleepData.isEmpty {
                             // Ambil semua sleepSample yang endDate-nya pada hari ini
-                            let sleepTime = healthViewModel.sleepData
-                                .filter {
-                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
+//                            let sleepTime = healthViewModel.sleepData
+//                                .filter {
+//                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
                             let totalSleepDuration = healthViewModel.sleepData
                                 .filter {
                                     Calendar.current.isDate($0.endDate, inSameDayAs: Date()) // Ambil data yang end date-nya hari ini
@@ -51,12 +50,12 @@ struct YourActivityCardView: View {
                             }
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
-                                .onAppear {
-                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
-                                    print("==sleep time==")
-                                    print(sleepTime)
-                                    print("==sleep time==")
-                                }
+//                                .onAppear {
+//                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
+//                                    print("==sleep time==")
+//                                    print(sleepTime)
+//                                    print("==sleep time==")
+                                
                         } else {
                             // Placeholder jika tidak ada data tidur untuk hari ini
                             HStack {
@@ -140,9 +139,9 @@ struct YourActivityCardView: View {
             .frame(width: cardWidthSize()-32, alignment: .center)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
-        .task {
-            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
-        }
+//        .task {
+//            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
+//        }
     }
     
     func cardWidthSize() -> CGFloat{

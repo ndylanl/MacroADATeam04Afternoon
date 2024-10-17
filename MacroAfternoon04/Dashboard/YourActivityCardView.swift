@@ -27,21 +27,39 @@ struct YourActivityCardView: View {
                     VStack(alignment: .leading){
                         
                         
-                        if let sleepSample = healthViewModel.sleepData.first(where: {
-                            Calendar.current.isDate($0.endDate, inSameDayAs: Date()) //ambil data yang end date nya hari ini
-                        }) {
-                            let sleepDuration = sleepSample.endDate.timeIntervalSince(sleepSample.startDate) / 3600 // convert to hours
-                            HStack{
-                                Text(String(format: "%.1f", sleepDuration))
+                        if !healthViewModel.sleepData.isEmpty {
+                            // Ambil semua sleepSample yang endDate-nya pada hari ini
+                            let sleepTime = healthViewModel.sleepData
+                                .filter {
+                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
+                            let totalSleepDuration = healthViewModel.sleepData
+                                .filter {
+                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date()) // Ambil data yang end date-nya hari ini
+                                }
+                                .reduce(0) { total, sample in
+                                    return total + sample.endDate.timeIntervalSince(sample.startDate) // Hitung total durasi
+                                }
+                            
+                            // Konversi total durasi tidur dari detik ke jam
+                            let sleepDurationInHours = totalSleepDuration / 3600
+                            
+                            HStack {
+                                Text(String(format: "%.1f", sleepDurationInHours))
                                     .font(.title)
                                 Text("hrs")
                                     .font(.subheadline)
                             }
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
+                                .onAppear {
+                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
+                                    print("==sleep time==")
+                                    print(sleepTime)
+                                    print("==sleep time==")
+                                }
                         } else {
-                            // Placeholder if no data for today
-                            HStack{
+                            // Placeholder jika tidak ada data tidur untuk hari ini
+                            HStack {
                                 Text("--")
                                     .font(.title)
                                 Text("hrs")
@@ -50,6 +68,7 @@ struct YourActivityCardView: View {
                             Text("🌙 Sleep Time")
                                 .font(.caption2)
                         }
+                        
                         
                     }
                     Spacer()

@@ -21,3 +21,4 @@ struct ImagePreviewView: View {
         .edgesIgnoringSafeArea(.all)
     }
 }
+

@@ -16,13 +16,17 @@ func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int) {
             // Directly call the function since there's no self
             dispatchNotification(label: label, id: id, at: hour, minute: minute)
         case .denied:
-            return
+             break
         case .notDetermined:
             notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { didAllow, error in
                 if didAllow {
                     dispatchNotification(label: label, id: id, at: hour, minute: minute)
                 }
             }
+        case .provisional:
+            break
+        case .ephemeral:
+            break
         @unknown default:
             print("Unknown")
         }

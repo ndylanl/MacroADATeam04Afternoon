@@ -18,7 +18,7 @@ class CameraManager: NSObject {
     private var videoOutput: AVCaptureVideoDataOutput?
     
     private let systemPreferredCamera = AVCaptureDevice.default(for: .video)
-
+    
     private var sessionQueue = DispatchQueue(label: "video.preview.session")
     
     private var addToPreviewStream: ((CGImage) -> Void)?
@@ -35,11 +35,8 @@ class CameraManager: NSObject {
         get async {
             let status = AVCaptureDevice.authorizationStatus(for: .video)
             
-            // Determine if the user previously authorized camera access.
             var isAuthorized = status == .authorized
             
-            // If the system hasn't determined the user's authorization status,
-            // explicitly prompt them for approval.
             if status == .notDetermined {
                 isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
             }
@@ -55,13 +52,12 @@ class CameraManager: NSObject {
             await configureSession()
             await startSession()
         }
-        
     }
     
     private func configureSession() async {
         guard await isAuthorized,
-              let systemPreferredCamera,
-              let deviceInput = try? AVCaptureDeviceInput(device: systemPreferredCamera)
+              let ultraWideCamera = ultraWideCamera(), // Use the ultra-wide camera
+              let deviceInput = try? AVCaptureDeviceInput(device: ultraWideCamera)
         else { return }
         
         captureSession.beginConfiguration()
@@ -71,7 +67,7 @@ class CameraManager: NSObject {
         }
         
         let videoOutput = AVCaptureVideoDataOutput()
-       
+        
         videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
         
         guard captureSession.canAddInput(deviceInput) else {
@@ -84,9 +80,7 @@ class CameraManager: NSObject {
         
         captureSession.addInput(deviceInput)
         captureSession.addOutput(videoOutput)
-                
     }
-    
     
     private func startSession() async {
         guard await isAuthorized else { return }
@@ -122,14 +116,59 @@ class CameraManager: NSObject {
         let rect = CGRect(x: posX, y: posY, width: width, height: height)
         
         guard let imageRef = image.cropping(to: rect) else { return nil }
+        
+        let ciImage = CIImage(cgImage: imageRef)
+        let resizedCIImage = ciImage.transformed(by: CGAffineTransform(scaleX: 416 / width, y: 416 / height))
+        
+        let ciContext = CIContext()
+        guard let resizedCGImage = ciContext.createCGImage(resizedCIImage, from: CGRect(x: 0, y: 0, width: 416, height: 416)) else { return nil }
+        
+        return resizedCGImage
+    }
+    
+    func focus(at point: CGPoint) {
+        guard let device = systemPreferredCamera else { return }
+        
+        do {
+            try device.lockForConfiguration()
             
-            let ciImage = CIImage(cgImage: imageRef)
-            let resizedCIImage = ciImage.transformed(by: CGAffineTransform(scaleX: 1024 / width, y: 1024 / height))
+            if device.isFocusPointOfInterestSupported {
+                device.focusPointOfInterest = point
+                device.focusMode = .autoFocus
+            }
             
-            let ciContext = CIContext()
-            guard let resizedCGImage = ciContext.createCGImage(resizedCIImage, from: CGRect(x: 0, y: 0, width: 1024, height: 1024)) else { return nil }
+            if device.isExposurePointOfInterestSupported {
+                device.exposurePointOfInterest = point
+                device.exposureMode = .autoExpose
+            }
             
-            return resizedCGImage
+            device.isSubjectAreaChangeMonitoringEnabled = true
+            
+            device.unlockForConfiguration()
+        } catch {
+            print("Error locking configuration: \(error)")
+        }
+    }
+    
+    func setFocus(value: Float) {
+        guard let device = systemPreferredCamera else { return }
+        
+        do {
+            try device.lockForConfiguration()
+            device.setFocusModeLocked(lensPosition: value, completionHandler: nil)
+            device.unlockForConfiguration()
+        } catch {
+            print("Error setting focus: \(error)")
+        }
+    }
+    
+    private func ultraWideCamera() -> AVCaptureDevice? {
+        let discoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInUltraWideCamera],
+            mediaType: .video,
+            position: .back
+        )
+        return discoverySession.devices.first
     }
 }
 

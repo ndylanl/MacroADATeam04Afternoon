@@ -15,6 +15,9 @@ struct CameraView: View {
     var totalPages: Int
     
     @State private var showCaptureCue: Bool = false
+    @State private var tapLocation: CGPoint = .zero
+    
+    @ObservedObject var viewModel: CameraViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -24,43 +27,35 @@ struct CameraView: View {
                 
                 ZStack {
                     if let image = image {
-                        ZStack {
+                        
                             Image(decorative: image, scale: 1)
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: geometry.size.width,
-                                       height: geometry.size.width)
+                                .scaledToFill()
+                                .frame(width: UIScreen.main.bounds.width - 32,
+                                       height: UIScreen.main.bounds.width - 32)
                             
-                            Image("headOutline")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: geometry.size.width,
-                                       height: geometry.size.width)
-                        }
+                        
                     } else {
                         ContentUnavailableView("Camera feed interrupted", systemImage: "xmark.circle.fill")
-                            .frame(width: geometry.size.width,
-                                   height: geometry.size.height)
+                            .frame(width: UIScreen.main.bounds.width - 32,
+                                   height: UIScreen.main.bounds.width - 32)
                     }
                     
                     if showCaptureCue {
                         Color.black.opacity(0.5)
                             .transition(.opacity)
-                            .frame(width: geometry.size.width,
-                                   height: geometry.size.width)
+                            .frame(width: UIScreen.main.bounds.width - 32,
+                                   height: UIScreen.main.bounds.width - 32)
                     }
                 }
+                .padding()
                 
-                Text("Please place your head in the shape outlined above.")
-                    .font(.title3)
-                    .multilineTextAlignment(.center)
-                    .frame(width: UIScreen.main.bounds.width * 333 / 430)
-                
-                Text("The Photo will be taken automatically once the right position has been taken.")
-                    .font(.body)
-                    .multilineTextAlignment(.center)
-                    .opacity(0.5)
-                    .frame(width: UIScreen.main.bounds.width * 333 / 430)
+//                Slider(value: $viewModel.focusValue, in: 0...1, step: 0.01) {
+//                    Text("Focus")
+//                }
+//                .onChange(of: viewModel.focusValue) { newValue in
+//                    viewModel.updateFocus(value: newValue)
+//                }
                 
                 Button(action: {
                     showCaptureCue = true

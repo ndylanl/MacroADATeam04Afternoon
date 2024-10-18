@@ -23,7 +23,7 @@ struct AddProgressCameraSheetView: View {
         NavigationView{
             VStack{
                 Spacer()
-                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages)
+                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel)
                     .ignoresSafeArea()
             }
             .navigationTitle("Hair Growth Progress")

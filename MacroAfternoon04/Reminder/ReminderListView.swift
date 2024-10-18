@@ -84,7 +84,7 @@ struct ReminderListView: View {
 //        }
 //    }
 }
-
-#Preview {
-    ReminderListView()
-}
+//
+//#Preview {
+//    ReminderListView()
+//}

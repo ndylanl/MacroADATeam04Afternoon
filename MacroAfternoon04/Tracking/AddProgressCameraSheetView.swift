@@ -54,11 +54,17 @@ struct AddProgressCameraSheetView: View {
             let data = uiImage.pngData()!
             return [data]
         }
-        let trackProgressModel = TrackProgressModel(hairPicture: hairPictures)
+
+        let trackProgressModel = TrackProgressModel(hairPicture: hairPictures, detections: [[]])
+        
+        detectObjectsInImage(trackProgress: trackProgressModel)
+        
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)
-    }
+        
+
+        }
     
     private func saveToModel(_ model: TrackProgressModel) {
         modelContext.insert(model)

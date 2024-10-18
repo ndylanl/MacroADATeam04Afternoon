@@ -24,7 +24,7 @@ struct Coordinates: Encodable, Decodable {
 }
 
 @Model
-class TrackProgressModel {
+class TrackProgressModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var hairPicture: [[Data]]
     var dateTaken: Date

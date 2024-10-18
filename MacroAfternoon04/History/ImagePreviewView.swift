@@ -17,7 +17,7 @@ struct ImagePreviewView: View {
                 .aspectRatio(contentMode: .fit)
                 .padding()
         }
-        .background(Color.black.opacity(0.8))
+        .toolbar(.hidden, for: .tabBar)
         .edgesIgnoringSafeArea(.all)
     }
 }

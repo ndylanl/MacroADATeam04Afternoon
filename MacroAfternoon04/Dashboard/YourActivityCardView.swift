@@ -153,6 +153,6 @@ struct YourActivityCardView: View {
     }
 }
 
-#Preview {
-    YourActivityCardView()
-}
+//#Preview {
+//    YourActivityCardView()
+//}

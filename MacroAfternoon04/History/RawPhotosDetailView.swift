@@ -16,7 +16,7 @@ struct RawPhotosDetailView: View {
         if let uiImage = UIImage(data: photo){
             AnnotatedImageView(image: uiImage, detections: detections, viewModel: viewModel)
                 .frame(width: UIScreen.main.bounds.width, height: 416)
-            Text("Average Hair Per Follicle: \(String(format: "%.2", viewModel.totalAverageHair(targetObjectDetection: detections)))")
+            Text("Average Hair Per Follicle: \(viewModel.totalAverageHair(targetObjectDetection: detections))")
             LegendView()
                 .frame(height: 100)
         }
@@ -78,9 +78,9 @@ struct AnnotatedImageView: View {
                 Rectangle()
                     .stroke(boxColor, lineWidth: 2)
                     .frame(width: object.boundingBox.width * UIScreen.main.bounds.width*4/5,
-                           height: object.boundingBox.height * 280)
-                    .offset(x: object.boundingBox.origin.x * UIScreen.main.bounds.width*4/5,
-                            y: (1 - object.boundingBox.origin.y) * 280)
+                           height: object.boundingBox.height * 275)
+                    .offset(x: object.boundingBox.origin.x * UIScreen.main.bounds.width*4.2/5,
+                            y: (1 - object.boundingBox.origin.y) * 275)
                 
             }
             

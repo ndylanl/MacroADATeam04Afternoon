@@ -401,6 +401,8 @@
 				DEVELOPMENT_TEAM = RSBCF2NM6N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Serene;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Read data from health app";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Write data from health app";
@@ -442,6 +444,8 @@
 				DEVELOPMENT_TEAM = RSBCF2NM6N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Serene;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Read data from health app";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Write data from health app";

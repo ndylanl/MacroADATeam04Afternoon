@@ -10,8 +10,12 @@ import SwiftData
 
 struct WeeklyReportView: View {
     @StateObject var viewModel: WeeklyReportViewModel
+    @ObservedObject var healthViewModel = HealthViewModel()
+    @State private var isSheetPresented: Bool = false
+    @Environment(\.modelContext) private var modelContext
     
     var weekNumber: Int
+    //var reports: [Int]
     
     var body: some View {
         ScrollView{
@@ -21,6 +25,7 @@ struct WeeklyReportView: View {
                     .opacity(0.5)
                 TabView{
                     ForEach(viewModel.photos, id: \.self) { photo in
+                        
                         if let uiImage = UIImage(data: photo) {
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -50,7 +55,7 @@ struct WeeklyReportView: View {
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("42")
+                            Text(String(format: "%.1f", healthViewModel.averageSleep))
                                 .font(.title)
                             Text("hrs")
                                 .font(.body)
@@ -68,12 +73,12 @@ struct WeeklyReportView: View {
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("100")
+                            Text(String(format: "%.0f", healthViewModel.averageHeartRate))
                                 .font(.title)
-                            Text("pts")
+                            Text("bpm")
                                 .font(.body)
                         }
-                        Text("😀 Stress Level")
+                        Text("💓 Heart Rate")
                             .font(.footnote)
                     }
                     .frame(width: UIScreen.main.bounds.width * 114 / 430, height: UIScreen.main.bounds.height * 110 / 932)
@@ -86,9 +91,9 @@ struct WeeklyReportView: View {
                     
                     VStack(alignment: .leading){
                         HStack{
-                            Text("100")
+                            Text(String(format: "%.0f", healthViewModel.averageMovement))
                                 .font(.title)
-                            Text("pts")
+                            Text("kcal")
                                 .font(.body)
                         }
                         Text("🏃 Movement")
@@ -101,11 +106,23 @@ struct WeeklyReportView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .padding(.bottom, 18)
-                
-                NavigationLink{
-//                    CompareProgressView()
-                    EmptyView()
-                } label: {
+                .onAppear {
+                    // Set the date range to calculate the averages
+                    let calendar = Calendar.current
+                    let endDate = Date()
+                    let startDate = calendar.date(byAdding: .day, value: -7, to: endDate)!
+                    
+                    // Panggil fungsi untuk menghitung rata-rata data kesehatan
+                    healthViewModel.calculateAverageSleep(startDate: startDate, endDate: endDate)
+                    healthViewModel.calculateAverageMovement(startDate: startDate, endDate: endDate)
+                    healthViewModel.calculateAverageHeartRate(startDate: startDate, endDate: endDate)
+                }
+                //                .sheet(isPresented: $isPresented) {
+                //                    AddReminderView()
+                Button(action: {
+                    // Set trigger untuk menampilkan modal sheet
+                    isSheetPresented = true
+                }) {
                     Text("Compare Report")
                         .font(.body)
                         .foregroundStyle(.white)
@@ -113,6 +130,26 @@ struct WeeklyReportView: View {
                         .background(.blue)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+                .sheet(isPresented: $isSheetPresented) {
+                    // Tampilan modal sheet yang akan ditampilkan
+                    CompareReportsView(viewModel: CompareProgressViewModel(modelContext: modelContext)/*, reports: reports*/)
+                    //CompareProgressView()
+                }
+                
+                
+                
+//                NavigationLink{
+//                    CompareReportsView()
+//                    //                    CompareProgressView()
+//                    EmptyView()
+//                } label: {
+//                    Text("Compare Report")
+//                        .font(.body)
+//                        .foregroundStyle(.white)
+//                        .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+//                        .background(.blue)
+//                        .clipShape(RoundedRectangle(cornerRadius: 12))
+//                }
                 
             }
             .frame(width: UIScreen.main.bounds.width * 374 / 430, alignment: .leading)
@@ -131,3 +168,5 @@ struct WeeklyReportView: View {
         UIScreen.main.bounds.height * 290 / 932
     }
 }
+
+

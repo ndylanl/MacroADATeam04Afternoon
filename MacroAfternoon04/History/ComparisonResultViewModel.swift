@@ -1,33 +1,35 @@
 //
-//  CompareProgressViewModel.swift
+//  ComparisonResultViewModel.swift
 //  MacroAfternoon04
 //
-//  Created by Alvin Lionel on 17/10/24.
+//  Created by Benedikta Anin on 21/10/24.
 //
 
 import Foundation
-import Combine
 import SwiftData
+import Combine
 
-class CompareProgressViewModel: ObservableObject {
-    @Published var progressModels: [TrackProgressModel] = []
+class ComparisonResultViewModel: ObservableObject {
+    @Published var trackProgressData: [TrackProgressModel] = []
+    
     private var cancellables = Set<AnyCancellable>()
-    var modelContext: ModelContext
+    private var modelContext: ModelContext
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        fetchProgressData()
+        self.fetchData()
     }
     
-    func fetchProgressData() {
+     func fetchData() {
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
-            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
+            sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
         )
         
         do {
             let models = try modelContext.fetch(fetchRequest)
-            self.progressModels = models
+            self.trackProgressData = models
+            print(trackProgressData)
         } catch {
             print("Failed to fetch data: \(error)")
         }

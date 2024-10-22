@@ -11,6 +11,7 @@ struct CompareProgressView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel: CompareProgressViewModel
     
+    
     init(viewModel: CompareProgressViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -49,3 +50,7 @@ struct CompareProgressView: View {
         }
     }
 }
+//
+//#Preview {
+//    CompareProgressView(viewModel: <#CompareProgressViewModel#>)
+//}

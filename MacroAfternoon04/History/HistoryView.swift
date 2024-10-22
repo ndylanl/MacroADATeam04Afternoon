@@ -14,6 +14,8 @@ struct HistoryView: View {
     @State private var showPicker = false
     @State var weeklyReportViewModel: WeeklyReportViewModel?
     
+    //var reports: [Int]
+    
     var body: some View {
         NavigationView{
             VStack(alignment: .leading){
@@ -34,7 +36,7 @@ struct HistoryView: View {
                 if weeklyReportViewModel != nil {
                     List{
                         ForEach(1..<weeklyReportViewModel!.totalWeeks() + 1, id: \.self) { i in
-                            NavigationLink(destination: WeeklyReportView(viewModel: WeeklyReportViewModel(weekNumber: i, modelContext: modelContext), weekNumber: i)) {
+                            NavigationLink(destination: WeeklyReportView(viewModel: WeeklyReportViewModel(weekNumber: i, modelContext: modelContext), weekNumber: i/*, reports: reports*/)) {
                                            Text("Week \(i)")
                                        }
                                    }
@@ -73,3 +75,5 @@ struct HistoryView: View {
         return formatter
     }
 }
+
+

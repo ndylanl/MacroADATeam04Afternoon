@@ -16,7 +16,7 @@ struct ReminderListView: View {
     @ObservedObject var reminderViewModel = ReminderViewModel()
     
     var body: some View {
-        NavigationView {
+        VStack {
             List {
                 if reminders.isEmpty {
                     Text("No reminders yet")
@@ -66,23 +66,7 @@ struct ReminderListView: View {
             }
         }
     }
-    
-//    func updateReminder(_ reminder: ReminderModel, isOn: Bool) {
-//        reminder.isReminderOn = isOn
-//        do {
-//            try modelContext.save()  // Save changes to the database
-//            // Jika isOn adalah false, batalkan notifikasi
-//            if !isOn {
-//                // Batalkan notifikasi untuk reminder ini
-//                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
-//            } else {
-//                // Jika isOn adalah true, jadwalkan notifikasi baru jika diperlukan
-//                reminderViewModel.scheduleReminderNotification(for: reminder)
-//            }
-//        } catch {
-//            print("Error saving reminder state: \(error)")
-//        }
-//    }
+
 }
 
 #Preview {

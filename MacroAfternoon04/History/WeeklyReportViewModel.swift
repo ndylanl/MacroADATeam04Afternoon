@@ -25,10 +25,16 @@ class WeeklyReportViewModel: ObservableObject {
         fetchData(weekNumber: weekNumber)
     }
     
+//    init(modelContext: ModelContext) {
+//        self.modelContext = modelContext
+//        self.weekNumber = 1
+//    }
+    
     private func fetchData(weekNumber: Int) {
+        print("week\(weekNumber)")
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
-            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
+            sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
         )
         
         do {

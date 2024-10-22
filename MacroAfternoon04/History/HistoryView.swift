@@ -35,11 +35,11 @@ struct HistoryView: View {
                 
                 if weeklyReportViewModel != nil {
                     List{
-                        ForEach(1..<weeklyReportViewModel!.totalWeeks() + 1, id: \.self) { i in
-                            NavigationLink(destination: WeeklyReportView(viewModel: WeeklyReportViewModel(weekNumber: i, modelContext: modelContext), weekNumber: i/*, reports: reports*/)) {
-                                           Text("Week \(i)")
-                                       }
-                                   }
+                        ForEach(Array(stride(from: weeklyReportViewModel!.totalWeeks(), through: 1, by: -1)), id: \.self) { i in
+                            NavigationLink(destination: WeeklyReportView(viewModel: WeeklyReportViewModel(weekNumber: i, modelContext: modelContext), weekNumber: i)) {
+                                Text("Week \(i)")
+                            }
+                        }
                     }
                     .scrollContentBackground(.hidden)
                     

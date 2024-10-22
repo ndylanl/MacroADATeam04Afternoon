@@ -9,24 +9,33 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @State private var selectedTab: Int = 0
+    @Environment(\.modelContext) var modelContext
     
-    //var reports: [Int]
+    @State var selectedTab: Int = 0
+
+    @State var healthManager = HealthManager()
     
-    @State private var healthManager = HealthManager()
+    @State var userName: String = ""
+    
+    @State var isOnboardingComplete: Bool = false
+    
+    @State var showingAddProgressSheet = false
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
-                DashboardView(selectedTab: $selectedTab)
+        if isOnboardingComplete{
+            TabView(selection: $selectedTab) {
+                Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
+                    DashboardView(userName: $userName, showingAddProgressSheet: $showingAddProgressSheet, selectedTab: $selectedTab)
+                }
+                
+                Tab("History", systemImage: "hourglass", value: 1) {
+                    HistoryView()
+                }
+            }.task {
+                await healthManager.requestAuthorization()
             }
-            
-            Tab("History", systemImage: "hourglass", value: 1) {
-                HistoryView(/*reports: reports*/)
-            }
-        }.task {
-            await healthManager.requestAuthorization()
+        } else {
+            OnBoardingFirstPageView(userName: $userName, isOnboardingComplete: $isOnboardingComplete, showingAddProgressSheet: $showingAddProgressSheet)
         }
     }
 }

@@ -14,12 +14,14 @@ struct RawPhotosView: View {
         VStack {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    ForEach(viewModel.photos, id: \.self) { photoData in
+                    ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
                         if let uiImage = UIImage(data: photoData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 100, height: 100)
+                            NavigationLink(destination: RawPhotosDetailView(photo: photoData, detections: viewModel.detections[index], viewModel: viewModel)) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 100, height: 100)
+                            }
                         }
                     }
                 }
@@ -27,6 +29,7 @@ struct RawPhotosView: View {
             .padding()
             
             Spacer()
+            
         }
         .navigationTitle("Raw Photos")
         .navigationBarTitleDisplayMode(.large)
@@ -39,3 +42,4 @@ struct RawPhotosView: View {
         }
     }
 }
+

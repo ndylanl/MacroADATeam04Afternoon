@@ -70,8 +70,8 @@ struct ReminderCardView: View {
     }
 }
 
-
-#Preview {
-    ReminderCardView()
-}
-
+//
+//#Preview {
+//    ReminderCardView()
+//}
+//

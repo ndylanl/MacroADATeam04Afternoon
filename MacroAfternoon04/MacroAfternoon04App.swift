@@ -15,7 +15,7 @@ struct MacroAfternoon04App: App {
     
     init() {
         do {
-            modelContainer = try ModelContainer(for: ReminderModel.self)
+            modelContainer = try ModelContainer(for: ReminderModel.self, TrackProgressModel.self)
         } catch {
             fatalError("Could not initialize model container: \(error)")
         }

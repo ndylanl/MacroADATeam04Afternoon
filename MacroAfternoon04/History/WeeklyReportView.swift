@@ -27,12 +27,16 @@ struct WeeklyReportView: View {
                     ForEach(viewModel.photos, id: \.self) { photo in
                         
                         if let uiImage = UIImage(data: photo) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .frame(width: photoWidthSize(), height: photoHeightSize())
+                            NavigationLink{
+                                ImagePreviewView(image: uiImage)
+                            } label: {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .frame(width: photoSize(), height: photoSize())
+                            }
                         } else {
                             Rectangle()
-                                .frame(width: photoWidthSize(), height: photoHeightSize())
+                                .frame(width: photoSize(), height: photoSize())
                         }
                     }
                 }
@@ -160,12 +164,8 @@ struct WeeklyReportView: View {
         }
     }
     
-    func photoWidthSize() -> CGFloat {
+    func photoSize() -> CGFloat {
         UIScreen.main.bounds.width * 326 / 430
-    }
-    
-    func photoHeightSize() -> CGFloat {
-        UIScreen.main.bounds.height * 290 / 932
     }
 }
 

@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct DashboardView: View {
+    @Binding var userName: String
     
-    @State var showingAddProgressSheet = false
+    @Binding var showingAddProgressSheet: Bool
     
     @Binding var selectedTab: Int
     
@@ -20,19 +21,12 @@ struct DashboardView: View {
                     HStack{
                         VStack(alignment: .leading){
                             Text("Good Morning,").font(.largeTitle)
-                            Text("DORY").font(.largeTitle).bold()
+                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
                         }
                         
                         Spacer()
                     }
                     .padding(.horizontal, 28)
-                    
-                    
-                    //                    Button{
-                    //                        selectedTab = 1
-                    //                    } label: {
-                    //                        ReminderCardView()
-                    //                    }
                     
                     NavigationLink(destination: ReminderListView(), label: {
                         ReminderCardView()
@@ -64,9 +58,9 @@ struct DashboardView: View {
                         }
                         
                         // Button untuk membuka HealthView
-//                        NavigationLink(destination: HealthView()) {
-//                            Image(systemName: "heart")
-//                        }
+                        //                        NavigationLink(destination: HealthView()) {
+                        //                            Image(systemName: "heart")
+                        //                        }
                     }
                 }
             }

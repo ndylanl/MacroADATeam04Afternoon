@@ -28,12 +28,11 @@ struct CameraView: View {
                 ZStack {
                     if let image = image {
                         
-                            Image(decorative: image, scale: 1)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: UIScreen.main.bounds.width - 32,
-                                       height: UIScreen.main.bounds.width - 32)
-                            
+                        Image(decorative: image, scale: 1)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: UIScreen.main.bounds.width - 32,
+                                   height: UIScreen.main.bounds.width - 32)
                         
                     } else {
                         ContentUnavailableView("Camera feed interrupted", systemImage: "xmark.circle.fill")
@@ -50,12 +49,12 @@ struct CameraView: View {
                 }
                 .padding()
                 
-//                Slider(value: $viewModel.focusValue, in: 0...1, step: 0.01) {
-//                    Text("Focus")
-//                }
-//                .onChange(of: viewModel.focusValue) { newValue in
-//                    viewModel.updateFocus(value: newValue)
-//                }
+                //                Slider(value: $viewModel.focusValue, in: 0...1, step: 0.01) {
+                //                    Text("Focus")
+                //                }
+                //                .onChange(of: viewModel.focusValue) { newValue in
+                //                    viewModel.updateFocus(value: newValue)
+                //                }
                 
                 Button(action: {
                     showCaptureCue = true

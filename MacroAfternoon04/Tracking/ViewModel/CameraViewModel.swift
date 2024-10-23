@@ -14,11 +14,22 @@ class CameraViewModel: ObservableObject {
     @Published var focusValue: Float = 0.5
     
     private let cameraManager = CameraManager()
+    private var previewTask: Task<Void, Never>?
     
     init() {
-        Task {
+        
+    }
+    
+    func startCamera() {
+        previewTask = Task {
             await handleCameraPreviews()
         }
+    }
+    
+    func stopCamera() {
+        previewTask?.cancel()
+        previewTask = nil
+        currentFrame = nil
     }
     
     func handleCameraPreviews() async {
@@ -30,8 +41,8 @@ class CameraViewModel: ObservableObject {
     }
     
     func updateFocus(value: Float) {
-            cameraManager.setFocus(value: value)
-        }
+        cameraManager.setFocus(value: value)
+    }
     
     func captureImage() {
         if let currentFrame = currentFrame {

@@ -26,6 +26,12 @@ struct AddProgressCameraSheetView: View {
                 CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel)
                     .ignoresSafeArea()
             }
+            .onAppear {
+                viewModel.startCamera()
+            }
+            .onDisappear {
+                viewModel.stopCamera()
+            }
             .navigationTitle("Hair Growth Progress")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{

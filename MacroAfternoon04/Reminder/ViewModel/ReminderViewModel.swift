@@ -29,8 +29,30 @@ class ReminderViewModel: ObservableObject {
                 // Jadwalkan notifikasi baru
                 scheduleReminderNotification(for: reminder)
             }
-//        } catch {
-//            print("Error saving reminder state: \(error)")
-//        }
+        
+        saveContext(context: context)
     }
+    
+    func saveReminder(_ reminder: ReminderModel, context: ModelContext) {
+            // Insert new or updated reminder into the context
+            context.insert(reminder)
+            
+            // Save changes to the context
+            saveContext(context: context)
+            
+            // Schedule notification for the reminder
+            if reminder.isReminderOn {
+                scheduleReminderNotification(for: reminder)
+            }
+        }
+    
+    // Helper function to save the context and handle potential errors
+        private func saveContext(context: ModelContext) {
+            do {
+                // Save changes to the context
+                try context.save()
+            } catch {
+                print("Error saving reminder: \(error)")
+            }
+        }
 }

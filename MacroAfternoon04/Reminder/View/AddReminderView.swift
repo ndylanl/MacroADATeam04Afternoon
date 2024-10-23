@@ -10,10 +10,11 @@ import SwiftData
 import UserNotifications
 
 struct AddReminderView: View {
-    @State var time = Date()                // Stores the selected reminder time
+    @Binding var reminder: ReminderModel?    // Binding to handle either a new or existing reminder
+    @State var time = Date()                 // Stores the selected reminder time
     @State var repeatOption = RepeatOption.never // Default repeat option using `RepeatOption`
     @State var label = "Reminder"
-    @State var sound = Sound.defaultSound // Default label for the reminder
+    @State var sound = Sound.defaultSound    // Default label for the reminder
     
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.modelContext) private var modelContext
@@ -43,9 +44,6 @@ struct AddReminderView: View {
                             TextField("Reminder Label", text: $label)
                                 .multilineTextAlignment(.trailing)
                                 .keyboardType(.default)
-                                .onTapGesture {
-                                    print("TextField tapped")
-                                }
                         }
                         
                         Picker("Sound", selection: $sound) {
@@ -57,23 +55,43 @@ struct AddReminderView: View {
                     .scrollContentBackground(.hidden)
                     
                 }
-                .navigationTitle("Add Reminder")
+                .onAppear {
+                    if let reminder = reminder {
+                        // If an existing reminder is passed, pre-populate the fields
+                        time = reminder.reminderTime
+                        repeatOption = reminder.repeatOption
+                        label = reminder.label
+                        sound = reminder.reminderSound
+                    }
+                }
+                .navigationTitle(reminder == nil ? "Add Reminder" : "Edit Reminder") // Show appropriate title
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading: Button("Cancel") {
                     presentationMode.wrappedValue.dismiss()
                 }, trailing: Button("Save") {
-                    // Insert the new reminder model into the SwiftData context
-                    let newReminder = ReminderModel(
-                        label: label,
-                        reminderTime: time,
-                        repeatOption: repeatOption,
-                        isReminderOn: true,
-                        reminderSound: sound
-                    )
-                    modelContext.insert(newReminder)
-                    
-                    // Schedule the notification
-                    reminderViewModel.scheduleReminderNotification(for: newReminder)
+                    if let reminder = reminder {
+                        // Update existing reminder
+                        reminder.label = label
+                        reminder.reminderTime = time
+                        reminder.repeatOption = repeatOption
+                        reminder.reminderSound = sound
+                        
+                        // Save the updated reminder in the modelContext
+                        reminderViewModel.updateReminder(reminder, isOn: reminder.isReminderOn, context: modelContext)
+                    } else {
+                        // Insert a new reminder model into the SwiftData context
+                        let newReminder = ReminderModel(
+                            label: label,
+                            reminderTime: time,
+                            repeatOption: repeatOption,
+                            isReminderOn: true,
+                            reminderSound: sound
+                        )
+                        modelContext.insert(newReminder)
+                        
+                        // Schedule the notification
+                        reminderViewModel.scheduleReminderNotification(for: newReminder)
+                    }
                     
                     // Dismiss the view
                     presentationMode.wrappedValue.dismiss()
@@ -81,10 +99,10 @@ struct AddReminderView: View {
             }
         }
     }
-    
 }
+
 
 // For preview purposes
 #Preview {
-    AddReminderView()
+    AddReminderView(reminder: .constant(nil))
 }

@@ -50,7 +50,7 @@ struct OnBoardingFirstPageView: View {
                 .frame(width: frameWidth() - 56, height: frameHeight() * 3 / 4, alignment: .top)
                 
                 NavigationLink{
-                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnboardingComplete, showingAddProgressSheet: $showingAddProgressSheet)
+                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnboardingComplete, showingAddProgressSheet: $showingAddProgressSheet, userName: $userName)
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }

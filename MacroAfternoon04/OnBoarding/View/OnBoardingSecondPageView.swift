@@ -10,6 +10,7 @@ import SwiftUI
 struct OnBoardingSecondPageView: View {
     @Binding var isOnBoardingComplete: Bool
     @Binding var showingAddProgressSheet: Bool
+    @Binding var userName: String
     
     var body: some View {
         VStack{
@@ -32,7 +33,9 @@ struct OnBoardingSecondPageView: View {
             
             Button{
                 showingAddProgressSheet = true
-                isOnBoardingComplete.toggle()
+                isOnBoardingComplete = true
+                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+                UserDefaults.standard.set(userName, forKey: "userName")
             } label: {
                 Text("Start Tracking Hair Growth")
             }
@@ -42,13 +45,15 @@ struct OnBoardingSecondPageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
             Button{
-                isOnBoardingComplete.toggle()
+                isOnBoardingComplete = true
+                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+                UserDefaults.standard.set(userName, forKey: "userName")
             } label: {
                 Text("Skip")
             }
             .foregroundStyle(Color("PrimaryColor"))
             .frame(height: 48)
-//            .background(Color.blue)
+            //            .background(Color.blue)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .frame(width: frameWidth(), height: frameHeight(), alignment: .top)

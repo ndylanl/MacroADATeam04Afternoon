@@ -14,8 +14,6 @@ struct HistoryView: View {
     @State private var showPicker = false
     @State var weeklyReportViewModel: WeeklyReportViewModel?
     
-    //var reports: [Int]
-    
     var body: some View {
         NavigationView{
             VStack(alignment: .leading){

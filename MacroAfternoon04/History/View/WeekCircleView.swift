@@ -19,7 +19,7 @@ struct WeekCircleView: View {
         }
         .foregroundStyle(Color("PrimaryColor"))
         .frame(width: getCircleSize(), height: getCircleSize())
-        .background(Color("SecondaryColor"))
+        .background(.white.opacity(0.5))
         .background(.ultraThinMaterial)
         .clipShape(Circle())
         .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 2)
@@ -40,6 +40,6 @@ struct WeekCircleView: View {
     }
 }
 
-//#Preview {
-//    WeekCircleView(weekDate: Date())
-//}
+#Preview {
+    WeekCircleView(weekDate: Date())
+}

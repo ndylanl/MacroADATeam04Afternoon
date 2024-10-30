@@ -14,16 +14,16 @@ struct RawPhotosView: View {
         VStack {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
-                        if let uiImage = UIImage(data: photoData) {
-                            NavigationLink(destination: RawPhotosDetailView(photo: photoData, detections: viewModel.detections[index], viewModel: viewModel)) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 100, height: 100)
-                            }
-                        }
-                    }
+//                    ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
+//                        if let uiImage = UIImage(data: photoData) {
+//                            NavigationLink(destination: RawPhotosDetailView(photo: photoData, detections: viewModel.detections[index], viewModel: viewModel)) {
+//                                Image(uiImage: uiImage)
+//                                    .resizable()
+//                                    .aspectRatio(contentMode: .fit)
+//                                    .frame(width: 100, height: 100)
+//                            }
+//                        }
+//                    }
                 }
             }
             .padding()

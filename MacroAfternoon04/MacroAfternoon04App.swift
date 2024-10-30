@@ -23,7 +23,8 @@ struct MacroAfternoon04App: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HeatmapView()
+//            ContentView()
                 .modelContainer(for: [TrackProgressModel.self, ReminderModel.self])
         }
     }

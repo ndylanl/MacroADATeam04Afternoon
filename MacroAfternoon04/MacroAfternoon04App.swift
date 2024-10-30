@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct MacroAfternoon04App: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     let modelContainer: ModelContainer
     
@@ -19,12 +20,20 @@ struct MacroAfternoon04App: App {
         } catch {
             fatalError("Could not initialize model container: \(error)")
         }
+        
+        ReminderService.shared.modelContext = modelContainer.mainContext
     }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .modelContainer(for: [TrackProgressModel.self, ReminderModel.self])
+                .onAppear {
+                    setupNotificationActions()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didFinishLaunchingNotification)) { _ in
+                    UNUserNotificationCenter.current().delegate = appDelegate
+                }
         }
     }
 }

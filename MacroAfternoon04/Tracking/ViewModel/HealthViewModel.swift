@@ -122,12 +122,12 @@ class HealthViewModel: ObservableObject {
             averageSleep = 0 // atau nilai default lainnya jika tidak ada hari
         }
         
-        // Update nilai rata-rata tidur
-        self.averageSleep = averageSleep
-        print("NOTICE ME :D")
-//        print(filteredSleepData)
-        print(totalSleepDuration)
-        print(averageSleep)
+//        // Update nilai rata-rata tidur
+//        self.averageSleep = averageSleep
+//        print("NOTICE ME :D")
+////        print(filteredSleepData)
+//        print(totalSleepDuration)
+//        print(averageSleep)
 
     }
     

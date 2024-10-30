@@ -10,18 +10,75 @@ import UserNotifications
 import SwiftData
 
 class ReminderViewModel: ObservableObject {
+    
+    func handleMarkAsDone(reminderID: String) {
+        print("User marked reminder as Done: \(reminderID)")
+            //call getReminderBasedOnId func
+        if let reminder = ReminderService.shared.getReminderBasedOnId(reminderID: reminderID) {
+            // Mark reminder as completed
+            reminder.isCompleted = true
+            //saveReminder(reminder, context: context)
+            if let context = ReminderService.shared.modelContext {
+                saveContext(context: context)
+            }
+
+        }
+        
+    }
+
+    
+    func handleSnooze(reminderID: String) {
+        print("User selected Snooze for reminder: \(reminderID)")
+
+        // Fetch the reminder model using its ID
+        if let reminder = ReminderService.shared.getReminderBasedOnId(reminderID: reminderID) {
+            
+            // Reschedule the notification for the new reminder time
+            scheduleSnoozeNotification(for: reminder)
+            
+            // Save the updated reminder to the context if necessary
+            //ReminderService.shared.saveReminder(reminder)
+            if let context = ReminderService.shared.modelContext {
+                saveContext(context: context)
+            }
+            
+            print("Reminder snoozed for 1 hour.")
+        }
+    }
+
+    // Function to schedule the snoozed notification
+    func scheduleSnoozeNotification(for reminder: ReminderModel) {
+        let content = UNMutableNotificationContent()
+        content.title = "Serene"
+        content.body = reminder.label
+        content.sound = UNNotificationSound.default
+        content.categoryIdentifier = "REMINDER_CATEGORY"
+
+        // Create the trigger for 1 hour later
+        let newTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: false)
+
+        let request = UNNotificationRequest(identifier: reminder.id.uuidString, content: content, trigger: newTrigger)
+        
+        // Add the notification request
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling snoozed notification: \(error)")
+            }
+        }
+    }
+
+    
     func scheduleReminderNotification(for reminder: ReminderModel) {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: reminder.reminderTime)
         let minute = calendar.component(.minute, from: reminder.reminderTime)
 
-        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute)
+        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute, repeatOption: reminder.repeatOption)
     }
 
     func updateReminder(_ reminder: ReminderModel, isOn: Bool, context: ModelContext) {
         reminder.isReminderOn = isOn
         
-//        do {
             if !isOn {
                 // Batalkan notifikasi
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
@@ -32,6 +89,7 @@ class ReminderViewModel: ObservableObject {
         
         saveContext(context: context)
     }
+    
     
     func saveReminder(_ reminder: ReminderModel, context: ModelContext) {
             // Insert new or updated reminder into the context

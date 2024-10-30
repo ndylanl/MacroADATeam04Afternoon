@@ -23,21 +23,21 @@ struct DashboardView: View {
         NavigationStack{
             ScrollView{
                 VStack{
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text("Good Morning,").font(.largeTitle)
-                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
-                        }
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 28)
+//                    HStack{
+//                        VStack(alignment: .leading){
+//                            Text("Good Morning,").font(.largeTitle)
+//                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
+//                        }
+//                        
+//                        Spacer()
+//                    }
+//                    .padding(.horizontal, 28)
+                    
+                    HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
                     
                     NavigationLink(destination: ReminderListView(), label: {
                         ReminderCardView()
                     })
-                    
-                    HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
                     
                     YourActivityCardView()
                 }
@@ -50,7 +50,7 @@ struct DashboardView: View {
                     .resizable()
             )
             
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Dashboard")
             
             .toolbar{
                 
@@ -111,4 +111,3 @@ struct DashboardView: View {
         }
     }
 }
-

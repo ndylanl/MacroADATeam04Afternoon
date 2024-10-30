@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct YourActivityCardView: View {
-    @ObservedObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
+    @StateObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
     
     var body: some View {
         ZStack(){

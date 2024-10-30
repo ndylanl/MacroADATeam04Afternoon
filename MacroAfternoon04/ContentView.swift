@@ -34,8 +34,9 @@ struct ContentView: View {
                 }
                 
                 Tab("History", systemImage: "hourglass", value: 1) {
-//                    HistoryCircleView(historyViewModel: HistoryViewModel(modelContext: modelContext))
-                    HistoryView()
+//                    EmptyView()
+                    HistoryCircleView()
+//                    HistoryView()
                 }
             }
             .task {

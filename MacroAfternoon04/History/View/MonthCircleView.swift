@@ -18,10 +18,11 @@ struct MonthCircleView: View {
             Text("Report")
                 .font(.body)
         }
-        .foregroundStyle(Color("SecondaryColor"))
+        .foregroundStyle(Color("PrimaryColor"))
         .frame(width: getCircleSize(), height: getCircleSize())
         .background(
-            LinearGradient(gradient: Gradient(colors: [Color("SecondaryColor"), Color("PrimaryColor")]), startPoint: .top, endPoint: .bottom)
+//            LinearGradient(gradient: Gradient(colors: [Color("SecondaryColor"), Color("PrimaryColor")]), startPoint: .top, endPoint: .bottom)
+            Color("SecondaryColor")
         )
         .clipShape(Circle())
         .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 2)

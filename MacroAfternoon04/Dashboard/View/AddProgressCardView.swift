@@ -15,11 +15,17 @@ struct AddProgressCardView: View {
             
             Image(systemName: "camera.fill")
                 .resizable()
-                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .foregroundStyle(Color("PrimaryColor"))
                 .frame(width: IconWidthSize(), height: IconHeightSize())
             
         }
+        .background(Color("SecondaryColor"))
         .frame(width: cardWidthSize(), height: cardHeightSize())
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color("PrimaryColor"), lineWidth: 0.5)
+        )
     }
     
     func cardWidthSize() -> CGFloat{

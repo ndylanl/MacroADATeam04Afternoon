@@ -20,7 +20,7 @@ struct MacroAfternoon04App: App {
             fatalError("Could not initialize model container: \(error)")
         }
     }
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

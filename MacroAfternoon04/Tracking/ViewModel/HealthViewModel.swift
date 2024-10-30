@@ -8,6 +8,7 @@
 import Foundation
 import HealthKit
 
+@MainActor
 class HealthViewModel: ObservableObject {
     private var healthKitManager = HealthManager()
     

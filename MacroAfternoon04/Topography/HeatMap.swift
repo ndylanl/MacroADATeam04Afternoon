@@ -8,7 +8,7 @@
 import SwiftUI
 
 // cuman buat testing
-let multiple = 4
+let multiple = 6
 let tempArray: [Float] = [1,0,1,0,1,0,1,0,1,0,1,0]
 
 func countNMinusOne(startValue: Int, multiple: Int) -> Int{
@@ -22,7 +22,7 @@ func countNMinusOne(startValue: Int, multiple: Int) -> Int{
 
 struct HeatmapView: View {
     
-    let pixelSize: CGFloat = 5
+    let pixelSize: CGFloat = 2
     
     let data = createDepthData(originalValues: tempArray, multiple: multiple)
 //    let data = createNewData2(row: 4, column: 3, originalValues: [1,0,1,0,1,0,1,0,1,0,1,0])

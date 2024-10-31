@@ -23,10 +23,16 @@ struct Coordinates: Encodable, Decodable {
     var width: Double
 }
 
+struct HairPictureData{
+    var scalpArea: Int
+    var hairPicture: [Data]
+}
+
 @Model
 class TrackProgressModel: Identifiable {
     @Attribute(.unique) var id: UUID
     var hairPicture: [[Data]]
+    //var hairPicture: [HairPictureData]
     var dateTaken: Date
     var detections: [[DetectedObject]] // Array of detected objects for each image
     

@@ -26,8 +26,8 @@ struct MacroAfternoon04App: App {
     
     var body: some Scene {
         WindowGroup {
-            HeatmapView()
-//            ContentView()
+            //HeatmapView()
+            ContentView()
                 .modelContainer(for: [TrackProgressModel.self, ReminderModel.self])
                 .onAppear {
                     setupNotificationActions()

@@ -17,6 +17,8 @@ struct DashboardView: View {
     
     @Binding var selectedTab: Int
     
+    @State var currentScalpArea: Int
+    
     @State var isShowAlert: Bool = false
     
     var body: some View {
@@ -42,7 +44,7 @@ struct DashboardView: View {
                     YourActivityCardView()
                 }
                 .sheet(isPresented: $showingAddProgressSheet){
-                    AddProgressCameraSheetView()
+                    AddProgressCameraSheetView(currentScalpPosition: $currentScalpArea)
                 }
             }
             .background(

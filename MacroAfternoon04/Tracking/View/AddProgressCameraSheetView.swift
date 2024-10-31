@@ -16,6 +16,8 @@ struct AddProgressCameraSheetView: View {
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var currentPage = 1
+    @Binding var currentScalpPosition: Int
+
     
     private let totalPages = 3
     

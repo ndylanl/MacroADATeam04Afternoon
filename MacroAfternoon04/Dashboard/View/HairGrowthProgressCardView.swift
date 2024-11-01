@@ -27,8 +27,8 @@ struct HairGrowthProgressCardView: View {
                 
                 HStack{
                     
-                    NavigationLink{
-                        PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
+                    Button{
+                        showingAddProgressSheet.toggle()
                     } label: {
                         AddProgressCardView()
                     }

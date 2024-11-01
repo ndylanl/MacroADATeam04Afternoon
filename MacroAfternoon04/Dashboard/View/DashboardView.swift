@@ -11,13 +11,11 @@ import SwiftData
 struct DashboardView: View {
     @Environment(\.modelContext) var modelContext
     
-    @Binding var userName: String
-    
     @Binding var showingAddProgressSheet: Bool
     
     @Binding var selectedTab: Int
     
-    @State var currentScalpArea: Int
+    @Binding var currentScalpPosition: Int
     
     @State var isShowAlert: Bool = false
     
@@ -25,15 +23,6 @@ struct DashboardView: View {
         NavigationStack{
             ScrollView{
                 VStack{
-//                    HStack{
-//                        VStack(alignment: .leading){
-//                            Text("Good Morning,").font(.largeTitle)
-//                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
-//                        }
-//                        
-//                        Spacer()
-//                    }
-//                    .padding(.horizontal, 28)
                     
                     HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
                     
@@ -44,7 +33,7 @@ struct DashboardView: View {
                     YourActivityCardView()
                 }
                 .sheet(isPresented: $showingAddProgressSheet){
-                    AddProgressCameraSheetView(currentScalpPosition: $currentScalpArea)
+                    AddProgressCameraSheetView(currentScalpPosition: $currentScalpPosition)
                 }
             }
             .background(
@@ -84,32 +73,32 @@ struct DashboardView: View {
     }
     
     func resetAllData(modelContext: ModelContext) {
-        let fetchRequestReminder = FetchDescriptor<ReminderModel>()
-        let fetchRequestTrackProgress = FetchDescriptor<TrackProgressModel>()
-        
-        UserDefaults.standard.removeObject(forKey: "userName")
-        UserDefaults.standard.removeObject(forKey: "isOnBoardingComplete")
-        
-        UserDefaults.standard.set("", forKey: "userName")
-        UserDefaults.standard.set(false, forKey: "isOnBoardingComplete")
-        
-        print(UserDefaults.standard.bool(forKey: "isOnBoardingComplete"))
-        
-        do {
-            let reminders = try modelContext.fetch(fetchRequestReminder)
-            let trackProgresses = try modelContext.fetch(fetchRequestTrackProgress)
-            
-            for reminder in reminders {
-                modelContext.delete(reminder)
-            }
-            
-            for trackProgress in trackProgresses {
-                modelContext.delete(trackProgress)
-            }
-            
-            try modelContext.save()
-        } catch {
-            print("Failed to reset data: \(error)")
-        }
+//        let fetchRequestReminder = FetchDescriptor<ReminderModel>()
+//        let fetchRequestTrackProgress = FetchDescriptor<TrackProgressModel>()
+//        
+//        UserDefaults.standard.removeObject(forKey: "userName")
+//        UserDefaults.standard.removeObject(forKey: "isOnBoardingComplete")
+//        
+//        UserDefaults.standard.set("", forKey: "userName")
+//        UserDefaults.standard.set(false, forKey: "isOnBoardingComplete")
+//        
+//        print(UserDefaults.standard.bool(forKey: "isOnBoardingComplete"))
+//        
+//        do {
+//            let reminders = try modelContext.fetch(fetchRequestReminder)
+//            let trackProgresses = try modelContext.fetch(fetchRequestTrackProgress)
+//            
+//            for reminder in reminders {
+//                modelContext.delete(reminder)
+//            }
+//            
+//            for trackProgress in trackProgresses {
+//                modelContext.delete(trackProgress)
+//            }
+//            
+//            try modelContext.save()
+//        } catch {
+//            print("Failed to reset data: \(error)")
+//        }
     }
 }

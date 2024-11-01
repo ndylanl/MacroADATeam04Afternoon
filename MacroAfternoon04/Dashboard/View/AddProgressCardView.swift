@@ -45,7 +45,3 @@ struct AddProgressCardView: View {
     }
     
 }
-
-#Preview {
-    AddProgressCardView()
-}

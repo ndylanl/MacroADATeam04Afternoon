@@ -23,7 +23,7 @@ struct CameraView: View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 
-                AddProgressTrackingBarView(progress: currentPage)
+                AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel)
                 
                 ZStack {
                     if let image = image {
@@ -48,13 +48,6 @@ struct CameraView: View {
                     }
                 }
                 .padding()
-                
-                //                Slider(value: $viewModel.focusValue, in: 0...1, step: 0.01) {
-                //                    Text("Focus")
-                //                }
-                //                .onChange(of: viewModel.focusValue) { newValue in
-                //                    viewModel.updateFocus(value: newValue)
-                //                }
                 
                 Button(action: {
                     showCaptureCue = true

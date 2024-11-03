@@ -8,8 +8,8 @@
 import SwiftUI
 
 // cuman buat testing
-let multiple = 6
-let tempArray: [Float] = [1,0,1,0,1,0,1,0,1,0,1,0]
+let multiple = 4
+//let tempArray: [Float] = [1,0,1,0,1,0,1,0,1,0,1,0]
 
 func countNMinusOne(startValue: Int, multiple: Int) -> Int{
     var newValue = startValue
@@ -22,30 +22,33 @@ func countNMinusOne(startValue: Int, multiple: Int) -> Int{
 
 struct HeatmapView: View {
     
-    let pixelSize: CGFloat = 2
+    let pixelSize: CGFloat = 5
     
-    let data = createDepthData(originalValues: tempArray, multiple: multiple)
-//    let data = createNewData2(row: 4, column: 3, originalValues: [1,0,1,0,1,0,1,0,1,0,1,0])
-
+    //let data = createDepthData(originalValues: tempArray, multiple: multiple)
+    @State var data: [Float]
     
     var body: some View {
         
         VStack(spacing:0){
-            ForEach(0..<Int(countNMinusOne(startValue: 4, multiple: multiple)), id:\.self){ row in
+            ForEach(0..<Int(countNMinusOne(startValue: 6, multiple: multiple)), id:\.self){ row in
                 HStack(alignment: .bottom, spacing: 0){
-                    ForEach(0..<Int(countNMinusOne(startValue: 3, multiple: multiple)), id:\.self){ column in
+                    ForEach(0..<Int(countNMinusOne(startValue: 5, multiple: multiple)), id:\.self){ column in
                         Rectangle()
                             .fill(self.colorForPixel(row: row, column: column))
                             .frame(width: pixelSize, height: pixelSize)
+//                            .blur(radius: 0.1, opaque: true)
                     }
                 }
             }
+        }
+        .onAppear(){
+            //print("Data from heatmapView: \(data)")
         }
         
     }
     
     func colorForPixel(row: Int, column: Int) -> Color {
-        let index = column + (row * countNMinusOne(startValue: 3, multiple: multiple))
+        let index = column + (row * countNMinusOne(startValue: 5, multiple: multiple))
         
         var value = Float(0)
         
@@ -55,10 +58,7 @@ struct HeatmapView: View {
             value = 1
         }
         
-//        let blue = value
-//        let red = 1 - value
-        return Color(UIColor(hue: 2*(CGFloat(value)/3), saturation: 1, brightness: 0.9, alpha:1))
-        //return Color(red: Double(red), green: 0, blue: Double(blue))
+        return Color(UIColor(hue: 2*(CGFloat(value)/3), saturation: 0.95, brightness: 0.8, alpha:1))
     }
 }
 
@@ -69,6 +69,7 @@ func createNewData1(row: Int, column: Int, originalValues: [Float]) -> [Float]{
     var indexOriginalValues = 0
     
     var curCol = 0
+    //print(originalValues)
     
     for i in 0..<data.count {
         if curCol % 2 == 0 {
@@ -130,8 +131,8 @@ func createNewData2(row: Int, column: Int, originalValues: [Float]) -> [Float]{
 }
 
 func createDepthData(originalValues: [Float], multiple: Int)-> [Float]{
-    var width = 3
-    var height = 4
+    var width = 5
+    var height = 6
     var tempWidth = width
     var tempHeight = height
     
@@ -175,11 +176,11 @@ func createDepthData(originalValues: [Float], multiple: Int)-> [Float]{
     data = tempData
     print(data.count)
     print("-----------")
-    print(data)
+    //print(data)
     
     return data
 }
 
-#Preview {
-    HeatmapView()
-}
+//#Preview {
+//    HeatmapView()
+//}

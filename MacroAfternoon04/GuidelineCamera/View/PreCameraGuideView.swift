@@ -97,6 +97,7 @@ struct PreCameraGuideView: View {
                             
                         }
                     }
+                    
                     HStack(spacing: 0){
                         ZStack(alignment: .topLeading) {
                             // Square background
@@ -257,6 +258,6 @@ struct PreCameraGuideView: View {
 //
 //
 #Preview {
-    @State var temp: Bool = false
+    @Previewable @State var temp: Bool = false
     PreCameraGuideView(showingAddProgressSheet: $temp)
 }

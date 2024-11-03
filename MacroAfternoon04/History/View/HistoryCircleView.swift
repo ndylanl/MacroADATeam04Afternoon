@@ -6,34 +6,41 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HistoryCircleView: View {
     @Environment(\.modelContext) var modelContext
     
-    @State private var historyViewModel: HistoryViewModel?
+    @StateObject private var historyViewModel: HistoryViewModel
+    
     @State private var selectedMonthYear: Date?
     @State private var showPicker = false
     @State private var weeksData: [Date] = []
     
     @State private var isComparePresented: Bool = false
     
+    public init(modelContext: ModelContext) {
+        _historyViewModel = StateObject(wrappedValue: HistoryViewModel(modelContext: modelContext))
+    }
+    
     var body: some View {
         NavigationView{
             ScrollView{
                 VStack{
-                    Button{
-                        showPicker.toggle()
-                    } label: {
-                        Text(selectedMonthYear != nil ? formattedDate(selectedMonthYear!, formatter: monthYearFormatter) : "Select Month and Year")
-                            .foregroundColor(Color("PrimaryColor"))
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 8)
-                            .background(Color("SecondaryColor"))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430, height: 50, alignment: .leading)
                     
-                    if historyViewModel != nil {
+                    if !historyViewModel.trackProgress.isEmpty {
+                        
+                        Button{
+                            showPicker.toggle()
+                        } label: {
+                            Text(selectedMonthYear != nil ? formattedDate(selectedMonthYear!, formatter: monthYearFormatter) : "Select Month and Year")
+                                .foregroundColor(Color("PrimaryColor"))
+                                .padding(.vertical, 12)
+                                .padding(.horizontal, 8)
+                                .background(Color("SecondaryColor"))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 374 / 430, height: 50, alignment: .leading)
                         
                         VStack {
                             if let selectedMonthYear = selectedMonthYear {
@@ -44,7 +51,7 @@ struct HistoryCircleView: View {
                                         MonthCircleView(nameOfTheMonth: formattedDate(selectedMonthYear, formatter: monthFormatter))
                                             .padding()
                                     }
-
+                                    
                                     ForEach(weeksData, id: \.self) { weekDate in
                                         NavigationLink {
                                             WeekReportView(date: weekDate)
@@ -59,58 +66,58 @@ struct HistoryCircleView: View {
                         }
                         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 370 / 932)
                         
-                    }
-                    
-                    VStack{
-                        Button{
-                            isComparePresented = true
-                        } label: {
-                            Text("Compare Reports")
-                                .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+                        VStack{
+                            Button{
+                                isComparePresented = true
+                            } label: {
+                                Text("Compare Reports")
+                                    .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+                            }
+                            
+                            .background(Color("PrimaryColor"))
+                            .foregroundStyle(Color("SecondaryColor"))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+                            
+                            Button{
+                                print("all data")
+                            } label: {
+                                Text("Browse All Data")
+                            }
+                            .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.top)
                         }
-                        
-                        .background(Color("PrimaryColor"))
-                        .foregroundStyle(Color("SecondaryColor"))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
-                        
-                        Button{
-                            print("all data")
-                        } label: {
-                            Text("Browse All Data")
+                    } else {
+                        VStack{
+                            Image("EmptyViewHistory")
+                                .resizable()
+                                .frame(width: UIScreen.main.bounds.width * 234 / 430, height: UIScreen.main.bounds.height * 264 / 932)
                         }
-                        .foregroundStyle(Color("PrimaryColor"))
-                        .padding(.top)
+                        .padding(.top, 188)
                     }
                 }
-                .navigationTitle(" History")
+                .navigationTitle("History")
             }
-            
             .onAppear {
-                if historyViewModel == nil {
-                    historyViewModel = HistoryViewModel(modelContext: modelContext)
-                    if let latestMonth = historyViewModel?.uniqueMonths.first {
-                        selectedMonthYear = latestMonth
-                    }
+                historyViewModel.fetchTrackProgress()
+                if let latestMonth = historyViewModel.uniqueMonths.first {
+                    selectedMonthYear = latestMonth
                 }
                 updateWeeksData()
             }
-            
             .onChange(of: selectedMonthYear) { oldValue, newValue in
                 updateWeeksData()
             }
         }
         .sheet(isPresented: $showPicker) {
             VStack {
-                if let historyViewModel = historyViewModel {
-                    Picker("Select Month and Year", selection: $selectedMonthYear) {
-                        ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
-                            Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
-                        }
+                Picker("Select Month and Year", selection: $selectedMonthYear) {
+                    ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
+                        Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
                     }
-                    .pickerStyle(WheelPickerStyle())
-                    .labelsHidden()
                 }
+                .pickerStyle(WheelPickerStyle())
+                .labelsHidden()
                 Button("Done") {
                     showPicker.toggle()
                 }
@@ -124,7 +131,7 @@ struct HistoryCircleView: View {
     }
     
     private func updateWeeksData() {
-        if let selectedMonthYear = selectedMonthYear, let historyViewModel = historyViewModel {
+        if let selectedMonthYear = selectedMonthYear {
             weeksData = historyViewModel.trackProgress
                 .filter { Calendar.current.isDate($0.dateTaken, equalTo: selectedMonthYear, toGranularity: .month) }
                 .map { $0.dateTaken }

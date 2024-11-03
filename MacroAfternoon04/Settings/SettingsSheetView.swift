@@ -50,7 +50,7 @@ struct SettingsSheetView: View {
     }
     
     func resetAllData() {
-        UserDefaults.standard.set(false, forKey: "isOnBoardingComplete")
+        
     }
     
     private func dayName(for day: Int) -> String {

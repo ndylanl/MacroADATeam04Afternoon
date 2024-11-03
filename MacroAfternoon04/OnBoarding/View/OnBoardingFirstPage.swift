@@ -13,6 +13,8 @@ struct OnBoardingFirstPageView: View {
     
     @Binding var showingAddProgressSheet: Bool
     
+    @Binding var selectedDay: Int
+    
     var body: some View {
         NavigationView{
             VStack(alignment: .leading){
@@ -74,7 +76,7 @@ struct OnBoardingFirstPageView: View {
                 Spacer()
                 
                 NavigationLink{
-                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete)
+                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }
@@ -87,6 +89,12 @@ struct OnBoardingFirstPageView: View {
                 Button{
                     isOnBoardingComplete = true
                     UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+                    
+                    let currentDay = Calendar.current.component(.weekday, from: Date())
+                    selectedDay = currentDay
+                    UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                    
+                    print(selectedDay)
                 } label: {
                     Text("Skip")
                 }
@@ -104,6 +112,6 @@ struct OnBoardingFirstPageView: View {
     }
 }
 
-#Preview {
-    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false))
-}
+//#Preview {
+//    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false))
+//}

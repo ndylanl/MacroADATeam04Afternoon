@@ -256,7 +256,7 @@ struct PreCameraGuideView: View {
 }
 //
 //
-#Preview {
-    @State var temp: Bool = false
-    PreCameraGuideView(showingAddProgressSheet: $temp)
-}
+//#Preview {
+//    @State var temp: Bool = false
+//    PreCameraGuideView(showingAddProgressSheet: $temp)
+//}

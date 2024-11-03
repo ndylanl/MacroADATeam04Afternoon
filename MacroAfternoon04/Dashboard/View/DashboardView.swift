@@ -17,14 +17,16 @@ struct DashboardView: View {
     
     @Binding var currentScalpPosition: Int
     
-    @State var isShowAlert: Bool = false
+    @Binding var selectedDay: Int
+    
+    @State var showingSettingsSheet: Bool = false
     
     var body: some View {
         NavigationStack{
             ScrollView{
                 VStack{
                     
-                    HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
+                    HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
                     
                     NavigationLink(destination: ReminderListView(), label: {
                         ReminderCardView()
@@ -48,57 +50,16 @@ struct DashboardView: View {
                 ToolbarItem(placement: .topBarTrailing){
                     HStack {
                         Button(action: {
-                            isShowAlert = true
+                            showingSettingsSheet = true
                         }) {
                             Image(systemName: "gear")
                         }
-                        
-                        // Button untuk membuka HealthView
-                        //                        NavigationLink(destination: HealthView()) {
-                        //                            Image(systemName: "heart")
-                        //                        }
                     }
                 }
             }
-            .alert("Title", isPresented: $isShowAlert) {
-                
-                Button("Delete", role: .destructive) {
-                    resetAllData(modelContext: modelContext)
-                }
-            } message: {
-                Text("Message")
-            }
-            
+            .sheet(isPresented: $showingSettingsSheet, content: {
+                SettingsSheetView(selectedDay: $selectedDay)
+            })
         }
-    }
-    
-    func resetAllData(modelContext: ModelContext) {
-//        let fetchRequestReminder = FetchDescriptor<ReminderModel>()
-//        let fetchRequestTrackProgress = FetchDescriptor<TrackProgressModel>()
-//        
-//        UserDefaults.standard.removeObject(forKey: "userName")
-//        UserDefaults.standard.removeObject(forKey: "isOnBoardingComplete")
-//        
-//        UserDefaults.standard.set("", forKey: "userName")
-//        UserDefaults.standard.set(false, forKey: "isOnBoardingComplete")
-//        
-//        print(UserDefaults.standard.bool(forKey: "isOnBoardingComplete"))
-//        
-//        do {
-//            let reminders = try modelContext.fetch(fetchRequestReminder)
-//            let trackProgresses = try modelContext.fetch(fetchRequestTrackProgress)
-//            
-//            for reminder in reminders {
-//                modelContext.delete(reminder)
-//            }
-//            
-//            for trackProgress in trackProgresses {
-//                modelContext.delete(trackProgress)
-//            }
-//            
-//            try modelContext.save()
-//        } catch {
-//            print("Failed to reset data: \(error)")
-//        }
     }
 }

@@ -20,21 +20,23 @@ struct ContentView: View {
     @State var showingAddProgressSheet = false
     
     @State var currentScalpPosition: Int = 1
+      
+    @State var selectedDay: Int = UserDefaults.standard.integer(forKey: "selectedDay")
     
     var body: some View {
         if !isOnBoardingComplete {
-            OnBoardingFirstPageView(isOnBoardingComplete: $isOnBoardingComplete, showingAddProgressSheet: $showingAddProgressSheet)
+            OnBoardingFirstPageView(isOnBoardingComplete: $isOnBoardingComplete, showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
                 .onDisappear {
                     UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnboardingComplete")
                 }
         } else {
             TabView(selection: $selectedTab) {
                 Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
-                    DashboardView(showingAddProgressSheet: $showingAddProgressSheet, selectedTab: $selectedTab, currentScalpPosition: $currentScalpPosition)
+                    DashboardView(showingAddProgressSheet: $showingAddProgressSheet, selectedTab: $selectedTab, currentScalpPosition: $currentScalpPosition, selectedDay: $selectedDay)
                 }
                 
                 Tab("History", systemImage: "hourglass", value: 1) {
-                    HistoryCircleView()
+                    HistoryCircleView(modelContext: modelContext)
                 }
             }
             .task {

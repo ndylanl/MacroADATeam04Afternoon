@@ -12,8 +12,11 @@ import Combine
 class HistoryViewModel: ObservableObject {
     
     var modelContext: ModelContext
-    var trackProgress: [TrackProgressModel] = []
+    
+    @Published var trackProgress: [TrackProgressModel] = []
+    
     var uniqueMonths: [Date] = []
+    
     @Published var annotatedImagesData: [(photo: Data, detections: [DetectedObject])] = []
     
     init(modelContext: ModelContext){

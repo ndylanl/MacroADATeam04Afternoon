@@ -11,7 +11,11 @@ import SwiftData
 struct HairGrowthProgressCardView: View {
     
     @Binding var showingAddProgressSheet: Bool
+    @Binding var selectedDay: Int
+    
     @Environment(\.modelContext) private var modelContext
+    
+    @State private var isButtonEnabled: Bool = false
     
     var body: some View {
         ZStack(){
@@ -27,10 +31,15 @@ struct HairGrowthProgressCardView: View {
                 
                 HStack{
                     
-                    Button{
-                        showingAddProgressSheet.toggle()
-                    } label: {
+                    if isButtonEnabled {
+                        NavigationLink {
+                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
+                        } label: {
+                            AddProgressCardView()
+                        }
+                    } else {
                         AddProgressCardView()
+                            .opacity(0.5)
                     }
                     
                     Spacer()
@@ -46,6 +55,60 @@ struct HairGrowthProgressCardView: View {
             .frame(width: cardWidthSize() - 32)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
+        .onAppear {
+            checkButtonAvailability()
+        }
+    }
+    
+    func checkButtonAvailability() {
+        
+        if isTrackProgressModelEmpty() {
+            isButtonEnabled = true
+            
+        }else {
+            let today = Calendar.current.startOfDay(for: Date())
+            let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: today)!
+            let dayAfter = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+            
+            let selectedDayDate = Calendar.current.date(bySetting: .weekday, value: selectedDay, of: today)!
+            
+            if selectedDayDate == today || selectedDayDate == dayBefore || selectedDayDate == dayAfter {
+                
+                isButtonEnabled = !isDateInTrackProgressModel(today: today, dayBefore: dayBefore, dayAfter: dayAfter)
+                
+            } else {
+                isButtonEnabled = false
+            }
+        }
+    }
+    
+    
+    func isTrackProgressModelEmpty() -> Bool {
+        let fetchDescriptor = FetchDescriptor<TrackProgressModel>()
+        
+        do {
+            let results = try modelContext.fetch(fetchDescriptor)
+            return results.isEmpty
+        } catch {
+            print("Failed to fetch TrackProgressModel: \(error)")
+            return false
+        }
+    }
+    
+    func isDateInTrackProgressModel(today: Date, dayBefore: Date, dayAfter: Date) -> Bool {
+        let predicate = #Predicate<TrackProgressModel> {
+            $0.dateTaken >= dayBefore && $0.dateTaken <= dayAfter
+        }
+        
+        let fetchDescriptor = FetchDescriptor<TrackProgressModel>(predicate: predicate)
+        
+        do {
+            let results = try modelContext.fetch(fetchDescriptor)
+            return !results.isEmpty
+        } catch {
+            print("Failed to fetch TrackProgressModel: \(error)")
+            return false
+        }
     }
 }
 

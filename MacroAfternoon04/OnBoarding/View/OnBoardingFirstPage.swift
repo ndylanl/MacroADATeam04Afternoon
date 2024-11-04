@@ -15,8 +15,10 @@ struct OnBoardingFirstPageView: View {
     
     @Binding var selectedDay: Int
     
+    @State var navigateToSecondOnBoarding: Bool = false
+    
     var body: some View {
-        NavigationView{
+        NavigationStack{
             VStack(alignment: .leading){
                 Text("Track Your Hair Growth")
                     .font(.title)
@@ -76,7 +78,7 @@ struct OnBoardingFirstPageView: View {
                 Spacer()
                 
                 NavigationLink{
-                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
+                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: $navigateToSecondOnBoarding)
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }
@@ -87,14 +89,13 @@ struct OnBoardingFirstPageView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
                 Button{
-                    isOnBoardingComplete = true
-                    UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
                     
                     let currentDay = Calendar.current.component(.weekday, from: Date())
                     selectedDay = currentDay
                     UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
                     
-                    print(selectedDay)
+                    navigateToSecondOnBoarding = true
+                    
                 } label: {
                     Text("Skip")
                 }
@@ -102,6 +103,10 @@ struct OnBoardingFirstPageView: View {
                 .padding()
                 .foregroundStyle(Color("PrimaryColor"))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+                .navigationDestination(isPresented: $navigateToSecondOnBoarding, destination: {
+                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
+                })
             }
             .padding()
             .frame(width: UIScreen.main.bounds.width)
@@ -112,6 +117,6 @@ struct OnBoardingFirstPageView: View {
     }
 }
 
-//#Preview {
-//    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false))
-//}
+#Preview {
+    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false), selectedDay: .constant(1))
+}

@@ -15,8 +15,16 @@ struct PreCameraGuideView: View {
     let options = ["A. All Scalp", "B. Left Side", "C. Right Side", "D. Front Side", "E. Middle Side", "F. Back Side"]
     
     @Binding var showingAddProgressSheet: Bool
+    
     @Environment(\.modelContext) private var modelContext
     
+    @Environment(\.presentationMode) private var presentationMode
+    
+    @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
+    
+    @Binding var selectedDay: Int
+    
+    @Binding var navigateToSecondOnBoarding: Bool
     
     var body: some View {
         ScrollView{
@@ -214,17 +222,9 @@ struct PreCameraGuideView: View {
                 .padding(.horizontal)
                 .padding(.top)
                 
-                Button{
-                    // actions here
+                NavigationLink{
                     // ISI INI NAVIGATE KE HEALTH ONBOARDING
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
                     
                 } label: {
                     Text("Skip")
@@ -234,9 +234,26 @@ struct PreCameraGuideView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal)
                 
+                .sheet(isPresented: $showingAddProgressSheet, onDismiss: {
+                    if !isOnBoardingComplete {
+                        
+                        let currentDay = Calendar.current.component(.weekday, from: Date())
+                        selectedDay = currentDay
+                        UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                        
+                        navigateToSecondOnBoarding = true
+                        
+                    } else {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }){
+                    AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
+                }
+                
                 
             }
             //        .frame(height: frameHeight())
+            .ignoresSafeArea(.all)
             .padding(.horizontal, 20)
             .background(
                 LinearGradient(gradient: Gradient(colors: [.white, Color("SecondaryColor")]), startPoint: .top, endPoint: .bottom)

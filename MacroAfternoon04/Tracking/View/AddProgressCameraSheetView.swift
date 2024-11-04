@@ -12,7 +12,10 @@ import SwiftData
 
 struct AddProgressCameraSheetView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.presentationMode) private var presentationMode
+    
+    @Binding var showingAddProgressSheet: Bool
+    
+//    @Environment(\.presentationMode) private var presentationMode
     
     @StateObject private var viewModel = CameraViewModel()
     
@@ -43,7 +46,7 @@ struct AddProgressCameraSheetView: View {
             .toolbar{
                 ToolbarItem(placement: .topBarLeading){
                     Button("Cancel") {
-                        presentationMode.wrappedValue.dismiss()
+                        showingAddProgressSheet = false
                     }
                 }
             }
@@ -58,7 +61,7 @@ struct AddProgressCameraSheetView: View {
                 viewModel.currentScalpPosition = viewModel.currentScalpPositions[currentPage - 1]
             } else {
                 saveImages()
-                presentationMode.wrappedValue.dismiss()
+                showingAddProgressSheet = false
             }
             statusRetry = "Photo Done Successfully"
         } else {

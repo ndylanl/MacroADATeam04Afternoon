@@ -11,6 +11,10 @@ struct OnBoardingSecondPageView: View {
     
     @Binding var isOnBoardingComplete: Bool
     
+    @Binding var selectedDay: Int
+    
+    @State var navigateToThirdOnBoarding: Bool = false
+    
     var body: some View {
         VStack(alignment: .leading){
             Text("Sleep, Stress, and Movement Detection")
@@ -21,7 +25,7 @@ struct OnBoardingSecondPageView: View {
                 .padding(.vertical)
             
             HStack{
-                Image("Option")
+                Image("OnBoardingSecond")
                     .resizable()
                     .frame(width: UIScreen.main.bounds.width * 253 / 430, height: UIScreen.main.bounds.width * 253 / 430)
             }
@@ -31,10 +35,22 @@ struct OnBoardingSecondPageView: View {
             Spacer()
             
             Button{
-                isOnBoardingComplete = true
-                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+                
+                // Request Access for Health
+                
+                
+                
+                // .....
+                let currentDay = Calendar.current.component(.weekday, from: Date())
+                selectedDay = currentDay
+                UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                
+                
+
+                navigateToThirdOnBoarding = true
+                
             } label: {
-                Text("Start Tracking Hair Growth")
+                Text("Enable Access Now")
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -43,24 +59,33 @@ struct OnBoardingSecondPageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
             Button{
-                isOnBoardingComplete = true
-                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+//                isOnBoardingComplete = true
+//                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+                
+                let currentDay = Calendar.current.component(.weekday, from: Date())
+                selectedDay = currentDay
+                UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                
+                print(selectedDay)
+                
+                navigateToThirdOnBoarding = true
             } label: {
-                Text("Skip")
+                Text("Later on Settings")
             }
             .frame(maxWidth: .infinity)
             .padding()
             .foregroundStyle(Color("PrimaryColor"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
+            
+            .navigationDestination(isPresented: $navigateToThirdOnBoarding, destination: {
+                OnBoardingThirdPageView(isOnBoardingComplete: $isOnBoardingComplete)
+            })
         }
         .padding()
         .frame(width: UIScreen.main.bounds.width)
         .background(
             LinearGradient(colors: [Color("SecondaryColor"), .white], startPoint: .bottom, endPoint: .top)
         )
+        .navigationBarHidden(true)
     }
-}
-
-#Preview {
-    OnBoardingSecondPageView(isOnBoardingComplete: .constant(false))
 }

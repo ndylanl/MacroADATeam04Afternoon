@@ -35,7 +35,7 @@ struct HairGrowthProgressCardView: View {
                     
                     if isButtonEnabled {
                         NavigationLink {
-                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
+                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
                         } label: {
                             AddProgressCardView()
                         }

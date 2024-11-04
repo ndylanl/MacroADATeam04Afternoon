@@ -123,6 +123,6 @@ func cardHeightSize() ->CGFloat{
     (UIScreen.main.bounds.height * 193 / 985)
 }
 
-#Preview {
-    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
-}
+//#Preview {
+//    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
+//}

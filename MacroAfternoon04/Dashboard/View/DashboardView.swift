@@ -11,7 +11,7 @@ import SwiftData
 struct DashboardView: View {
     @Environment(\.modelContext) var modelContext
     
-    @Binding var userName: String
+//    @Binding var userName: String
     
     @Binding var showingAddProgressSheet: Bool
     
@@ -36,17 +36,8 @@ struct DashboardView: View {
                 ScrollView{
                     VStack{
                         Spacer()
-                        //                    HStack{
-                        //                        VStack(alignment: .leading){
-                        //                            Text("Good Morning,").font(.largeTitle)
-                        //                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
-                        //                        }
-                        //
-                        //                        Spacer()
-                        //                    }
-                        //                    .padding(.horizontal, 28)
                         
-                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
+                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
                         
                         Spacer()
                         
@@ -108,7 +99,7 @@ struct DashboardView: View {
         }
     }
 }
-
-#Preview {
-    DashboardView(userName: .constant("Anin"), showingAddProgressSheet: .constant(false), selectedTab: .constant(0))
-}
+//
+//#Preview {
+//    DashboardView(userName: .constant("Anin"), showingAddProgressSheet: .constant(false), selectedTab: .constant(0))
+//}

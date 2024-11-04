@@ -8,29 +8,36 @@
 import SwiftUI
 
 struct YourActivityCardView: View {
-    @ObservedObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
+    @StateObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
     
     var body: some View {
         ZStack(){
-            Image("placeholderDashboardYourActivityCard")
-                .resizable()
-                .clipShape(RoundedRectangle(cornerRadius: 18))
+            RoundedCornerComponentView()
+            //            Image("placeholderDashboardYourActivityCard")
+            //                .resizable()
+            //                .clipShape(RoundedRectangle(cornerRadius: 18))
             
             VStack(alignment: .leading){
-                Text("Your Activity")
-                    .font(.footnote)
+                Text("Last Result & Activity")
+                    .font(.body)
                 
                 Divider()
                 
+                
+                Text("You have no monthly results yet.")
+                    .padding([.top, .bottom, .trailing])
+                    .font(.title3)
+                    .foregroundStyle(Color("NeutralColor"))
+                
                 AnyLayout(HStackLayout()){
-                    
+                    //                HStack{
                     VStack(alignment: .leading){
                         
                         if !healthViewModel.sleepData.isEmpty {
                             // Ambil semua sleepSample yang endDate-nya pada hari ini
-//                            let sleepTime = healthViewModel.sleepData
-//                                .filter {
-//                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
+                            //                            let sleepTime = healthViewModel.sleepData
+                            //                                .filter {
+                            //                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
                             let totalSleepDuration = healthViewModel.sleepData
                                 .filter {
                                     Calendar.current.isDate($0.endDate, inSameDayAs: Date()) // Ambil data yang end date-nya hari ini
@@ -48,14 +55,17 @@ struct YourActivityCardView: View {
                                 Text("hrs")
                                     .font(.subheadline)
                             }
-                            Text("🌙 Sleep Time")
-                                .font(.caption2)
-//                                .onAppear {
-//                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
-//                                    print("==sleep time==")
-//                                    print(sleepTime)
-//                                    print("==sleep time==")
-                                
+                            HStack{
+                                Image(systemName: "moon.stars.fill")
+                                Text("Sleep")
+                            }
+                            .font(.footnote)
+                            //                                .onAppear {
+                            //                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
+                            //                                    print("==sleep time==")
+                            //                                    print(sleepTime)
+                            //                                    print("==sleep time==")
+                            
                         } else {
                             // Placeholder jika tidak ada data tidur untuk hari ini
                             HStack {
@@ -64,12 +74,19 @@ struct YourActivityCardView: View {
                                 Text("hrs")
                                     .font(.subheadline)
                             }
-                            Text("🌙 Sleep Time")
-                                .font(.caption2)
+                            HStack{
+                                Image(systemName: "moon.stars.fill")
+                                Text("Sleep")
+                            }
+                            .font(.footnote)
+                            
                         }
-                        
-                        
                     }
+                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(.black, lineWidth: 0.5))
+                    
                     Spacer()
                     
                     // Menampilkan data Heart Rate dari healthViewModel
@@ -82,8 +99,11 @@ struct YourActivityCardView: View {
                                 Text("bpm")
                                     .font(.subheadline)
                             }
-                            Text("❤️ Heart Rate")
-                                .font(.caption2)
+                            HStack{
+                                Image(systemName: "heart.fill")
+                                Text("Heart rate")
+                            }
+                            .font(.footnote)
                         } else {
                             // Placeholder jika tidak ada data heart rate
                             HStack{
@@ -92,10 +112,18 @@ struct YourActivityCardView: View {
                                 Text("bpm")
                                     .font(.subheadline)
                             }
-                            Text("❤️ Heart Rate")
-                                .font(.caption2)
+                            HStack{
+                                Image(systemName: "heart.fill")
+                                Text("Heart rate")
+                            }
+                            .font(.footnote)
                         }
                     }
+                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(.black, lineWidth: 0.5))
+                    
                     Spacer()
                     
                     // Menampilkan data Movement dari healthViewModel
@@ -103,13 +131,16 @@ struct YourActivityCardView: View {
                         if !healthViewModel.movementData.isEmpty {
                             // Hanya menampilkan total movement hari ini
                             HStack {
-                                Text(String(format: "%.2f", healthViewModel.totalMovementToday))
+                                Text(String(format: "%.1f", healthViewModel.totalMovementToday))
                                     .font(.title)
                                 Text("kcal")
                                     .font(.subheadline)
                             }
-                            Text("🏃 Movement")
-                                .font(.caption2)
+                            HStack{
+                                Image(systemName: "waveform.path.ecg")
+                                Text("Movement")
+                            }
+                            .font(.footnote)
                         } else {
                             // Placeholder jika tidak ada data movement
                             HStack {
@@ -118,30 +149,35 @@ struct YourActivityCardView: View {
                                 Text("kcal")
                                     .font(.subheadline)
                             }
-                            Text("🏃 Movement")
-                                .font(.caption2)
+                            HStack{
+                                Image(systemName: "waveform.path.ecg")
+                                Text("Movement")
+                            }
+                            .font(.footnote)
                         }
                     }
+                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(.black, lineWidth: 0.5))
                 }
                 
-                ZStack{
-                    RoundedCornerComponentView()
-                    
-                    VStack(alignment: .leading){
-                        Text("💡 Tips")
-                            .font(.subheadline)
-                        Text("Apply shampoo to your scalp, instead of the entire length of your hair. This way, you cleanse and wash away built-up products, dead skin, and excess oil, but avoid drying your hair too much.")
-                            .font(.body)
-                    }.padding(12)
-                }
-                .frame(width: cardWidthSize() - 32, height: UIScreen.main.bounds.height * 159 / 985)
             }
+            
             .frame(width: cardWidthSize()-32, alignment: .center)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
-//        .task {
-//            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
-//        }
+        //        .task {
+        //            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
+        //        }
+    }
+    func cardActivityWidthSize() -> CGFloat{
+        (UIScreen.main.bounds.width * 111 / 430)
+    }
+    
+    func cardActivityHeightSize() -> CGFloat{
+        (UIScreen.main.bounds.height * 79 / 932)
     }
     
     func cardWidthSize() -> CGFloat{
@@ -149,10 +185,10 @@ struct YourActivityCardView: View {
     }
     
     func cardHeightSize() ->CGFloat{
-        (UIScreen.main.bounds.height * 309 / 985)
+        (UIScreen.main.bounds.height * 219 / 964)
     }
 }
 
-//#Preview {
-//    YourActivityCardView()
-//}
+#Preview {
+    YourActivityCardView()
+}

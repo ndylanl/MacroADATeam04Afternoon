@@ -14,24 +14,42 @@ struct LastProgressCardView: View {
             RoundedCornerComponentView()
             
             VStack(alignment: .center){
-                Image("placeholderDashboardLastProgressCard")
-                    .resizable()
-                    .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
+//                ZStack{
+//                    RoundedCornerComponentView()
+//                        .background(Color.white)
+                    Text("🫧📖🤷📖🫧")
+    //                    .resizable()
+                        .font(.title3)
+                        .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
+                        .background(Color.white)
+                    
+//                }
+                
+
+//                Image("placeholderDashboardLastProgressCard")
+//                    .resizable()
+//                    .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
 
                 HStack{
-                    Text("Recent Progress")
+                    Image(systemName: "doc.text.fill")
+                    Text("Recent Report")
+                        
                     Spacer()
                     Image(systemName: "chevron.right")
                 }
-                    .font(.body)
+                .font(.body)
                     .padding(.bottom, 12)
+                    .foregroundStyle(Color("PrimaryColor"))
                 
             }
             .padding(12)
             .foregroundStyle(Color.primary)
-            .background(Color.white)
+            .background(Color("SecondaryColor"))
             .frame(width: cardWidthSize(), height: cardHeightSize())
-            .clipShape(RoundedRectangle(cornerRadius: 18))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color("PrimaryColor"), lineWidth: 0.5))
         }
         .frame(width: cardWidthSize(), height: cardHeightSize(), alignment: .bottom)
     }

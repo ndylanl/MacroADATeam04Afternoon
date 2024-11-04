@@ -9,9 +9,9 @@ import SwiftUI
 
 struct RoundedCornerComponentView: View {
     var body: some View {
-        RoundedRectangle(cornerRadius:18)
+        RoundedRectangle(cornerRadius: 16)
             .fill(Color.white)
-            .shadow(radius: 4, x: 0, y: 4)
-            .opacity(0.5)
+//            .shadow(radius: 4, x: 0, y: 4)
+//            .opacity(0.5)
     }
 }

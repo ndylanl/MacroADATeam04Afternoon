@@ -13,7 +13,7 @@ struct ContentView: View {
     
     @State var selectedTab: Int = 0
     
-    @State var healthManager = HealthManager()
+//    @State var healthManager = HealthManager()
     
     @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
     
@@ -39,9 +39,9 @@ struct ContentView: View {
                     HistoryCircleView(modelContext: modelContext)
                 }
             }
-            .task {
-                await healthManager.requestAuthorization()
-            }
+//            .task {
+//                await healthManager.requestAuthorization()
+//            }
         }
     }
 }

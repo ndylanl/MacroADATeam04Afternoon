@@ -15,6 +15,8 @@ struct OnBoardingSecondPageView: View {
     
     @State var navigateToThirdOnBoarding: Bool = false
     
+    @State var healthManager = HealthManager()
+    
     var body: some View {
         VStack(alignment: .leading){
             Text("Sleep, Stress, and Movement Detection")
@@ -37,7 +39,9 @@ struct OnBoardingSecondPageView: View {
             Button{
                 
                 // Request Access for Health
-                
+                Task{
+                    await healthManager.requestAuthorization()
+                }
                 
                 
                 // .....

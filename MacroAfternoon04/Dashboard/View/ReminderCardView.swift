@@ -14,22 +14,31 @@ struct ReminderCardView: View {
     
     var body: some View {
         ZStack {
-            RoundedCornerComponentView()
+            RoundedCornerComponentBlueView()
             
             VStack(alignment: .leading) {
-                Text("Reminder")
-                    .font(.footnote)
-                    .foregroundStyle(.black)
-                
-                Divider()
+//                Text("Reminder")
+//                    .font(.footnote)
+//                    .foregroundStyle(.black)
+//
+//                Divider()
                 
                 if reminders.isEmpty {
                     // Tampilan ketika tidak ada reminder
-                    Text("+ Add New Reminder")
-                        .font(.title)
+                    HStack{
+                        Image(systemName: "bell.fill")
+                        Text("Add New Reminder")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                        
+                    }
+                    .font(.title)
+                    .foregroundStyle(Color("PrimaryColor"))
+                    
                     
                     Text("You have no reminders yet")
                         .font(.body)
+                        .foregroundStyle(Color("NeutralColor"))
                 } else {
                     // Filter reminders yang aktif dan sort berdasarkan waktu terdekat
                     let nextReminder = reminders
@@ -55,10 +64,15 @@ struct ReminderCardView: View {
                 }
        
             }
-            .foregroundStyle(Color.primary)
+            
             .frame(width: cardWidthSize() - 32, height: cardHeightSize() - 24)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color("PrimaryColor"), lineWidth: 0.5))
+        .shadow(radius:3, x:0, y:1)
     }
     
     func cardWidthSize() -> CGFloat {
@@ -66,12 +80,12 @@ struct ReminderCardView: View {
     }
     
     func cardHeightSize() -> CGFloat {
-        (UIScreen.main.bounds.height * 142 / 985)
+        (UIScreen.main.bounds.height * 92 / 964)
     }
 }
 
 //
-//#Preview {
-//    ReminderCardView()
-//}
+#Preview {
+    ReminderCardView()
+}
 //

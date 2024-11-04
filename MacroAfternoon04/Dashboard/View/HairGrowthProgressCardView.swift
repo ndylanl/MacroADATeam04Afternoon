@@ -19,15 +19,17 @@ struct HairGrowthProgressCardView: View {
     
     var body: some View {
         ZStack(){
-            Image("placeholderDashboardYourActivityCard")
-                .resizable()
-                .clipShape(RoundedRectangle(cornerRadius: 18))
+            RoundedCornerComponentView()
+//            Image("placeholderDashboardYourActivityCard")
+//                .resizable()
+//                .clipShape(RoundedRectangle(cornerRadius: 18))
             
             VStack(alignment: .leading){
-                Text("Hair Growth Progress")
-                    .font(.footnote)
                 
-                Divider()
+                Text("✦ Hair Growth Progress")
+                    .font(.title3)
+                
+//                Divider()
                 
                 HStack{
                     
@@ -51,6 +53,7 @@ struct HairGrowthProgressCardView: View {
                     }
                     
                 }
+                .shadow(radius: 4, x: 0, y: 2)
             }
             .frame(width: cardWidthSize() - 32)
         }
@@ -120,6 +123,6 @@ func cardHeightSize() ->CGFloat{
     (UIScreen.main.bounds.height * 193 / 985)
 }
 
-//#Preview {
-//    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
-//}
+#Preview {
+    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
+}

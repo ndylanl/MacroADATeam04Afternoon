@@ -11,6 +11,8 @@ import SwiftData
 struct DashboardView: View {
     @Environment(\.modelContext) var modelContext
     
+    @Binding var userName: String
+    
     @Binding var showingAddProgressSheet: Bool
     
     @Binding var selectedTab: Int
@@ -23,29 +25,70 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack{
-            ScrollView{
-                VStack{
-                    
-                    HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
-                    
-                    NavigationLink(destination: ReminderListView(), label: {
-                        ReminderCardView()
-                    })
-                    
-                    YourActivityCardView()
-                }
-                .sheet(isPresented: $showingAddProgressSheet){
-                    //AddProgressCameraSheetView(currentScalpPosition: $currentScalpArea)
-
-                    AddProgressCameraSheetView()
+            //            ScrollView{
+            ZStack{
+                LinearGradient(
+                    gradient: Gradient(colors: [Color("DashboardGray"), Color("SecondaryColor")]),
+                    startPoint: UnitPoint(x: 0.5, y: 0.25),  // Near top-center
+                    endPoint: UnitPoint(x: 0.5, y: 0.75)
+                ).ignoresSafeArea()
+                
+                ScrollView{
+                    VStack{
+                        Spacer()
+                        //                    HStack{
+                        //                        VStack(alignment: .leading){
+                        //                            Text("Good Morning,").font(.largeTitle)
+                        //                            Text(userName).font(.largeTitle).bold().textCase(.uppercase)
+                        //                        }
+                        //
+                        //                        Spacer()
+                        //                    }
+                        //                    .padding(.horizontal, 28)
+                        
+                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet)
+                        
+                        Spacer()
+                        
+                        NavigationLink(destination: ReminderListView(), label: {
+                            ReminderCardView()
+                        })
+                        .padding(10)
+                        
+                        HStack {
+                            Spacer()
+                            YourActivityCardView()
+                            Spacer()
+                        }
+                        Spacer()
+                        
+                        
+                        DailyTipsView()
+                            .padding(10)
+                    }
+                    .sheet(isPresented: $showingAddProgressSheet){
+                        AddProgressCameraSheetView()
+                        
+                        
+                    }
+                    .edgesIgnoringSafeArea(.all)
                 }
             }
-            .background(
-                Image("placeholderDashboardBackground")
-                    .resizable()
-            )
+            
+            
+            
+            //            }
+            //            .ignoresSafeArea()
+            //            .scrollContentBackground(.hidden)
+            //            .background(
+            //                Image("placeholderDashboardBackground")
+            //                    .resizable()
+            //            )
             
             .navigationTitle("Dashboard")
+            .toolbarBackground(.clear, for: .navigationBar)
+            //            .toolbarBackgroundVisibility(.visible, for: .navigationBar)
+            //            .navigationBarTitleTextColor(.blue)
             
             .toolbar{
                 
@@ -64,4 +107,8 @@ struct DashboardView: View {
             })
         }
     }
+}
+
+#Preview {
+    DashboardView(userName: .constant("Anin"), showingAddProgressSheet: .constant(false), selectedTab: .constant(0))
 }

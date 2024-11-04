@@ -71,20 +71,23 @@ class HealthViewModel: ObservableObject {
     func changeAuthorizationStatus() {
         guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else { return }
         let status = healthKitManager.healthStore?.authorizationStatus(for: heartRateType)
-        
-        switch status {
-        case .notDetermined:
-            isAuthorized = false
-        case .sharingDenied:
-            isAuthorized = false
-        case .sharingAuthorized:
-            isAuthorized = true
-        case .none:
-            break
-        @unknown default:
-            isAuthorized = false
+
+        DispatchQueue.main.async {
+            switch status {
+            case .notDetermined:
+                self.isAuthorized = false
+            case .sharingDenied:
+                self.isAuthorized = false
+            case .sharingAuthorized:
+                self.isAuthorized = true
+            case .none:
+                break
+            @unknown default:
+                self.isAuthorized = false
+            }
         }
     }
+
     
     // Calculate total movement for today
     func calculateTotalMovementToday() {

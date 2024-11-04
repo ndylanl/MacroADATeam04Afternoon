@@ -35,7 +35,9 @@ struct DashboardView: View {
                     YourActivityCardView()
                 }
                 .sheet(isPresented: $showingAddProgressSheet){
-                    AddProgressCameraSheetView(currentScalpPosition: $currentScalpPosition)
+                    //AddProgressCameraSheetView(currentScalpPosition: $currentScalpArea)
+
+                    AddProgressCameraSheetView()
                 }
             }
             .background(

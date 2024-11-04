@@ -26,7 +26,7 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
         print("Expected 6 columns but found \(columns).")
         return nil
     }
-
+    
     // Labels corresponding to columns
     let labels = ["1", "2", "3", "4", "5", "w"]
     
@@ -52,12 +52,12 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
 
 func detectObjectsInImage(trackProgress: TrackProgressModel) {
     // Iterate through each image in hairPicture
+    print("DETECT OBJECTS IN IMAGE")
     for imageDataArray in trackProgress.hairPicture {
         var detectedObjects: [DetectedObject] = []
         
-        for imageData in imageDataArray {
+        for imageData in imageDataArray.hairPicture {
             guard let uiImage = imageData.toUIImage() else { continue }
-            //let cvPixImage = uiImage.toCVPixelBuffer(size: 416)!
             
             do{
                 guard let model = try? VNCoreMLModel(for: best().model) else { return }
@@ -68,62 +68,97 @@ func detectObjectsInImage(trackProgress: TrackProgressModel) {
                             // Extract bounding box and label
                             let boundingBox = observation.boundingBox
                             let label = observation.labels.first?.identifier ?? "Unknown"
-                            print("_______________________")
-                            print("X: \(boundingBox.origin.x)")
-                            print("Y: \(boundingBox.origin.y)")
-                            print("Label: \(label)")
-//                            let coordinates = Coordinates(x: boundingBox.origin.x, y: boundingBox.origin.y, height: boundingBox.height, width: boundingBox.width)
+
                             let detectedObject = DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
                             
                             detectedObjects.append(detectedObject)
                             return detectedObject
                         }
-                        trackProgress.detections.append(detectedObjects)
                     }
                 }
                 
                 let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
                 try? handler.perform([request])
+                
             }
+            trackProgress.detections.append(detectedObjects)
         }
     }
 }
+
+func checkPicHasDetection(uiImage: UIImage) -> Bool{
+    var detectedObjects = 0
+    
+    do{
+        guard let model = try? VNCoreMLModel(for: best().model) else { return false}
+        
+        let request = VNCoreMLRequest(model: model) { (request, error) in
+            if let results = request.results as? [VNRecognizedObjectObservation] {
+                detectedObjects = results.count { observation in
+                    // Extract bounding box and label
+                    if results.count > 0 {
+                        detectedObjects = results.count
+                        print("TRUE")
+                        return true
+                    } else {
+                        detectedObjects = 0
+                        print("FALSE")
+                        return false
+                    }
+                }
+            }
+        }
+        
+        let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
+        try? handler.perform([request])
+    }
+    
+    if detectedObjects > 0 {
+        return true
+    } else{
+        return false
+    }
+}
+
+
+
+
 //
 //func processImages(trackProgress: TrackProgressModel) {
 //    var allDetections: [[DetectedObject]] = []
-//    
+//
 //    // Iterate through each image in hairPicture
 //    for imageDataArray in trackProgress.hairPicture {
 //        var detectedObjects: [DetectedObject] = []
-//        
+//
 //        for imageData in imageDataArray {
 //            guard let uiImage = imageData.toUIImage() else { continue }
 //            let cvPixImage = uiImage.toCVPixelBuffer(size: 416)!
-//            
+//
 //            do{
 //                let model = try best(configuration: MLModelConfiguration())
 //                let prediction = try model.prediction(input: bestInput(imagePath: cvPixImage, iouThreshold: 0.85, confidenceThreshold: 0.019))
-//                
-//                
+//
+//
 //                let numberOfRows = prediction.confidence.shape[0].intValue
 //                let numberOfColumns = prediction.confidence.shape[1].intValue
-//                
+//
 //                // Define your labels
 //                let labels: [Int] = [1, 2, 3, 4, 5, 6]
-//                
+//
 //                // Loop through each row of the MLMultiArray
 //                for row in 0..<numberOfRows {
 //                    for col in 0..<numberOfColumns {
 //                        // Access the MLMultiArray element using its index
 //                        //confidence is a multiarray double of all classes signifying confidence for all classes
 //                        let confidence = prediction.confidence[row * numberOfColumns + col].doubleValue
-//                        
+//
 //                        let x = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 0)]].doubleValue
 //                        let y = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 1)]].doubleValue
 //                        let width = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 2)]].doubleValue
 //                        let height = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 3)]].doubleValue
-//                        
-//                        
+//
+//
 //                        let coordinates = Coordinates(x: x, y: y, height: height, width: width)
 //                        let detectedObject = DetectedObject(index: row, confidence: confidence, label: labels[col], coordinates: coordinates)
 //                        detectedObjects.append(detectedObject)
@@ -139,8 +174,8 @@ func detectObjectsInImage(trackProgress: TrackProgressModel) {
 //                        print("!!!!!!!")
 //                    }
 //                }
-//                
-//                
+//
+//
 //            } catch let error {
 //                print(error.localizedDescription)
 //            }

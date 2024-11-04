@@ -29,7 +29,7 @@ class RecentProgressViewModel: ObservableObject {
             guard let lastModel = models.first else { return }
             
             self.lastDate = DateFormatter.localizedString(from: lastModel.dateTaken, dateStyle: .short, timeStyle: .none)
-            self.lastPhotos = lastModel.hairPicture.flatMap { $0 }
+            self.lastPhotos = lastModel.hairPicture.flatMap { $0.hairPicture }
         } catch {
             print("Failed to fetch data: \(error)")
         }

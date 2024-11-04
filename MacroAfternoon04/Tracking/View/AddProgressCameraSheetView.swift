@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 import SwiftData
 
+
 struct AddProgressCameraSheetView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.presentationMode) private var presentationMode
@@ -16,10 +17,10 @@ struct AddProgressCameraSheetView: View {
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var currentPage = 1
-    @Binding var currentScalpPosition: Int
 
+    @State var totalPages = 3
     
-    private let totalPages = 3
+    @State var statusRetry: String = "Begin Taking Pictures"
     
     var body: some View {
         NavigationView{
@@ -27,9 +28,12 @@ struct AddProgressCameraSheetView: View {
                 Spacer()
                 CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel)
                     .ignoresSafeArea()
+                Text(statusRetry)
             }
             .onAppear {
                 viewModel.startCamera()
+                viewModel.setPositions()
+                totalPages = viewModel.currentScalpPositions.count
             }
             .onDisappear {
                 viewModel.stopCamera()
@@ -47,26 +51,25 @@ struct AddProgressCameraSheetView: View {
     }
     
     private func captureImage() {
-        viewModel.captureImage()
-        if currentPage < totalPages {
-            currentPage += 1
+        if checkPicHasDetection(uiImage: UIImage(cgImage: viewModel.currentFrame!)){
+            viewModel.captureImage()
+            if currentPage < totalPages {
+                currentPage += 1
+                viewModel.currentScalpPosition = viewModel.currentScalpPositions[currentPage - 1]
+            } else {
+                saveImages()
+                presentationMode.wrappedValue.dismiss()
+            }
+            statusRetry = "Photo Done Successfully"
         } else {
-            saveImages()
-            presentationMode.wrappedValue.dismiss()
+            statusRetry = "No Detections in Photo"
         }
     }
     
     private func saveImages() {
-        let hairPictures = viewModel.capturedImages.map { cgImage in
-            let uiImage = UIImage(cgImage: cgImage)
-            let data = uiImage.pngData()!
-            return [data]
-        }
-
-        let trackProgressModel = TrackProgressModel(hairPicture: hairPictures, detections: [[]])
+        let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]])
         
         detectObjectsInImage(trackProgress: trackProgressModel)
-        
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)
@@ -82,4 +85,5 @@ struct AddProgressCameraSheetView: View {
             print("Failed to save: \(error.localizedDescription)")
         }
     }
+    
 }

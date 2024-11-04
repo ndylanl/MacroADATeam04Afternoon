@@ -25,7 +25,7 @@ struct CameraView: View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 
-                AddProgressTrackingBarView(progress: currentPage)
+                AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel)
                 
                 ZStack {
                     if let image = image {

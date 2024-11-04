@@ -92,8 +92,8 @@ struct ComparisonResultView: View {
             .padding()
             .onAppear {
                 self.viewModel = ComparisonResultViewModel(modelContext: modelContext)
-                self.photosA = viewModel?.trackProgressData[reportA - 1].hairPicture.flatMap { $0 } ?? []
-                self.photosB = viewModel?.trackProgressData[reportB - 1].hairPicture.flatMap { $0 } ?? []
+                self.photosA = viewModel?.trackProgressData[reportA - 1].hairPicture.flatMap { $0.hairPicture } ?? []
+                self.photosB = viewModel?.trackProgressData[reportB - 1].hairPicture.flatMap { $0.hairPicture } ?? []
             }
             
             

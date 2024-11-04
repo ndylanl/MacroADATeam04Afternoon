@@ -97,6 +97,7 @@ struct PreCameraGuideView: View {
                             
                         }
                     }
+                    
                     HStack(spacing: 0){
                         ZStack(alignment: .topLeading) {
                             // Square background

@@ -48,11 +48,14 @@ class HistoryViewModel: ObservableObject {
         do {
             let models = try modelContext.fetch(fetchRequest)
             if let model = models.first {
-                self.annotatedImagesData = model.hairPicture.enumerated().flatMap { (index, photoArray) in
-                    photoArray.map { photo in
-                        (photo: photo, detections: model.detections[index])
-                    }
+                for i in 0..<model.hairPicture.count {
+                    self.annotatedImagesData.append((photo: model.hairPicture[i].hairPicture[0], detections: model.detections[i]))
                 }
+//                self.annotatedImagesData = model.hairPicture.enumerated().flatMap { (index, photoArray) in
+//                    photoArray.map { photo in
+//                        (photo: photo, detections: model.detections[index])
+//                    }
+//                }
             }
         } catch {
             print("Failed to fetch annotated images data: \(error)")

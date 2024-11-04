@@ -54,7 +54,7 @@ struct HistoryCircleView: View {
                                     
                                     ForEach(weeksData, id: \.self) { weekDate in
                                         NavigationLink {
-                                            WeekReportView(date: weekDate)
+                                            WeekReportView(date: weekDate, viewModel: WeeklyReportViewModel(modelContext: modelContext))
                                         } label: {
                                             WeekCircleView(weekDate: weekDate)
                                                 .padding()

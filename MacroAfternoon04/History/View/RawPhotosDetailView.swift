@@ -78,10 +78,10 @@ struct AnnotatedImageView: View {
                 
                 Rectangle()
                     .stroke(boxColor, lineWidth: 2)
-                    .frame(width: object.boundingBox.width * UIScreen.main.bounds.width*ratioX,
-                           height: object.boundingBox.height * ratioY)
-                    .offset(x: object.boundingBox.origin.x * UIScreen.main.bounds.width * ratioX,
-                            y: (1 - object.boundingBox.origin.y) * ratioY)
+                    .frame(width: object.boundingBox.width * UIScreen.main.bounds.width*4/5,
+                           height: object.boundingBox.height * 275)
+                    .offset(x: object.boundingBox.origin.x * UIScreen.main.bounds.width * 4.2/5,
+                            y: (1 - object.boundingBox.origin.y) * 275)
                 
             }
         }

@@ -239,7 +239,7 @@ struct WeekReportView: View {
         .background(Color(.systemGray6))
         .onAppear {
             viewModel.weekNumber = weekOfMonth(for: date)
-            viewModel.fetchData(weekNumber: viewModel.weekNumber)
+            viewModel.fetchData(weekDate: date)
         }
         .sheet(isPresented: $isInfoSheetPresented) {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)

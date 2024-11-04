@@ -16,19 +16,46 @@ class WeeklyReportViewModel: ObservableObject {
     @Published var photos: [Data] = []
     @Published var detections: [[DetectedObject]] = []
     @Published var weekNumber: Int = 0
+    @Published var weekDate: Date = Date()
     @Published var heatMapArray: [Float] = [0,0,0,0,0,0,0,0,0,0,0,0]
-    //@Published var model: TrackProgressModel?
+    @Published var model: TrackProgressModel?
     
     private var cancellables = Set<AnyCancellable>()
     private var modelContext: ModelContext
     @Published var averageHairPerFollicle: Double = 10
     
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext, weekDate: Date) {
         self.modelContext = modelContext
-        fetchData(weekNumber: weekNumber)
+//        fetchCurrentModel(weekNumber: weekDate)
+        fetchData(weekDate: weekDate)
     }
+//    
+//    func fetchCurrentModel(weekNumber: Date){
+//        let fetchRequest = FetchDescriptor<TrackProgressModel>(
+//            predicate: nil,
+//            sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
+//        )
+//        
+//        do {
+//            let models = try modelContext.fetch(fetchRequest)
+//            //guard weekNumber > 0 && weekNumber <= models.count else { return }
+//            
+//            //let model = models[weekNumber - 1]
+//            
+//            for i in models{
+//                if i.dateTaken == weekNumber {
+//                    model = i
+//                }
+//            }
+//        } catch {
+//            print("Failed to fetch data: \(error)")
+//        }
+//        
+//        
+//        
+//    }
     
-    func fetchData(weekNumber: Int) {
+    func fetchData(weekDate: Date) {
         print("week\(weekNumber)")
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
@@ -37,9 +64,18 @@ class WeeklyReportViewModel: ObservableObject {
         
         do {
             let models = try modelContext.fetch(fetchRequest)
-            guard weekNumber > 0 && weekNumber <= models.count else { return }
+            //guard weekNumber > 0 && weekNumber <= models.count else { return }
             
-            let model = models[weekNumber - 1]
+            //let model = models[weekNumber - 1]
+            var model: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [])
+            
+            for i in models{
+                if i.dateTaken == weekDate {
+                    model = i
+                }
+            }
+            
+            
             print("Model:\(model)")
             date = DateFormatter.localizedString(from: model.dateTaken, dateStyle: .short, timeStyle: .none)
             photos = model.hairPicture.flatMap { $0.hairPicture }
@@ -56,6 +92,7 @@ class WeeklyReportViewModel: ObservableObject {
             print("Failed to fetch data: \(error)")
         }
     }
+    
     
     func totalHairLabels(targetObjectDetection: [DetectedObject]) -> Dictionary<Int, Int> {
         var totalCounts: Dictionary<Int, Int> = [:]

@@ -35,18 +35,36 @@ enum ReminderCategory: String, Codable, CaseIterable {
     case other = "Other"
 }
 
+extension ReminderModel {
+    func resetPoints() {
+        self.appointmentPoint = 100
+        self.applyPoint = 100
+        self.consumePoint = 100
+        self.exercisePoint = 100
+        self.otherPoint = 100
+        print("Points reset to 100 for reminder: \(self.label)")
+    }
+}
+
 @Model
 class ReminderModel {
-    @Attribute var id: UUID = UUID() // Automatically initialized
+    @Attribute var id: UUID = UUID()
     @Attribute var label: String
-    @Attribute var reminderTime: Date
+    @Attribute var reminderTime: Date // The target time for the reminder
     @Attribute var repeatOption: RepeatOption
     @Attribute var isReminderOn: Bool
     @Attribute var reminderSound: Sound
     @Attribute var category: ReminderCategory
     @Attribute var isCompleted: Bool = false
-    
-//    @Persisted var reminderSound: Sound
+    @Attribute var dateCreated: Date = Date() // Track creation date of the reminder
+    @Attribute var isActive: Bool = true // Indicates if the reminder is currently active
+    @Attribute var appointmentPoint: Int = 100
+    @Attribute var applyPoint: Int = 100
+    @Attribute var consumePoint: Int = 100
+    @Attribute var exercisePoint: Int = 100
+    @Attribute var otherPoint: Int = 100
+    @Attribute var lastResetDate: Date? // Track the last reset date
+
 
     init(label: String, reminderTime: Date, repeatOption: RepeatOption, isReminderOn: Bool, reminderSound: Sound = .defaultSound, category: ReminderCategory = .other) {
         self.label = label
@@ -55,8 +73,14 @@ class ReminderModel {
         self.isReminderOn = isReminderOn
         self.reminderSound = reminderSound
         self.category = category
+        self.isActive = true
+        self.lastResetDate = nil
     }
 }
+
+
+
+
 
 
 

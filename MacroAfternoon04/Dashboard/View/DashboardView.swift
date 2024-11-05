@@ -65,16 +65,7 @@ struct DashboardView: View {
                     .edgesIgnoringSafeArea(.all)
                 }
             }
-            
-            
-            
-            //            }
-            //            .ignoresSafeArea()
-            //            .scrollContentBackground(.hidden)
-            //            .background(
-            //                Image("placeholderDashboardBackground")
-            //                    .resizable()
-            //            )
+
             
             .navigationTitle("Dashboard")
             .toolbarBackground(.clear, for: .navigationBar)

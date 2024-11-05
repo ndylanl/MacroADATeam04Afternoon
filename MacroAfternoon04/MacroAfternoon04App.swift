@@ -31,6 +31,7 @@ struct MacroAfternoon04App: App {
                 .modelContainer(for: [TrackProgressModel.self, ReminderModel.self])
                 .onAppear {
                     setupNotificationActions()
+                    //ReminderService.shared.resetWeeklyPointsIfNeeded()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didFinishLaunchingNotification)) { _ in
                     UNUserNotificationCenter.current().delegate = appDelegate

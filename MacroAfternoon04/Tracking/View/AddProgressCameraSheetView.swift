@@ -29,9 +29,8 @@ struct AddProgressCameraSheetView: View {
         NavigationView{
             VStack{
                 Spacer()
-                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel)
+                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel, statusRetry: $statusRetry)
                     .ignoresSafeArea()
-                Text(statusRetry)
             }
             .onAppear {
                 viewModel.startCamera()
@@ -70,15 +69,13 @@ struct AddProgressCameraSheetView: View {
     }
     
     private func saveImages() {
-        let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]])
+        let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]], scalpPositions: UserDefaults.standard.string(forKey: "ScalpAreaChosen")!)
         
         detectObjectsInImage(trackProgress: trackProgressModel)
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)
-        
-
-        }
+    }
     
     private func saveToModel(_ model: TrackProgressModel) {
         modelContext.insert(model)

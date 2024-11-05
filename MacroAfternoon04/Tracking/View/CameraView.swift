@@ -21,14 +21,34 @@ struct CameraView: View {
     
     @ObservedObject var viewModel: CameraViewModel
     
+    @Binding var statusRetry: String
+    
+    var textColor: Color {
+            switch statusRetry {
+            case "Photo Done Successfully":
+                return .green
+            case "No Detections in Photo":
+                return .red
+            default:
+                return .gray // Default color
+            }
+        }
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 
                 AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel, totalPages: $totalPages)
-                
+
+                Text(statusRetry)
+                    .foregroundColor(textColor)
+
                 ZStack {
                     if let image = image {
+                        
+                        CameraScalpPositionGuideView(selectedOption: $viewModel.currentScalpPosition)
+                            .zIndex(2)
+                            .offset(x: UIScreen.main.bounds.width/3.1, y: -UIScreen.main.bounds.width/3.5)
                         
                         Image(decorative: image, scale: 1)
                             .resizable()

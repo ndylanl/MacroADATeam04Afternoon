@@ -28,7 +28,7 @@ class CameraViewModel: ObservableObject {
     var tempHairData: [HairPictureData] = []
     
     init() {
-        self.currentScalpPosition = 0
+        self.currentScalpPosition = 1
         self.currentScalpPositions = [1,2,3,4,5,6,7,8,9,10,11,12]
     }
     
@@ -51,6 +51,7 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
+    
     
     func updateFocus(value: Float) {
         cameraManager.setFocus(value: value)

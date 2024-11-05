@@ -67,7 +67,7 @@ class WeeklyReportViewModel: ObservableObject {
             //guard weekNumber > 0 && weekNumber <= models.count else { return }
             
             //let model = models[weekNumber - 1]
-            var model: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [])
+            var model: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [], scalpPositions: "ScalpFull")
             
             for i in models{
                 if i.dateTaken == weekDate {

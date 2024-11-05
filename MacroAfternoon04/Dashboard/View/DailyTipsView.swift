@@ -29,7 +29,8 @@ struct DailyTipsView: View {
                 
             }
             .onAppear {
-                startTimer()
+//                startTimer()
+                randomTip()
                 // Jika ingin tip harian berganti setiap hari, bisa ditambahkan logika pengaturan tanggal
                 //currentTipIndex = calculateDailyTipIndex()
             }
@@ -55,6 +56,10 @@ struct DailyTipsView: View {
     private func showNextTip() {
         // Mengganti indeks tip
         currentTipIndex = (currentTipIndex + 1) % tips.count
+    }
+    
+    private func randomTip() {
+        currentTipIndex = Int.random(in: 0..<tips.count)
     }
 }
 

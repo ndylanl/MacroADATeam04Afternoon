@@ -9,27 +9,34 @@ import SwiftUI
 
 struct DisabledAddProgressView: View {
     
+    @Binding var daysLeft: Int
+    
     var body: some View{
         ZStack(){
             //RoundedCornerComponentView()
             
-            RoundedCornerComponentBlueView()
+            RoundedCornerComponentGrayView()
             
-            Image("DisabledAddProgress")
-                    .resizable()
-//                .font(.system(size: 17, weight: .regular))
-//                .foregroundStyle(Color("NeutralColor"))
-                .frame(width: IconWidthSize(), height: IconHeightSize())
+            VStack{
+                Image(systemName: "camera.fill")
+                    .font(.title3)
+                
+                Text("Add Progress \(daysLeft) Days Left")
+                    .font(.caption2)
+                    .multilineTextAlignment(.center)
+            }
+            .foregroundStyle(Color("NeutralColor"))
+            .frame(width: IconWidthSize(), height: IconHeightSize())
             
             
             
         }
-        //.background(Color("SecondaryColor"))
+        //        .background(Color.white)
         .frame(width: cardWidthSize(), height: cardHeightSize())
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color("PrimaryColor"), lineWidth: 0.5)
+                .stroke(Color("NeutralColor"), lineWidth: 0.5)
         )
     }
     
@@ -52,5 +59,5 @@ struct DisabledAddProgressView: View {
 }
 
 #Preview {
-    DisabledAddProgressView()
+    DisabledAddProgressView(daysLeft: .constant(1))
 }

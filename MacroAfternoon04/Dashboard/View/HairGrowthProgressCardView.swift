@@ -18,6 +18,7 @@ struct HairGrowthProgressCardView: View {
     @StateObject var viewModel: RecentProgressViewModel
     
     @State private var isButtonEnabled: Bool = false
+    @State private var daysLeft: Int = 7
     
     init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
         self._showingAddProgressSheet = showingAddProgressSheet
@@ -43,7 +44,7 @@ struct HairGrowthProgressCardView: View {
                             AddProgressCardView()
                         }
                     } else {
-                        DisabledAddProgressView()
+                        DisabledAddProgressView(daysLeft: $daysLeft)
                     }
                     
                     Spacer()
@@ -69,8 +70,8 @@ struct HairGrowthProgressCardView: View {
         
         if isTrackProgressModelEmpty() {
             isButtonEnabled = true
-            
-        }else {
+            daysLeft = 0
+        } else {
             let today = Calendar.current.startOfDay(for: Date())
             let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: today)!
             let dayAfter = Calendar.current.date(byAdding: .day, value: 1, to: today)!
@@ -83,6 +84,7 @@ struct HairGrowthProgressCardView: View {
                 
             } else {
                 isButtonEnabled = false
+                daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 0
             }
         }
     }

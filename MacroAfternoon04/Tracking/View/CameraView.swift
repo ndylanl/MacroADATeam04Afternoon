@@ -42,13 +42,14 @@ struct CameraView: View {
 
                 Text(statusRetry)
                     .foregroundColor(textColor)
+                    .padding(.vertical, -10)
 
                 ZStack {
                     if let image = image {
                         
                         CameraScalpPositionGuideView(selectedOption: $viewModel.currentScalpPosition)
                             .zIndex(2)
-                            .offset(x: UIScreen.main.bounds.width/3.1, y: -UIScreen.main.bounds.width/3.5)
+                            .offset(x: UIScreen.main.bounds.width/3.3, y: -UIScreen.main.bounds.width/3.8)
                         
                         Image(decorative: image, scale: 1)
                             .resizable()
@@ -81,13 +82,18 @@ struct CameraView: View {
                 
                 VStack{
                     Text("Please bring the camera very close to the scalp until it looks clear enough.")
-                        .font(.title3)
+                        .font(.body)
                         .multilineTextAlignment(.center)
                     
                     Text("Make sure you have a good lighting and another person to help take photos.")
-                        .font(.body).opacity(0.5)
+                        .font(.footnote).opacity(0.5)
                         .multilineTextAlignment(.center)
-                }.padding(.horizontal)
+                        .padding(.horizontal)
+
+                }
+                .padding(.horizontal)
+                .padding(.horizontal)
+
                 
                 
                 Button(action: {
@@ -102,14 +108,16 @@ struct CameraView: View {
                 }) {
                     Circle()
                         .stroke(Color("PrimaryColor"), lineWidth: 2)
-                        .frame(width: UIScreen.main.bounds.width * 68 / 430, height: UIScreen.main.bounds.width * 68 / 430)
+                        .frame(width: UIScreen.main.bounds.width * 80 / 430, height: UIScreen.main.bounds.width * 80 / 430)
                         .overlay(
                             Circle()
                                 .fill(Color("PrimaryColor"))
-                                .frame(width: UIScreen.main.bounds.width * 60 / 430, height: UIScreen.main.bounds.width * 60 / 430)
+                                .frame(width: UIScreen.main.bounds.width * 72 / 430, height: UIScreen.main.bounds.width * 72 / 430)
                         )
                 }
                 .padding()
+                
+                Spacer()
             }
         }
     }

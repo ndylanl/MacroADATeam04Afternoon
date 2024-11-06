@@ -22,7 +22,7 @@ func countNMinusOne(startValue: Int, multiple: Int) -> Int{
 
 struct HeatmapView: View {
     
-    let pixelSize: CGFloat = 5
+    let pixelSize: CGFloat = 4.5
     
     //let data = createDepthData(originalValues: tempArray, multiple: multiple)
     @State var data: [Float]

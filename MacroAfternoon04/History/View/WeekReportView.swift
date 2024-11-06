@@ -50,9 +50,10 @@ struct WeekReportView: View {
                 TabView{
                     if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
                         HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
+                            .clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
                     }
                 }
-                .frame(height: UIScreen.main.bounds.height * 434 / 932)
+                .frame(width:UIScreen.main.bounds.width * 5/6, height: UIScreen.main.bounds.height * 454 / 932)
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 

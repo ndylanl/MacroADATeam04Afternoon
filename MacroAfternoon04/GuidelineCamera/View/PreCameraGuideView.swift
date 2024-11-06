@@ -29,7 +29,7 @@ struct PreCameraGuideView: View {
     var body: some View {
         ScrollView{
             VStack(alignment: .leading){
-                Text("Macro Photos Will Be Taken With Assitance")
+                Text("Macro Photos Will Be Taken With Assistance")
                     .font(.largeTitle)
                     .padding()
                 Text("Make sure you have a good lighting and another person to help take photos of your scalp.")
@@ -205,6 +205,7 @@ struct PreCameraGuideView: View {
                     .padding(.leading)
                 
                 Button{
+                    selectedOption = "A. All Scalp"
                     // actions here
                     UserDefaults.standard.set(selectedOption, forKey: "ScalpAreaChosen")
                     // this is how to grab it

@@ -10,10 +10,10 @@ import SwiftData
 
 struct HairGrowthProgressCardView: View {
     
+    @Environment(\.modelContext) private var modelContext
+    
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
-    
-    @Environment(\.modelContext) private var modelContext
     
     @State private var isButtonEnabled: Bool = false
     
@@ -40,14 +40,14 @@ struct HairGrowthProgressCardView: View {
                             AddProgressCardView()
                         }
                     } else {
-                        AddProgressCardView()
-                            .opacity(0.5)
+                        DisabledAddProgressView()
                     }
                     
                     Spacer()
                     
                     NavigationLink{
                         RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
+                        
                     } label: {
                         LastProgressCardView()
                     }

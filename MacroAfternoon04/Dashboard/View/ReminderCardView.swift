@@ -48,10 +48,18 @@ struct ReminderCardView: View {
                     // Tampilkan reminder terdekat berdasarkan waktunya
                     if let nextReminder = nextReminder {
                         // Tampilkan reminder terdekat berdasarkan waktunya
-                        Text(nextReminder.label)
-                            .font(.title)
+                        HStack{
+                            Image(systemName: "bell.fill")
+                            Text(nextReminder.label)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                        }
+                        .font(.title)
+                        .foregroundStyle(Color("PrimaryColor"))
+                        
                         Text("\(nextReminder.reminderTime, style: .time)")
                             .font(.body)
+                            .foregroundStyle(Color.black)
                     } else {
                         // Jika ada reminder tapi tidak ada yang aktif
                         Text("+ Add New Reminder")

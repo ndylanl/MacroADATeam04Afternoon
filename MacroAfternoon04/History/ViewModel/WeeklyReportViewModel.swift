@@ -20,6 +20,9 @@ class WeeklyReportViewModel: ObservableObject {
     @Published var heatMapArray: [Float] = [0,0,0,0,0,0,0,0,0,0,0,0]
     @Published var model: TrackProgressModel?
     
+    @Published var lastDate: Date = Date()
+    
+    
     private var cancellables = Set<AnyCancellable>()
     private var modelContext: ModelContext
     @Published var averageHairPerFollicle: Double = 10
@@ -28,6 +31,7 @@ class WeeklyReportViewModel: ObservableObject {
         self.modelContext = modelContext
 //        fetchCurrentModel(weekNumber: weekDate)
         fetchData(weekDate: weekDate)
+        fetchLastData()
     }
 //    
 //    func fetchCurrentModel(weekNumber: Date){
@@ -219,6 +223,22 @@ class WeeklyReportViewModel: ObservableObject {
         } catch {
             print("Failed to fetch data: \(error)")
             return 0
+        }
+    }
+    
+    func fetchLastData() {
+        let fetchRequest = FetchDescriptor<TrackProgressModel>(
+            predicate: nil,
+            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
+        )
+        
+        do {
+            let models = try modelContext.fetch(fetchRequest)
+            guard let lastModel = models.first else { return }
+
+            self.lastDate = lastModel.dateTaken
+        } catch {
+            print("Failed to fetch data: \(error)")
         }
     }
 }

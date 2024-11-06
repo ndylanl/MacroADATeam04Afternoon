@@ -15,13 +15,12 @@ struct AddProgressTrackingBarView: View {
     
     var body: some View {
         HStack{
-            ForEach(1..<totalPages + 1){ i in
+            ForEach(1..<13){ i in
                 Capsule()
-                    .fill(progress < i ? Color.gray : Color.blue)
-                    .frame(width: UIScreen.main.bounds.width / CGFloat(totalPages) , height: 10)
+                    .fill(progress > i ? Color("PrimaryColor") : Color.gray)
+                    .frame(width: UIScreen.main.bounds.width / 24 , height: 10)
             }
         }
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 68 / 932)
     }
 }
-

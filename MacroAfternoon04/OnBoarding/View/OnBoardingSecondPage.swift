@@ -40,11 +40,11 @@ struct OnBoardingSecondPageView: View {
                 
                 // Request Access for Health
                 Task{
-                    await healthManager.requestAuthorization()
-                    //                }
+                    healthManager.requestAuthorization()
+//                    if UserDefaults.standard.bool(forKey: "shouldRequestAuthorization") {
+//                        healthManager.requestAuthorization()
+//                    }
                     
-                    
-                    // .....
                     let currentDay = Calendar.current.component(.weekday, from: Date())
                     selectedDay = currentDay
                     UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
@@ -66,6 +66,7 @@ struct OnBoardingSecondPageView: View {
             Button{
 //                isOnBoardingComplete = true
 //                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
+//                UserDefaults.standard.set(false, forKey: "shouldRequestAuthorization")
                 
                 let currentDay = Calendar.current.component(.weekday, from: Date())
                 selectedDay = currentDay
@@ -85,6 +86,12 @@ struct OnBoardingSecondPageView: View {
             .navigationDestination(isPresented: $navigateToThirdOnBoarding, destination: {
                 OnBoardingThirdPageView(isOnBoardingComplete: $isOnBoardingComplete)
             })
+//            .onAppear {
+//                // Set default to true if not already set
+//                if UserDefaults.standard.object(forKey: "shouldRequestAuthorization") == nil {
+//                    UserDefaults.standard.set(true, forKey: "shouldRequestAuthorization")
+//                }
+//            }
         }
         .padding()
         .frame(width: UIScreen.main.bounds.width)
@@ -93,4 +100,5 @@ struct OnBoardingSecondPageView: View {
         )
         .navigationBarHidden(true)
     }
+    
 }

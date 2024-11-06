@@ -15,6 +15,8 @@ struct HairGrowthProgressCardView: View {
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
     
+//    @StateObject var viewModel: RecentProgressViewModel
+    
     @State private var isButtonEnabled: Bool = false
     
     var body: some View {
@@ -47,7 +49,7 @@ struct HairGrowthProgressCardView: View {
                     
                     NavigationLink{
                         RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
-                        
+//                        WeekReportView(date: )
                     } label: {
                         LastProgressCardView()
                     }

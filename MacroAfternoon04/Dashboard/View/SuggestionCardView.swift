@@ -8,32 +8,34 @@
 import SwiftUI
 
 struct SuggestionCardView: View {
+    @StateObject var suggestionViewModel = SuggestionViewModel()
+    
     var body: some View {
-        VStack{
+        VStack {
             Text("Your hair growth is")
                 .font(.title2)
             Text("getting better")
                 .font(.system(size: 48))
                 .fontWeight(.medium)
             
-            HStack{
-                VStack(alignment: .leading){
-                    Text("• Have more sleep time")
-                    Text("• Start more workout")
-                        
+            if !suggestionViewModel.suggestions.isEmpty {
+                HStack {
+                    VStack(alignment: .leading) {
+                        ForEach(suggestionViewModel.suggestions, id: \.self) { suggestion in
+                            Text(suggestion)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    Image("okay")
+                        .resizable()
+                        .frame(width: 58.08, height: 58.08)
                 }
-                
-                Spacer()
-                
-                Image(systemName: "hand.thumbsup.fill")
-                    .resizable()
-                    .frame(width: 58.08, height: 58.08)
-                
-            }.padding(.horizontal)
-            
-            
-            
+                .padding(.horizontal)
+            }
         }
+
     }
 }
 

@@ -15,23 +15,24 @@ struct HairGrowthProgressCardView: View {
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
     
-//    @StateObject var viewModel: RecentProgressViewModel
+    @StateObject var viewModel: RecentProgressViewModel
     
     @State private var isButtonEnabled: Bool = false
+    
+    init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
+        self._showingAddProgressSheet = showingAddProgressSheet
+        self._selectedDay = selectedDay
+        self._viewModel = StateObject(wrappedValue: RecentProgressViewModel(modelContext: modelContext))
+    }
     
     var body: some View {
         ZStack(){
             RoundedCornerComponentView()
-//            Image("placeholderDashboardYourActivityCard")
-//                .resizable()
-//                .clipShape(RoundedRectangle(cornerRadius: 18))
             
             VStack(alignment: .leading){
                 
                 Text("✦ Hair Growth Progress")
                     .font(.title3)
-                
-//                Divider()
                 
                 HStack{
                     
@@ -48,8 +49,7 @@ struct HairGrowthProgressCardView: View {
                     Spacer()
                     
                     NavigationLink{
-                        RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
-//                        WeekReportView(date: )
+                        WeekReportView(date: viewModel.lastDate, viewModel: WeeklyReportViewModel(modelContext: modelContext, weekDate: viewModel.lastDate))
                     } label: {
                         LastProgressCardView()
                     }
@@ -124,7 +124,3 @@ func cardWidthSize() -> CGFloat{
 func cardHeightSize() ->CGFloat{
     (UIScreen.main.bounds.height * 193 / 985)
 }
-
-//#Preview {
-//    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
-//}

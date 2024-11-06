@@ -23,6 +23,7 @@ struct DashboardView: View {
     
     @State var showingSettingsSheet: Bool = false
     
+    
     var body: some View {
         NavigationStack{
             //            ScrollView{
@@ -37,7 +38,7 @@ struct DashboardView: View {
                     VStack{
                         Spacer()
                         
-                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
+                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, modelContext: modelContext)
                         
                         Spacer()
                         

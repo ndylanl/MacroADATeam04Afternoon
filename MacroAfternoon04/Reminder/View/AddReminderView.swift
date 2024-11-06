@@ -21,7 +21,7 @@ struct AddReminderView: View {
     @Environment(\.modelContext) private var modelContext
     @ObservedObject var reminderViewModel = ReminderViewModel()
     
-    @Query var list: [ReminderModel] // For SwiftData insertion
+    @Query var list: [ReminderModel] 
     
     var body: some View {
         NavigationView {
@@ -105,6 +105,9 @@ struct AddReminderView: View {
                         
                         // Save the updated reminder in the modelContext
                         reminderViewModel.updateReminder(reminder, isOn: reminder.isReminderOn, context: modelContext)
+                        
+                        // check the published reminder status
+                        //reminderViewModel.checkReminderStatus(for: reminder)
                     } else {
                         // Insert a new reminder model into the SwiftData context
                         let newReminder = ReminderModel(

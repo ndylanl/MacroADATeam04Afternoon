@@ -29,9 +29,22 @@
 		92B60BF02CB2A7FE003A35DD /* MacroAfternoon04UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacroAfternoon04UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8D007CE92CD8FEB800FB9E3A /* Exceptions for "MacroAfternoon04" folder in "MacroAfternoon04" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 92B60BD32CB2A7C5003A35DD /* MacroAfternoon04 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		92B60BD62CB2A7C5003A35DD /* MacroAfternoon04 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8D007CE92CD8FEB800FB9E3A /* Exceptions for "MacroAfternoon04" folder in "MacroAfternoon04" target */,
+			);
 			path = MacroAfternoon04;
 			sourceTree = "<group>";
 		};
@@ -401,6 +414,7 @@
 				DEVELOPMENT_TEAM = RSBCF2NM6N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MacroAfternoon04/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Serene;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";
@@ -444,6 +458,7 @@
 				DEVELOPMENT_TEAM = RSBCF2NM6N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MacroAfternoon04/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Serene;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera is used to capturing photos.";

@@ -17,18 +17,22 @@ struct LastProgressCardView: View {
 //                ZStack{
 //                    RoundedCornerComponentView()
 //                        .background(Color.white)
-                    Text("🫧📖🤷📖🫧")
-    //                    .resizable()
-                        .font(.title3)
-                        .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
-                        .background(Color.white)
+                
+//                    Text("🫧📖🤷📖🫧")
+//    //                    .resizable()
+//                        .font(.title3)
+//                        .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
+//                        .background(Color.white)
                     
 //                }
                 
 
-//                Image("placeholderDashboardLastProgressCard")
-//                    .resizable()
-//                    .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
+                VStack{
+                    Image("PlaceholderDashboardRecent")
+                        .resizable()
+                }
+                .frame(width: cardPhotoWidthSize() , height: cardPhotoHeightSize())
+                .background(Color.white)
 
                 HStack{
                     Image(systemName: "doc.text.fill")
@@ -63,11 +67,11 @@ struct LastProgressCardView: View {
     }
     
     func cardPhotoWidthSize() -> CGFloat{
-        (UIScreen.main.bounds.width * 214 / 430)
+        (UIScreen.main.bounds.width * 212 / 430)
     }
     
     func cardPhotoHeightSize() -> CGFloat{
-        (UIScreen.main.bounds.height * 69 / 985)
+        (UIScreen.main.bounds.height * 66 / 985)
     }
     
     func cardRecentHeightSize() -> CGFloat{
@@ -79,6 +83,6 @@ struct LastProgressCardView: View {
     }
 }
 
-//#Preview {
-//    LastProgressCardView()
-//}
+#Preview {
+    LastProgressCardView()
+}

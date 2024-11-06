@@ -58,10 +58,6 @@ struct ReminderCardView: View {
                         .font(.title)
                         .foregroundStyle(Color("PrimaryColor"))
                         
-//                        Text(nextReminder.label)
-//                            .font(.title)
-//                            .multilineTextAlignment(.leading)
-//                            .foregroundStyle(Color("PrimaryColor"))
                         Text("\(nextReminder.reminderTime, style: .time)")
                             .font(.body)
                             .foregroundStyle(Color.black)

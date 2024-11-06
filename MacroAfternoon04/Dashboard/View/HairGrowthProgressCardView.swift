@@ -10,10 +10,12 @@ import SwiftData
 
 struct HairGrowthProgressCardView: View {
     
+    @Environment(\.modelContext) private var modelContext
+    
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
     
-    @Environment(\.modelContext) private var modelContext
+//    @StateObject var viewModel: RecentProgressViewModel
     
     @State private var isButtonEnabled: Bool = false
     
@@ -35,19 +37,19 @@ struct HairGrowthProgressCardView: View {
                     
                     if isButtonEnabled {
                         NavigationLink {
-                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet)
+                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
                         } label: {
                             AddProgressCardView()
                         }
                     } else {
-                        AddProgressCardView()
-                            .opacity(0.5)
+                        DisabledAddProgressView()
                     }
                     
                     Spacer()
                     
                     NavigationLink{
                         RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
+//                        WeekReportView(date: )
                     } label: {
                         LastProgressCardView()
                     }

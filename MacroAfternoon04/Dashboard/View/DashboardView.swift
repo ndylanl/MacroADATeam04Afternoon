@@ -57,11 +57,7 @@ struct DashboardView: View {
                         DailyTipsView()
                             .padding(10)
                     }
-                    .sheet(isPresented: $showingAddProgressSheet){
-                        AddProgressCameraSheetView()
-                        
-                        
-                    }
+                    
                     .edgesIgnoringSafeArea(.all)
                 }
             }

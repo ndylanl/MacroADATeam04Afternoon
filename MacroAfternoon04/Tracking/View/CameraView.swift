@@ -12,7 +12,7 @@ struct CameraView: View {
     @Binding var image: CGImage?
     var onCapture: () -> Void
     var currentPage: Int
-    var totalPages: Int
+    @State var totalPages: Int
     
     @State private var showCaptureCue: Bool = false
     @State private var tapLocation: CGPoint = .zero
@@ -25,7 +25,7 @@ struct CameraView: View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 
-                AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel)
+                AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel, totalPages: $totalPages)
                 
                 ZStack {
                     if let image = image {

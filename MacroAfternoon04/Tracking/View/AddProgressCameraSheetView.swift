@@ -15,23 +15,24 @@ struct AddProgressCameraSheetView: View {
     
     @Binding var showingAddProgressSheet: Bool
     
-//    @Environment(\.presentationMode) private var presentationMode
+    //    @Environment(\.presentationMode) private var presentationMode
     
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var currentPage = 1
-
+    
     @State var totalPages = 3
     
     @State var statusRetry: String = "Begin Taking Pictures"
+    
+    @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
     
     var body: some View {
         NavigationView{
             VStack{
                 Spacer()
-                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel)
+                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel, statusRetry: $statusRetry)
                     .ignoresSafeArea()
-                Text(statusRetry)
             }
             .onAppear {
                 viewModel.startCamera()
@@ -69,16 +70,31 @@ struct AddProgressCameraSheetView: View {
         }
     }
     
+    private func calcPoints(points: [Int]) -> Int{
+        var intToReturn = 100
+        
+        var sum = 0 // Initialize sum to zero
+        
+        // Iterate through each score in the array
+        for score in points {
+            if score < 100 {
+                let difference = 100 - score // Calculate the difference
+                sum += difference // Add the difference to the sum
+            }
+        }
+        
+        return (intToReturn - sum)
+        
+    }
+    
     private func saveImages() {
-        let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]])
+        let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]], scalpPositions: UserDefaults.standard.string(forKey: "ScalpAreaChosen")!, appointmentPoint: calcPoints(points:reminders.compactMap{$0.appointmentPoint}), applyPoint: calcPoints(points:reminders.compactMap{$0.applyPoint}), consumePoint: calcPoints(points:reminders.compactMap{$0.consumePoint}), exercisePoint: calcPoints(points:reminders.compactMap{$0.exercisePoint}), otherPoint: calcPoints(points:reminders.compactMap{$0.otherPoint}))
         
         detectObjectsInImage(trackProgress: trackProgressModel)
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)
-        
-
-        }
+    }
     
     private func saveToModel(_ model: TrackProgressModel) {
         modelContext.insert(model)

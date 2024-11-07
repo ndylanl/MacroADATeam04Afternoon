@@ -22,7 +22,7 @@ func countNMinusOne(startValue: Int, multiple: Int) -> Int{
 
 struct HeatmapView: View {
     
-    let pixelSize: CGFloat = 5
+    let pixelSize: CGFloat = 4.5
     
     //let data = createDepthData(originalValues: tempArray, multiple: multiple)
     @State var data: [Float]
@@ -41,6 +41,7 @@ struct HeatmapView: View {
                 }
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 110))
         .onAppear(){
             //print("Data from heatmapView: \(data)")
         }
@@ -69,7 +70,6 @@ func createNewData1(row: Int, column: Int, originalValues: [Float]) -> [Float]{
     var indexOriginalValues = 0
     
     var curCol = 0
-    //print(originalValues)
     
     for i in 0..<data.count {
         if curCol % 2 == 0 {
@@ -135,9 +135,7 @@ func createDepthData(originalValues: [Float], multiple: Int)-> [Float]{
     var height = 6
     var tempWidth = width
     var tempHeight = height
-    
-    print("Multiple: \(multiple)")
-    
+        
     for _ in 1...multiple {
         width = 2 * width - 1
     }
@@ -145,23 +143,16 @@ func createDepthData(originalValues: [Float], multiple: Int)-> [Float]{
     for _ in 1...multiple {
         height = 2 * height - 1
     }
-    
-    print("Width: \(width)")
-    print("Height: \(height)")
 
     let totalDataSize = width * height
     var data = [Float](repeating: 0.0, count: totalDataSize)
     var tempData: [Float] = []
     
-    print("----------")
     for i in 1...multiple {
-        print("TempHeight: \(tempHeight)")
-        print("TempWidth: \(tempWidth)")
 
         if i == 1{
             tempData = createNewData2(row: tempHeight, column: tempWidth, originalValues: originalValues)
         } else {
-            print("Masuk ke sini")
             tempData = createNewData2(row: tempHeight, column: tempWidth, originalValues: tempData)
         }
         
@@ -174,13 +165,7 @@ func createDepthData(originalValues: [Float], multiple: Int)-> [Float]{
         }
     }
     data = tempData
-    print(data.count)
-    print("-----------")
-    //print(data)
+
     
     return data
 }
-
-//#Preview {
-//    HeatmapView()
-//}

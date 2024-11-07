@@ -14,124 +14,58 @@ struct MonthReportView: View {
     
     @State private var isInfoSheetPresented = false
     
+    @StateObject var viewModel: MonthlyReportViewModel
+    
+    @State private var renderedImage: UIImage?
+
+    
     var body: some View {
         ScrollView{
             VStack{
-//                HStack{
-//                    Text(formattedDate(date, formatter: dateFormatter))
-//                        .font(.body)
-//                        .opacity(0.5)
-//                    
-//                    Spacer()
-//                    
-//                    Button{
-//                        print("Raw Photos")
-//                    }label: {
-//                        Text("Raw Photos")
-//                    }
-//                }
-//                .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 TabView{
-                    ForEach(1..<4){ index in
+                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
+                        //HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
+                        //.clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
+                        // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
                         
-                        Rectangle()
-                            .frame(width: photoSize(), height: photoSize())
-                        
+                        if let image = renderedImage {
+                            Image(uiImage: applyFisheyeEffect(to: image)!)
+                                .resizable()
+                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                        }
                     }
                 }
-                .frame(height: UIScreen.main.bounds.height * 434 / 932)
+                .frame(height: UIScreen.main.bounds.height * 354 / 932)
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .padding(.bottom, -24)
+                .onAppear{
+                    let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+                    renderedImage = renderer.uiImage
+                }
                 
                 VStack(alignment: .leading){
-                    Text("Topograpy Information")
+                    Text("Heat Map Information")
                     
                     Divider()
                     
                     HStack{
                         Text("●")
                             .foregroundStyle(.red)
-                        Text("Hair")
-                    }
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("Hair is growing and growing")
+                        Text("Hair growth can be better")
                     }
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
-                        Text("Hair is growing")
+                        Text("Hair is stable")
                     }
-                    
-                }
-                .padding()
-                .background(.white)
-                .font(.body)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                
-                TabView{
-                    ForEach(1..<4){ index in
-                        
-                        Rectangle()
-                            .frame(width: photoSize(), height: photoSize())
-                        
-                    }
-                }
-                .frame(height: UIScreen.main.bounds.height * 434 / 932)
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-                
-                VStack(alignment: .leading){
-                    HStack{
-                        Text("Macro Photo Information")
-                        
-                        Spacer()
-                        
-                        Button{
-                            print("Raw Photos")
-                        }label: {
-                            Text("Raw Photos")
-                        }
-                        
-                    }
-                    
-                    Divider()
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.red)
-                        Text("1 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.purple)
-                        Text("2 Strand per Follicle")
-                    }
-                    
                     HStack{
                         Text("●")
                             .foregroundStyle(.blue)
-                        Text("3 Strand per Follicle")
+                        Text("Hair is growing")
                     }
                     
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.green)
-                        Text("4 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("5 Strand per Follicle")
-                    }
-                    
-                    Text("Average Strands per Follicle: 1,8")
-                        .padding(.top)
                 }
                 .padding()
                 .background(.white)
@@ -147,7 +81,7 @@ struct MonthReportView: View {
                     VStack(alignment: .center){
                         Text("Your hair growth is")
                             .font(.title2)
-                        Text("getting better")
+                        Text(viewModel.hairGrowthStatus)
                             .font(.largeTitle)
                     }
                     .frame(width: UIScreen.main.bounds.width * 340 / 430)
@@ -168,6 +102,30 @@ struct MonthReportView: View {
                         Text("Start more workouts")
                     }
                     
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with applying serum")
+                    }
+                    .isHidden(viewModel.applySuggestion, remove: viewModel.applySuggestion)
+                    
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with your appointments")
+                    }
+                    .isHidden(viewModel.appointmentSuggestion, remove: viewModel.appointmentSuggestion)
+
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with consuming medication")
+                    }
+                    .isHidden(viewModel.consumeSuggestion, remove: viewModel.consumeSuggestion)
+                    
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with your exercises")
+                    }
+                    .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
+
                     HStack{
                         
                         VStack(alignment: .leading){
@@ -269,4 +227,52 @@ struct MonthReportView: View {
         formatter.dateFormat = "MMMM"
         return formatter
     }
+}
+
+extension View {
+    /// Hide or show the view based on a boolean value.
+    ///
+    /// Example for visibility:
+    ///
+    ///     Text("Label")
+    ///         .isHidden(true)
+    ///
+    /// Example for complete removal:
+    ///
+    ///     Text("Label")
+    ///         .isHidden(true, remove: true)
+    ///
+    /// - Parameters:
+    ///   - hidden: Set to `false` to show the view. Set to `true` to hide the view.
+    ///   - remove: Boolean value indicating whether or not to remove the view.
+    @ViewBuilder func isHidden(_ hidden: Bool, remove: Bool = false) -> some View {
+        if hidden {
+            if !remove {
+                self.hidden()
+            }
+        } else {
+            self
+        }
+    }
+}
+
+import SwiftUI
+import CoreImage
+import CoreImage.CIFilterBuiltins
+
+func applyFisheyeEffect(to inputImage: UIImage) -> UIImage? {
+    let context = CIContext()
+    guard let ciImage = CIImage(image: inputImage) else { return nil }
+    
+    // Create a filter to simulate barrel distortion
+    let filter = CIFilter(name: "CIBumpDistortion") // Using bump distortion as an alternative
+    filter?.setValue(ciImage, forKey: kCIInputImageKey)
+    filter?.setValue(350, forKey: kCIInputRadiusKey) // Radius of the distortion
+    filter?.setValue(0.4, forKey: kCIInputScaleKey) // Scale factor for distortion center
+    
+    // Get the output image
+    guard let outputImage = filter?.outputImage,
+          let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else { return nil }
+    
+    return UIImage(cgImage: cgImage)
 }

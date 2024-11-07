@@ -78,7 +78,7 @@ struct HistoryCircleView: View {
             if let selectedMonthYear = selectedMonthYear {
                 ZStack {
                     NavigationLink {
-                        MonthReportView(date: selectedMonthYear)
+                        MonthReportView(date: selectedMonthYear, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear))
                     } label: {
                         MonthCircleView(nameOfTheMonth: formattedDate(selectedMonthYear, formatter: monthFormatter))
                             .padding()

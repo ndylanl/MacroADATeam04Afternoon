@@ -62,11 +62,10 @@ struct DashboardView: View {
                     .edgesIgnoringSafeArea(.all)
                 }
             }
+
             
             .navigationTitle("Dashboard")
             .toolbarBackground(.clear, for: .navigationBar)
-            //            .toolbarBackgroundVisibility(.visible, for: .navigationBar)
-            //            .navigationBarTitleTextColor(.blue)
             
             .toolbar{
                 

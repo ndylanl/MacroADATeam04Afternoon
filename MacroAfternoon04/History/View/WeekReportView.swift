@@ -11,8 +11,8 @@ import SwiftData
 struct WeekReportView: View {
     var date: Date
     @Environment(\.modelContext) private var modelContext
-//    @State private var photos: [Data] = []
-//    @State private var detections: [[DetectedObject]] = []
+    //    @State private var photos: [Data] = []
+    //    @State private var detections: [[DetectedObject]] = []
     
     @State private var isInfoSheetPresented = false
     
@@ -21,6 +21,8 @@ struct WeekReportView: View {
     @State private var isComparePresented: Bool = false
     
     @StateObject var viewModel: WeeklyReportViewModel
+    
+    @State private var renderedImage: UIImage?
     
     let labelColors: [Int: Color] = [
         1: .red,
@@ -32,9 +34,152 @@ struct WeekReportView: View {
     ]
     
     var body: some View {
-        if isOnBoardingHistoryComplete {
-            ScrollView{
-                VStack{
+        ScrollView{
+            VStack{
+                HStack{
+                    Text(formattedDate(date, formatter: dateFormatter))
+                        .font(.body)
+                        .opacity(0.5)
+                    
+                    Spacer()
+                    
+                    NavigationLink{
+                        RawPhotoView(photos: viewModel.photos)
+                    }label: {
+                        Text("Raw Photos")
+                    }
+                }
+                .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                
+                TabView{
+                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
+                        //HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
+                        //.clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
+                        // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
+                        
+                        if let image = renderedImage {
+                            Image(uiImage: applyFisheyeEffect(to: image)!)
+                                .resizable()
+                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                        }
+                    }
+                }
+                .frame(height: UIScreen.main.bounds.height * 354 / 932)
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .padding(.bottom, -24)
+                .onAppear{
+                    let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+                    renderedImage = renderer.uiImage
+                }
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("Heat Map Information")
+                        
+                        Spacer()
+                        
+                        Button{
+                            isInfoSheetPresented = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.red)
+                        Text("Hair is unhealthy")
+                    }
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.green)
+                        Text("Hair is normal")
+                    }
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.blue)
+                        Text("Hair is healthy")
+                    }
+                }
+                .padding()
+                .background(.white)
+                .font(.body)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                
+                TabView{
+                    ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
+                        if let uiImage = UIImage(data: photoData) {
+                            AnnotatedImageView(image: uiImage, detections: viewModel.detections[index + 1], viewModel: viewModel)
+                        }
+                    }
+                }
+                .frame(height: UIScreen.main.bounds.height * 434 / 932)
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("Macro Photo Information")
+                        
+                        Spacer()
+                        
+                        Button{
+                            isInfoSheetPresented = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
+                    
+                    Divider()
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.red)
+                        Text("1 Strand per Follicle")
+                    }
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.purple)
+                        Text("2 Strand per Follicle")
+                    }
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.blue)
+                        Text("3 Strand per Follicle")
+                    }
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.green)
+                        Text("4 Strand per Follicle")
+                    }
+                    
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.yellow)
+                        Text("5 Strand per Follicle")
+                    }
+                    
+                    Text("Average Strands per Follicle: \(viewModel.averageHairPerFollicle)")
+                        .padding(.top)
+                }
+                .padding()
+                .background(.white)
+                .font(.body)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                
+                VStack(alignment: .leading){
+                    Text("Personal Activities")
+                    
+                    Divider()
+                    
                     HStack{
                         Text(formattedDate(date, formatter: dateFormatter))
                             .font(.body)
@@ -260,23 +405,6 @@ struct WeekReportView: View {
         UIScreen.main.bounds.width * 374 / 430
     }
     
-//    private func fetchPhotos() {
-//        let fetchRequest = FetchDescriptor<TrackProgressModel>(
-//            predicate: #Predicate { $0.dateTaken == date },
-//            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
-//        )
-//        
-//        do {
-//            let models = try modelContext.fetch(fetchRequest)
-//            if let model = models.first {
-//                viewModel.photos = model.hairPicture.flatMap { $0.hairPicture }
-//                viewModel.detections = model.detections
-//            }
-//        } catch {
-//            print("Failed to fetch photos: \(error)")
-//        }
-//    }
-    
     private func formattedDate(_ date: Date, formatter: DateFormatter) -> String {
         return formatter.string(from: date)
     }
@@ -292,4 +420,5 @@ struct WeekReportView: View {
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
     }
+
 }

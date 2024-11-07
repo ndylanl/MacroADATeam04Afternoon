@@ -25,7 +25,7 @@ struct MonthCircleView: View {
             Color("SecondaryColor")
         )
         .clipShape(Circle())
-        .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 2)
+        .shadow(color: Color("PrimaryColor").opacity(0.85), radius: 8, x: 0, y: 4)
         
     }
     

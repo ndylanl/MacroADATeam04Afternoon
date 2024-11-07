@@ -18,7 +18,7 @@ struct HistoryCircleView: View {
     @State private var weeksData: [Date] = []
     
     @State private var isComparePresented: Bool = false
-    @State private var isAnimating = false // State variable for animation
+    @State private var isAnimating = false
     
     public init(modelContext: ModelContext) {
         _historyViewModel = StateObject(wrappedValue: HistoryViewModel(modelContext: modelContext))
@@ -112,8 +112,8 @@ struct HistoryCircleView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
             
-            Button {
-                print("all data")
+            NavigationLink {
+                BrowseAllDataView(modelContext: modelContext)
             } label: {
                 Text("Browse All Data")
             }

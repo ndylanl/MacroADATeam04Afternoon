@@ -18,6 +18,8 @@ struct SettingsSheetView: View {
     var body: some View {
         NavigationView {
             VStack {
+                
+                
                 Picker("Select Day", selection: $selectedDay) {
                     ForEach(1..<8) { day in
                         Text(self.dayName(for: day)).tag(day)

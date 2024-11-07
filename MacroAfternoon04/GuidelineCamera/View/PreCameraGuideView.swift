@@ -242,6 +242,8 @@ struct PreCameraGuideView: View {
                         selectedDay = currentDay
                         UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
                         
+                        addProgressNotification(selectedDay: selectedDay)
+                        
                         navigateToSecondOnBoarding = true
                         
                     } else {

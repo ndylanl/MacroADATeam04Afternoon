@@ -13,7 +13,7 @@ struct RoundedCornerComponentGrayView: View {
         RoundedRectangle(cornerRadius: 12)
             .fill(Color.white)
             .shadow(radius: 4, x: 0, y: 4)
-            .opacity(0.5)
+//            .opacity(0.8)
         
 //        LinearGradient(
 //            gradient: Gradient(colors: [Color.white, Color("SecondaryColor")]),

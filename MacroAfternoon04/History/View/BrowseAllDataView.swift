@@ -22,13 +22,23 @@ struct BrowseAllDataView: View {
             ForEach(historyViewModel.uniqueMonths, id: \.self) { month in
                 Section(header: Text(formattedDate(month, formatter: monthYearFormatter))) {
                     NavigationLink(destination: MonthReportView(date: month)) {
-                        Text("Monthly Report")
-                            .bold()
+                        VStack(alignment: .leading) {
+                            Text("Monthly Report")
+                                .bold()
+                            Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+                                .font(.caption)
+                                .foregroundStyle(Color("NeutralColor"))
+                        }
                     }
                     
                     ForEach(weeksInMonth(month), id: \.self) { weekDate in
                         NavigationLink(destination: WeekReportView(date: weekDate, viewModel: WeeklyReportViewModel(modelContext: modelContext, weekDate: weekDate))) {
-                            Text("Week \(weekOfMonth(for: weekDate)) Report")
+                            VStack(alignment: .leading) {
+                                Text("Week \(weekOfMonth(for: weekDate)) Report")
+                                Text(formattedDate(weekDate, formatter: dayMonthYearFormatter))
+                                    .font(.caption)
+                                    .foregroundStyle(Color("NeutralColor"))
+                            }
                         }
                     }
                 }
@@ -57,10 +67,22 @@ struct BrowseAllDataView: View {
         return formatter
     }
     
+    private var dayMonthYearFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter
+    }
+    
     private func weekOfMonth(for date: Date) -> Int {
         let calendar = Calendar.current
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
+    }
+    
+    private func endOfMonth(for date: Date) -> Date {
+        let calendar = Calendar.current
+        let components = DateComponents(month: 1, day: -1)
+        return calendar.date(byAdding: components, to: calendar.date(from: calendar.dateComponents([.year, .month], from: date))!)!
     }
 }
 

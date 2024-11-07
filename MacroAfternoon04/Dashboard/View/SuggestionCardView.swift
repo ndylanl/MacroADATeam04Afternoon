@@ -83,20 +83,25 @@ struct SuggestionCardView: View {
     func setSuggestions(){
         var lastMonthModels: [TrackProgressModel] = []
         
-        //CARI TAHU SAMA TIM, APA KETENTUAN ITU BULAN APA YANG BISA DITARUH DI DASHBOARD
-        let lastMonth = getMonth(from: models[models.count - 1].dateTaken)
+        var lastMonth = getMonth(from: models[models.count - 1].dateTaken)
         var allMonths: [Int] = []
         
-        //if models[models.count - 1].dateTaken.da
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: models[models.count - 1].dateTaken)
         
+        if day >= 28{
+            if weekOfMonth(for: Date()) != weekOfMonth(for: models[models.count - 1].dateTaken){
+               lastMonth -= 1
+            }
+        } else {
+            lastMonth -= 1
+        }
         
         for model in models{
             if !allMonths.contains(getMonth(from: model.dateTaken)){
                 allMonths.append(getMonth(from: model.dateTaken))
             }
-            
-            //HOW TO SET LASTMONTH AS EITHER ONE MONTH PRIOR OR WHEN ITS ALREADY THE LAST REPORT OF THE MONTH
-            
+                        
             if getMonth(from: model.dateTaken) == lastMonth{
                 lastMonthModels.append(model)
             }
@@ -115,9 +120,7 @@ struct SuggestionCardView: View {
         let consumeAvg = averagePoints(of: consumePoints)
         let exerciseAvg = averagePoints(of: exercisePoints)
         let otherAvg = averagePoints(of: otherPoints)
-        
-        print("applyAvg: \(applyAvg)")
-        
+                
         if applyAvg <= okThreshold{
             applySuggestion = false
         }

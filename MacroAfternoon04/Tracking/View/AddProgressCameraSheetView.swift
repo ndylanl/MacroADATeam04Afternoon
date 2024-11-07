@@ -27,6 +27,8 @@ struct AddProgressCameraSheetView: View {
     
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
     
+    @StateObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
+    
     var body: some View {
         NavigationView{
             VStack{

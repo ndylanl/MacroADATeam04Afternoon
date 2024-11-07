@@ -49,7 +49,7 @@ struct CameraView: View {
                         
                         CameraScalpPositionGuideView(selectedOption: $viewModel.currentScalpPosition)
                             .zIndex(2)
-                            //.offset(x: UIScreen.main.bounds.width/3.3, y: -UIScreen.main.bounds.width/3.8)
+                            .offset(x: UIScreen.main.bounds.width/3.3, y: -UIScreen.main.bounds.width/3.8)
                         
                         Image(decorative: image, scale: 1)
                             .resizable()

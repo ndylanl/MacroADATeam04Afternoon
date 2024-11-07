@@ -40,7 +40,8 @@ struct CameraScalpPositionGuideView: View {
             .resizable() // Make the image resizable
             .aspectRatio(contentMode: .fit)
             .frame(width: UIScreen.main.bounds.width/4)
-
+        Text("scalpPositions\(optionsFileDict[UserDefaults.standard.string(forKey: "ScalpAreaChosen")!]!)\(optionsDict[selectedOption]!)")
+        
     }
         
 }

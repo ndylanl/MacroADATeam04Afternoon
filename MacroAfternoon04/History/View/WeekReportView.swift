@@ -11,14 +11,16 @@ import SwiftData
 struct WeekReportView: View {
     var date: Date
     @Environment(\.modelContext) private var modelContext
-//    @State private var photos: [Data] = []
-//    @State private var detections: [[DetectedObject]] = []
+    //    @State private var photos: [Data] = []
+    //    @State private var detections: [[DetectedObject]] = []
     
     @State private var isInfoSheetPresented = false
     
     @State private var isComparePresented: Bool = false
     
     @StateObject var viewModel: WeeklyReportViewModel
+    
+    @State private var renderedImage: UIImage?
     
     let labelColors: [Int: Color] = [
         1: .red,
@@ -49,17 +51,29 @@ struct WeekReportView: View {
                 
                 TabView{
                     if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
-                        HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
-                            .clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
+                        //HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
+                        //.clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
+                        // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
+                        
+                        if let image = renderedImage {
+                            Image(uiImage: applyFisheyeEffect(to: image)!)
+                                .resizable()
+                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                        }
                     }
                 }
-                .frame(width:UIScreen.main.bounds.width * 5/6, height: UIScreen.main.bounds.height * 454 / 932)
+                .frame(height: UIScreen.main.bounds.height * 354 / 932)
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .padding(.bottom, -24)
+                .onAppear{
+                    let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+                    renderedImage = renderer.uiImage
+                }
                 
                 VStack(alignment: .leading){
                     HStack{
-                        Text("Topograpy Information")
+                        Text("Heat Map Information")
                         
                         Spacer()
                         
@@ -75,17 +89,17 @@ struct WeekReportView: View {
                     HStack{
                         Text("●")
                             .foregroundStyle(.red)
-                        Text("Hair")
-                    }
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("Hair is growing and growing")
+                        Text("Hair is unhealthy")
                     }
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
-                        Text("Hair is growing")
+                        Text("Hair is normal")
+                    }
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.blue)
+                        Text("Hair is healthy")
                     }
                 }
                 .padding()
@@ -255,23 +269,6 @@ struct WeekReportView: View {
         UIScreen.main.bounds.width * 374 / 430
     }
     
-//    private func fetchPhotos() {
-//        let fetchRequest = FetchDescriptor<TrackProgressModel>(
-//            predicate: #Predicate { $0.dateTaken == date },
-//            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
-//        )
-//        
-//        do {
-//            let models = try modelContext.fetch(fetchRequest)
-//            if let model = models.first {
-//                viewModel.photos = model.hairPicture.flatMap { $0.hairPicture }
-//                viewModel.detections = model.detections
-//            }
-//        } catch {
-//            print("Failed to fetch photos: \(error)")
-//        }
-//    }
-    
     private func formattedDate(_ date: Date, formatter: DateFormatter) -> String {
         return formatter.string(from: date)
     }
@@ -287,4 +284,5 @@ struct WeekReportView: View {
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
     }
+
 }

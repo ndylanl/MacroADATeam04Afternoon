@@ -65,7 +65,6 @@ class ReminderModel {
     @Attribute var otherPoint: Int = 100
     @Attribute var lastResetDate: Date? // Track the last reset date
 
-
     init(label: String, reminderTime: Date, repeatOption: RepeatOption, isReminderOn: Bool, reminderSound: Sound = .defaultSound, category: ReminderCategory = .other) {
         self.label = label
         self.reminderTime = reminderTime

@@ -40,10 +40,8 @@ class WeeklyReportViewModel: ObservableObject {
         
         do {
             let models = try modelContext.fetch(fetchRequest)
-            //guard weekNumber > 0 && weekNumber <= models.count else { return }
-            
-            //let model = models[weekNumber - 1]
-            var model: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [], scalpPositions: "ScalpFull")
+
+            var model: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [], scalpPositions: "ScalpFull", appointmentPoint: 100, applyPoint: 100, consumePoint: 100, exercisePoint: 100, otherPoint: 100)
             
             for i in models{
                 if i.dateTaken == weekDate {
@@ -51,42 +49,20 @@ class WeeklyReportViewModel: ObservableObject {
                 }
             }
             
-            
-            print("Model:\(model)")
+
             date = DateFormatter.localizedString(from: model.dateTaken, dateStyle: .short, timeStyle: .none)
             photos = model.hairPicture.flatMap { $0.hairPicture }
             modelScalpPositions = model.scalpPositions
-            print("Photos: \(photos.count)")
+
             detections = model.detections
-            print("Detections: \(detections.count)")
+
             print(detections)
             averageHairPerFollicle = totalAverageHair(targetObjectDetection: detections)
-            print("Average: \(averageHairPerFollicle)")
-            
-            //ProcessArray
-            
+                        
             heatMapArray = createArrayHeatMap(photos: photos, detections: detections, scalpPositions: modelScalpPositions)
-            print("heatMapArray: \(heatMapArray)")
         } catch {
             print("Failed to fetch data: \(error)")
         }
-    }
-    
-    
-    func totalHairLabels(targetObjectDetection: [DetectedObject]) -> Dictionary<Int, Int> {
-        var totalCounts: Dictionary<Int, Int> = [:]
-        
-        for object in targetObjectDetection {
-            if let label = Int(object.label) {
-                if totalCounts.keys.contains(label) {
-                    totalCounts[label]! += 1
-                } else {
-                    totalCounts[label] = 1
-                }
-            }
-        }
-        
-        return totalCounts
     }
     
     func totalAverageHair(targetObjectDetection: [[DetectedObject]]) -> Double {
@@ -100,13 +76,9 @@ class WeeklyReportViewModel: ObservableObject {
                 totalObjects += 1
             }
         }
-        print("targetObjectDetection: \(targetObjectDetection.count)")
-        print("totalObjects: \(totalObjects)")
-        print("totalLabels: \(totalLabels)")
         
         // Calculate the average, ensuring to handle division by zero
         let average = totalObjects > 0 ? Double(totalLabels) / Double(totalObjects) : 0.0
-        //print("Average: \(average)")
         return average
     }
     
@@ -157,7 +129,6 @@ class WeeklyReportViewModel: ObservableObject {
         var toAppend: [Int] = []
         
         if processCurrentScalpPositions(scalpPositions: scalpPositions).count == 6{
-            print("Scalp Positions: \(scalpPositions)")
             let stringToIntArray: [String: [Int]] = [
                 "B. Left Side": [7, 8, 13, 18, 22, 23],
                 "C. Right Side": [6, 7, 11, 16, 21, 22],
@@ -166,29 +137,21 @@ class WeeklyReportViewModel: ObservableObject {
                 "F. Back Side": [6, 7, 8, 11, 12, 13],
             ]
             toAppend = stringToIntArray[scalpPositions]!
-            print("toAppend: \(toAppend)")
-            
-            //validNumbers.append(contentsOf: toAppend)
+
             validNumbers += toAppend
             validNumbers.sort(by: <)
-            print("---------------")
-            print("VALID NUMBERS: \(validNumbers)")
-            print("---------------")
         }
         
         if !photos.isEmpty{
             var indexDetections = 1
             for i in 0...29{
-                //find where the index out of bounds is
-                //print("Current Index: \(i)")
                 
                 if validNumbers.contains(i) {
                     arrayToReturn.append(1.0)
                 } else {
                     print("----------------------")
                     print(reverseConvertNumber(i)! + 1)
-                    //print(detections[reverseConvertNumber(i)! + 1])
-                    //averageToAppend = sequentialAverageHair(targetObjectDetection: detections[reverseConvertNumber(i)! + 1])
+
                     averageToAppend = sequentialAverageHair(targetObjectDetection: detections[indexDetections])
                     indexDetections += 1
                     if averageToAppend >= 3.0 {

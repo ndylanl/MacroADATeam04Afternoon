@@ -139,6 +139,8 @@ class WeeklyReportViewModel: ObservableObject {
         
         let currentPositions = optionsDict[scalpPositions]
         
+        print("currentPositions: \(String(describing: currentPositions))")
+        
         return currentPositions!
     }
     

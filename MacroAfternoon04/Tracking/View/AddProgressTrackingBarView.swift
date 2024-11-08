@@ -13,11 +13,11 @@ struct AddProgressTrackingBarView: View {
 
     @Binding var totalPages: Int
     
-    @State var totalPagesFinal: Int = 0
+    @State var totalPagesFinal: Int = 6
     
     var body: some View {
         HStack{
-            ForEach(1..<totalPagesFinal+1, id: \.self){ i in
+            ForEach(1..<totalPagesFinal, id: \.self){ i in
                 Capsule()
                     .fill(progress > i ? Color("PrimaryColor") : Color.gray)
                     .frame(width: UIScreen.main.bounds.width / 24 , height: 10)

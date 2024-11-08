@@ -21,7 +21,7 @@ struct HairGrowthProgressCardView: View {
     @State private var isButtonEnabled: Bool = false
     @State private var daysLeft: Int = 7
     
-    @State private var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen")
+    @State var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen") ?? ""
     
     
     init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
@@ -44,7 +44,7 @@ struct HairGrowthProgressCardView: View {
                     if isButtonEnabled {
                         
                         Button {
-                            if selectedOption == nil {
+                            if selectedOption == "" {
                                 showingPreCameraGuideView = true
                             } else {
                                 showingAddProgressSheet = true
@@ -64,6 +64,7 @@ struct HairGrowthProgressCardView: View {
                     } label: {
                         LastProgressCardView()
                     }
+                    .disabled(selectedOption == "")
                     
                 }
                 .shadow(radius: 4, x: 0, y: 2)
@@ -76,6 +77,7 @@ struct HairGrowthProgressCardView: View {
         }
         .onChange(of: showingAddProgressSheet) { oldValue, newValue in
             checkButtonAvailability()
+            checkRecentAvailability()
         }
         .onChange(of: selectedDay) { oldValue, newValue in
             checkButtonAvailability()
@@ -110,6 +112,10 @@ struct HairGrowthProgressCardView: View {
                 daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 6
             }
         }
+    }
+    
+    func checkRecentAvailability() {
+        selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen") ?? ""
     }
     
     

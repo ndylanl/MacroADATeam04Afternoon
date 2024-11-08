@@ -11,7 +11,7 @@ import SwiftUI
 struct PreCameraGuideView: View {
     //@Binding var showingAddProgressSheet: Bool
     
-    @State private var selectedOption = "A. All Scalp"
+    @State var selectedOption = "A. All Scalp"
     let options = ["A. All Scalp", "B. Left Side", "C. Right Side", "D. Front Side", "E. Middle Side", "F. Back Side"]
     
     @Binding var showingAddProgressSheet: Bool
@@ -20,7 +20,7 @@ struct PreCameraGuideView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-//    @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
+    //    @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
     @Binding var isOnBoardingComplete: Bool
     
     @Binding var selectedDay: Int
@@ -183,6 +183,9 @@ struct PreCameraGuideView: View {
                         
                     }
                 }
+                .onChange(of: selectedOption) { oldValue, newValue in
+                    UserDefaults.standard.set(selectedOption, forKey: "ScalpAreaChosen")
+                }
                 .pickerStyle(DefaultPickerStyle())
                 .frame(maxWidth: frameWidth()) // Make it expand horizontally
                 .background(
@@ -243,13 +246,15 @@ struct PreCameraGuideView: View {
                 .padding(.horizontal)
                 
                 .sheet(isPresented: $showingAddProgressSheet, onDismiss: {
+                    
+                    
+                    let currentDay = Calendar.current.component(.weekday, from: Date())
+                    selectedDay = currentDay
+                    UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                    
+                    addProgressNotification(selectedDay: selectedDay)
+                    
                     if !isOnBoardingComplete {
-                        
-                        let currentDay = Calendar.current.component(.weekday, from: Date())
-                        selectedDay = currentDay
-                        UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
-                        
-                        addProgressNotification(selectedDay: selectedDay)
                         
                         navigateToSecondOnBoarding = true
                         
@@ -273,7 +278,7 @@ struct PreCameraGuideView: View {
         .background(
             LinearGradient(gradient: Gradient(colors: [.white, Color("SecondaryColor")]), startPoint: .top, endPoint: .bottom)
         )
-
+        
         .navigationBarBackButtonHidden(true) // Hides the back button
     }
     

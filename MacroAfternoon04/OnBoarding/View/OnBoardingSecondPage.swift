@@ -40,7 +40,7 @@ struct OnBoardingSecondPageView: View {
                 
                 // Request Access for Health
                 Task{
-                    healthManager.requestAuthorization()
+                    await healthManager.requestAuthorization()
 //                    if UserDefaults.standard.bool(forKey: "shouldRequestAuthorization") {
 //                        healthManager.requestAuthorization()
 //                    }

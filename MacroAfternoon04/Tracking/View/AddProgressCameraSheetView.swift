@@ -92,6 +92,9 @@ struct AddProgressCameraSheetView: View {
     }
     
     private func saveImages() {
+        
+        print("scalpAreaChosen \(UserDefaults.standard.string(forKey: "ScalpAreaChosen")!)")
+        
         let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]], scalpPositions: UserDefaults.standard.string(forKey: "ScalpAreaChosen")!, appointmentPoint: calcPoints(points:reminders.compactMap{$0.appointmentPoint}), applyPoint: calcPoints(points:reminders.compactMap{$0.applyPoint}), consumePoint: calcPoints(points:reminders.compactMap{$0.consumePoint}), exercisePoint: calcPoints(points:reminders.compactMap{$0.exercisePoint}), otherPoint: calcPoints(points:reminders.compactMap{$0.otherPoint}))
         
         detectObjectsInImage(trackProgress: trackProgressModel)

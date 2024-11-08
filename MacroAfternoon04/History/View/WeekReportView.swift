@@ -20,6 +20,8 @@ struct WeekReportView: View {
     
     @StateObject var viewModel: WeeklyReportViewModel
     
+    @EnvironmentObject var healthViewModel: HealthViewModel
+
     @State private var renderedImage: UIImage?
     
     let labelColors: [Int: Color] = [
@@ -182,7 +184,7 @@ struct WeekReportView: View {
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("42")
+                                Text(viewModel.sleepData)
                                     .font(.title)
                                 Text("hrs")
                                     .font(.body)
@@ -196,25 +198,25 @@ struct WeekReportView: View {
                                 .stroke(.black, lineWidth: 0.5)
                         )
                         
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text("100")
-                                    .font(.title)
-                                Text("pts")
-                                    .font(.body)
-                            }
-                            Text("􀙌 Stress")
-                                .font(.footnote)
-                        }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
-                        )
+//                        VStack(alignment: .leading){
+//                            HStack{
+//                                Text("100")
+//                                    .font(.title)
+//                                Text("pts")
+//                                    .font(.body)
+//                            }
+//                            Text("􀙌 Stress")
+//                                .font(.footnote)
+//                        }
+//                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 12)
+//                                .stroke(.black, lineWidth: 0.5)
+//                        )
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("371")
+                                Text(viewModel.movementData)
                                     .font(.title)
                                 Text("cal")
                                     .font(.body)
@@ -255,6 +257,8 @@ struct WeekReportView: View {
         .onAppear {
             viewModel.weekNumber = weekOfMonth(for: date)
             viewModel.fetchData(weekDate: date)
+            healthViewModel.fetchHealthData()
+            viewModel.setPersonalActivity(date: date, healthViewModel: healthViewModel)
         }
         .sheet(isPresented: $isInfoSheetPresented) {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)

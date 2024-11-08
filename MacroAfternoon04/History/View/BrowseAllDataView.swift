@@ -11,6 +11,10 @@ import SwiftData
 struct BrowseAllDataView: View {
     @Environment(\.modelContext) private var modelContext
     
+    @State  var showAlert = false
+    @State  var alertMessage: String = ""
+    @State private var navigateToMonthReport = false
+    
     @StateObject private var historyViewModel: HistoryViewModel
     
     public init(modelContext: ModelContext) {
@@ -21,16 +25,51 @@ struct BrowseAllDataView: View {
         List {
             ForEach(historyViewModel.uniqueMonths, id: \.self) { month in
                 Section(header: Text(formattedDate(month, formatter: monthYearFormatter))) {
-                    NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
-                        VStack(alignment: .leading) {
-                            Text("Monthly Report")
-                                .bold()
-                            Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
-                                .font(.caption)
-                                .foregroundStyle(Color("NeutralColor"))
+                    
+                    
+                    if MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(){
+                        Button(action: {
+                            // Set the alert message if needed
+                            alertMessage = "The Monthly Report will be available at the end of the month."
+                            showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess()
+                            
+                            if !showAlert{
+                                navigateToMonthReport = true
+                            }
+                        }) {
+                            VStack(alignment: .leading) {
+                                Text("Monthly Report")
+                                    .bold()
+                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+                                    .font(.caption)
+                                    .foregroundStyle(Color("NeutralColor"))
+                            }
+                        }
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text("Monthly Report Status"),
+                                message: Text(alertMessage),
+                                dismissButton: .default(Text("OK")) {
+                                }
+                            )
+                        }
+                        
+                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month)), isActive: $navigateToMonthReport) {
+                            EmptyView() // This is needed to create a link without visible content
+                        }
+                        .isHidden(true, remove: true)
+                    }else{
+                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
+                            VStack(alignment: .leading) {
+                                Text("Monthly Report")
+                                    .bold()
+                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+                                    .font(.caption)
+                                    .foregroundStyle(Color("NeutralColor"))
+                            }
                         }
                     }
-                    
+
                     ForEach(weeksInMonth(month), id: \.self) { weekDate in
                         NavigationLink(destination: WeekReportView(date: weekDate, viewModel: WeeklyReportViewModel(modelContext: modelContext, weekDate: weekDate))) {
                             VStack(alignment: .leading) {

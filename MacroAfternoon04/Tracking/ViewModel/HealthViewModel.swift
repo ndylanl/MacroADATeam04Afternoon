@@ -38,6 +38,7 @@ class HealthViewModel: ObservableObject {
     }
     
     func fetchHealthData() {
+        print("Fetching Health Data")
         // Fetch sleep data
         healthKitManager.fetchSleepData { data, error in
             if let data = data {
@@ -124,6 +125,7 @@ class HealthViewModel: ObservableObject {
         } else {
             averageSleep = 0 // atau nilai default lainnya jika tidak ada hari
         }
+        self.averageSleep = averageSleep
 
     }
     

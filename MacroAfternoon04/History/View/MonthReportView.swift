@@ -16,6 +16,8 @@ struct MonthReportView: View {
     
     @StateObject var viewModel: MonthlyReportViewModel
     
+    @EnvironmentObject var healthViewModel: HealthViewModel
+    
     @State private var renderedImage: UIImage?
     
     var body: some View {
@@ -129,7 +131,7 @@ struct MonthReportView: View {
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("42")
+                                Text(viewModel.sleepData)
                                     .font(.title)
                                 Text("hrs")
                                     .font(.body)
@@ -145,23 +147,7 @@ struct MonthReportView: View {
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("100")
-                                    .font(.title)
-                                Text("pts")
-                                    .font(.body)
-                            }
-                            Text("􀙌 Stress")
-                                .font(.footnote)
-                        }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
-                        )
-                        
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text("371")
+                                Text(viewModel.movementData)
                                     .font(.title)
                                 Text("cal")
                                     .font(.body)
@@ -182,6 +168,9 @@ struct MonthReportView: View {
                 .font(.body)
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                .onAppear{
+                    viewModel.setPersonalActivity(date: date, healthViewModel: healthViewModel)
+                }
                 
                 
                 Button{

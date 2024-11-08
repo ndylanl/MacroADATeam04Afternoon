@@ -25,6 +25,9 @@ class ComparisonResultViewModel: ObservableObject {
     @Published var otherSuggestion = true
     
     @Published var hairGrowthStatus: String = "getting better"
+    
+    @Published var sleepData = ""
+    @Published var movementData = ""
 
     
     private var cancellables = Set<AnyCancellable>()
@@ -33,6 +36,15 @@ class ComparisonResultViewModel: ObservableObject {
     init(modelContext: ModelContext, dateReportA: Date?, dateReportB: Date?) {
         self.modelContext = modelContext
         self.fetchData(dateReportA: dateReportA, dateReportB: dateReportB)
+    }
+    
+    @MainActor func setPersonalActivity(dateA: Date, dateB: Date,healthViewModel: HealthViewModel){
+        let calendar = Calendar.current
+        healthViewModel.calculateAverageSleep(startDate: dateA, endDate: dateB)
+        healthViewModel.calculateAverageMovement(startDate: dateA, endDate: dateB)
+        
+        sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+        movementData = String(format: "%.1f", healthViewModel.averageMovement)
     }
     
     func checkReportAccess(dateReportA: Date?, dateReportB: Date?) -> Bool{

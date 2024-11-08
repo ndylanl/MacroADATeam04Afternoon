@@ -39,9 +39,7 @@ struct ContentView: View {
                     HistoryCircleView(modelContext: modelContext)
                 }
             }
-//            .task {
-//                await healthManager.requestAuthorization()
-//            }
+            
         }
     }
 }

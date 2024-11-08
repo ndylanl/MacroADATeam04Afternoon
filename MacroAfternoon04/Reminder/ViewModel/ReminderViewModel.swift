@@ -195,9 +195,14 @@ class ReminderViewModel: ObservableObject {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: reminder.reminderTime)
         let minute = calendar.component(.minute, from: reminder.reminderTime)
-
-        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute, repeatOption: reminder.repeatOption)
+        
+        
+        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute, repeatOptions: reminder.repeatOption)
+        print("scheduling reminder for \(reminder.label) at \(hour):\(minute)")
     }
+    
+
+
 
     func updateReminder(_ reminder: ReminderModel, isOn: Bool, context: ModelContext) {
         reminder.isReminderOn = isOn

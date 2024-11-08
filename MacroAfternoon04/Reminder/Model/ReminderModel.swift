@@ -10,13 +10,13 @@ import SwiftData
 
 enum RepeatOption: String, Codable, CaseIterable {
     case never = "Never"
-    case monday = "Every Monday"
-    case tuesday = "Every Tuesday"
-    case wednesday = "Every Wednesday"
-    case thursday = "Every Thursday"
-    case friday = "Every Friday"
-    case saturday = "Every Saturday"
-    case sunday = "Every Sunday"
+    case monday = "Monday"
+    case tuesday = "Tuesday"
+    case wednesday = "Wednesday"
+    case thursday = "Thursday"
+    case friday = "Friday"
+    case saturday = "Saturday"
+    case sunday = "Sunday"
 }
 
 
@@ -51,7 +51,7 @@ class ReminderModel {
     @Attribute var id: UUID = UUID()
     @Attribute var label: String
     @Attribute var reminderTime: Date // The target time for the reminder
-    @Attribute var repeatOption: RepeatOption
+    @Attribute var repeatOption: [RepeatOption] 
     @Attribute var isReminderOn: Bool
     @Attribute var reminderSound: Sound
     @Attribute var category: ReminderCategory
@@ -65,7 +65,8 @@ class ReminderModel {
     @Attribute var otherPoint: Int = 100
     @Attribute var lastResetDate: Date? // Track the last reset date
 
-    init(label: String, reminderTime: Date, repeatOption: RepeatOption, isReminderOn: Bool, reminderSound: Sound = .defaultSound, category: ReminderCategory = .other) {
+
+    init(label: String, reminderTime: Date, repeatOption: [RepeatOption], isReminderOn: Bool, reminderSound: Sound = .defaultSound, category: ReminderCategory = .other) {
         self.label = label
         self.reminderTime = reminderTime
         self.repeatOption = repeatOption

@@ -7,20 +7,29 @@
 
 import UserNotifications
 
-func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, repeatOption: RepeatOption) {
+func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, repeatOptions: [RepeatOption]) {
     let notificationCenter = UNUserNotificationCenter.current()
-    
+    print("sapiman")
     notificationCenter.getNotificationSettings { settings in
+        print("sapiman2", settings.authorizationStatus.rawValue)
         switch settings.authorizationStatus {
         case .authorized:
             // Directly call the function since there's no self
-            dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+            print("sapiman3", repeatOptions)
+            for repeatOption in repeatOptions {
+                dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+                print("dispatching notification ")
+            }
+//            dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
         case .denied:
              break
         case .notDetermined:
             notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { didAllow, error in
                 if didAllow {
-                    dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+                    for repeatOption in repeatOptions {
+                        dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+                    }
+//                    dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
                 }
             }
         case .provisional:
@@ -51,7 +60,7 @@ func setupNotificationActions() {
 }
 
 func dispatchNotification(label: String, id: UUID, at hour: Int, minute: Int, repeatOption: RepeatOption) {
-    let identifier = id.uuidString
+    let identifier = UUID().uuidString
     let title = "Serene"
     let body = "Reminder: \(label)!"
     let notificationCenter = UNUserNotificationCenter.current()
@@ -112,9 +121,8 @@ func dispatchNotification(label: String, id: UUID, at hour: Int, minute: Int, re
             print("Repeating notification scheduled successfully!")
         }
     }
-    
-    
 }
+
 
 
 

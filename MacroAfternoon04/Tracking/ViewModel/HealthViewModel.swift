@@ -25,13 +25,13 @@ class HealthViewModel: ObservableObject {
     @Published var averageHeartRate: Double = 0.0
     
     
-    init() {
-        self.healthRequest()
-    }
+//    init() {
+//        self.healthRequest()
+//    }
     
     func healthRequest() {
         Task {
-            await healthKitManager.requestAuthorization()  // Use async/await for authorization
+            healthKitManager.requestAuthorization() 
             self.changeAuthorizationStatus()
             self.fetchHealthData()
         }
@@ -70,7 +70,7 @@ class HealthViewModel: ObservableObject {
     
     func changeAuthorizationStatus() {
         guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else { return }
-        let status = healthKitManager.healthStore?.authorizationStatus(for: heartRateType)
+        let status = healthKitManager.healthStore.authorizationStatus(for: heartRateType)
 
         DispatchQueue.main.async {
             switch status {
@@ -80,8 +80,8 @@ class HealthViewModel: ObservableObject {
                 self.isAuthorized = false
             case .sharingAuthorized:
                 self.isAuthorized = true
-            case .none:
-                break
+//            case .none:
+//                break
             @unknown default:
                 self.isAuthorized = false
             }

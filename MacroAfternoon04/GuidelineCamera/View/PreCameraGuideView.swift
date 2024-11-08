@@ -262,14 +262,18 @@ struct PreCameraGuideView: View {
                 
                 
             }
-            //        .frame(height: frameHeight())
             .ignoresSafeArea(.all)
             .padding(.horizontal, 20)
             .background(
                 LinearGradient(gradient: Gradient(colors: [.white, Color("SecondaryColor")]), startPoint: .top, endPoint: .bottom)
             )
+            //        .frame(height: frameHeight())
         }
-        
+        //.ignoresSafeArea()
+        .background(
+            LinearGradient(gradient: Gradient(colors: [.white, Color("SecondaryColor")]), startPoint: .top, endPoint: .bottom)
+        )
+
         .navigationBarBackButtonHidden(true) // Hides the back button
     }
     

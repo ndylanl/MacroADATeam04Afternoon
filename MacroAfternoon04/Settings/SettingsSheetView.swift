@@ -274,8 +274,13 @@ struct SettingsSheetView: View {
                         }
                     }
                 }
+                .ignoresSafeArea(.all)
                 .background(Color(.systemGray6))
             }
+            .background(
+                LinearGradient(gradient: Gradient(colors: [.white, Color(.systemGray6), Color(.systemGray6)]), startPoint: .top, endPoint: .bottom)
+            )
+
         }
     }
     

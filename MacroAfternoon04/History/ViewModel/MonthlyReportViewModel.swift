@@ -16,11 +16,11 @@ class MonthlyReportViewModel: ObservableObject {
     @Published var selectedMonthYear: Date
     @Published var detectionsA: [[DetectedObject]] = []
     @Published var detectionsB: [[DetectedObject]] = []
-
+    
     @Published var weekNumber: Int = 0
     @Published var weekDate: Date = Date()
     @Published var heatMapArray: [Float] = [0,0,0,0,0,0,0,0,0,0,0,0]
-
+    
     @Published var modelScalpPositions: String = ""
     @Published var model: TrackProgressModel?
     
@@ -36,7 +36,11 @@ class MonthlyReportViewModel: ObservableObject {
     //@Published var showAlert = false
     @Published var alertStatus: String = "It isn't the time to check this month's report yet."
     
-
+    @Published var sleepData = ""
+    @Published var movementData = ""
+    
+//    @StateObject var healthViewModel = HealthViewModel()
+    
     
     private var cancellables = Set<AnyCancellable>()
     private var modelContext: ModelContext
@@ -48,10 +52,6 @@ class MonthlyReportViewModel: ObservableObject {
     }
     
     func checkMonthlyReportAccess() -> Bool{
-        
-        
-        
-        
         //return false
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
@@ -67,7 +67,7 @@ class MonthlyReportViewModel: ObservableObject {
             if month != calendar.component(.month, from: models.last!.dateTaken){
                 return false
             }
-
+            
             if day >= 28{
                 if weekOfMonth(for: Date()) == weekOfMonth(for: models[models.count - 1].dateTaken){
                     return false
@@ -183,12 +183,22 @@ class MonthlyReportViewModel: ObservableObject {
             } else {
                 hairGrowthStatus = "can be better"
             }
-
+            
             setSuggestions(models: models)
             
         } catch {
             print("Failed to fetch data: \(error)")
         }
+    }
+    
+    @MainActor func setPersonalActivity(date: Date, healthViewModel: HealthViewModel){
+        let calendar = Calendar.current
+        let startDate = calendar.date(byAdding: .day, value: -30, to: date)
+        healthViewModel.calculateAverageSleep(startDate: startDate!, endDate: date)
+        healthViewModel.calculateAverageMovement(startDate: startDate!, endDate: date)
+        
+        sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+        movementData = String(format: "%.1f", healthViewModel.averageMovement)
     }
     
     func findModelsWithMajorityScalpPosition(models: [TrackProgressModel]) -> [TrackProgressModel] {
@@ -272,7 +282,7 @@ class MonthlyReportViewModel: ObservableObject {
         let consumeAvg = averagePoints(of: consumePoints)
         let exerciseAvg = averagePoints(of: exercisePoints)
         let otherAvg = averagePoints(of: otherPoints)
-                
+        
         if applyAvg <= okThreshold{
             applySuggestion = false
         }
@@ -353,12 +363,12 @@ class MonthlyReportViewModel: ObservableObject {
             "E. Middle Side": [3, 4, 5, 6, 7, 8],
             "F. Back Side": [7, 8, 9, 10, 11, 12],
         ]
-//        print("scalpPositions: \(scalpPositions)")
+        //        print("scalpPositions: \(scalpPositions)")
         
         let currentPositions = optionsDict[scalpPositions]
         
-//        print("currentPositions: \(currentPositions)")
-
+        //        print("currentPositions: \(currentPositions)")
+        
         
         return currentPositions!
     }
@@ -383,7 +393,7 @@ class MonthlyReportViewModel: ObservableObject {
             //validNumbers.append(contentsOf: toAppend)
             validNumbers += toAppend
             validNumbers.sort(by: <)
-
+            
         }
         
         var indexDetections = 1

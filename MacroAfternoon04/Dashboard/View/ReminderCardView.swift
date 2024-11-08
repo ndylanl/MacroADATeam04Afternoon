@@ -17,11 +17,7 @@ struct ReminderCardView: View {
             RoundedCornerComponentBlueView()
             
             VStack(alignment: .leading) {
-//                Text("Reminder")
-//                    .font(.footnote)
-//                    .foregroundStyle(.black)
-//
-//                Divider()
+
                 
                 if reminders.isEmpty {
                     // Tampilan ketika tidak ada reminder

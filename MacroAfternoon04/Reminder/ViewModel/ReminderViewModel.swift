@@ -14,92 +14,6 @@ class ReminderViewModel: ObservableObject {
     @Published var publishedRemindersCount = 0
     private var weeklyResetTimer: Timer?
     
-//    init() {
-//        setupWeeklyReset()
-//    }
-//    
-//    func checkReminderStatus(for reminder: ReminderModel) {
-//        let now = Date()
-////        var components = DateComponents()
-////        components.year = 2024
-////        components.month = 11
-////        components.day = 4
-////        components.hour = 20
-////        components.minute = 01
-////        let now = Calendar.current.date(from: components)!
-//
-//        print("Checking reminder: \(reminder.label) at \(now)")
-//        print("Reminder time: \(reminder.reminderTime), isActive: \(reminder.isActive)")
-//
-//        if reminder.reminderTime < now && reminder.isActive {
-//            publishedRemindersCount += 1
-//            print("Missed reminders count: \(publishedRemindersCount)")
-//        } else {
-//            print("Condition not met: \(reminder.reminderTime < now), \(reminder.isActive)")
-//        }
-//    }
-//
-//
-//    private func setupWeeklyReset() {
-//        // Set the timer to reset the counter every week
-//        weeklyResetTimer = Timer.scheduledTimer(withTimeInterval: 604800, repeats: true) { _ in
-//            self.resetMissedRemindersCount()
-//        }
-//    }
-//    
-//    private func resetMissedRemindersCount() {
-//        publishedRemindersCount = 0
-//    }
-//    
-//    deinit {
-//        weeklyResetTimer?.invalidate()
-//    }
-    
-//    func incrementPassedRemindersCount() {
-//        let now = Date()
-//        
-//        // Get all active reminders (assuming you already have a function to fetch these)
-//        let activeReminders = ReminderService.shared.getAllActiveReminders()
-//        
-//        for reminder in activeReminders {
-//            // Check if the reminder time has passed and it’s still active
-//            if reminder.reminderTime < now && reminder.isReminderOn && reminder.isActive {
-//                reminder.missedCount += 1
-//                print("Incremented missed count for \(reminder.label) to \(reminder.missedCount)")
-//            }
-//            
-//        }
-//    }
-    
-//    func incrementPassedRemindersCount() {
-//        print("Checking reminders for missed alarms...")
-//
-//        // Fetch all active reminders
-//        let activeReminders = ReminderService.shared.getAllActiveReminders()
-//        
-//        activeReminders.forEach { reminder in
-//            if reminder.reminderTime < Date() {
-//                print("Reminder \(reminder.label) has passed. Current missed count: \(reminder.missedCount)")
-//                
-//                // Increment the count
-//                reminder.missedCount += 1
-//                
-//                // Save the updated count (assuming you have a save method)
-//                save(reminder)
-//                
-//                print("Updated missed count for \(reminder.label) to \(reminder.missedCount)")
-//            } else {
-//                print("Reminder \(reminder.label) is still active and not missed.")
-//            }
-//        }
-//    }
-    
-//    private func save(_ reminder: ReminderModel) {
-//        // Assuming there's a save method to persist the reminder changes
-//        // Add a print statement here as well to confirm the save action
-//        print("Saving reminder \(reminder.label) with missed count \(reminder.missedCount)")
-//        // Actual save logic here
-//    }
     
     func deductPoints(for reminder: ReminderModel) {
         // Deduct 1 point from the corresponding category if the points are greater than 0
@@ -195,9 +109,14 @@ class ReminderViewModel: ObservableObject {
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: reminder.reminderTime)
         let minute = calendar.component(.minute, from: reminder.reminderTime)
-
-        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute, repeatOption: reminder.repeatOption)
+        
+        
+        checkForPermissions(label: reminder.label, id: reminder.id, at: hour, minute: minute, repeatOptions: reminder.repeatOption)
+        print("scheduling reminder for \(reminder.label) at \(hour):\(minute)")
     }
+    
+
+
 
     func updateReminder(_ reminder: ReminderModel, isOn: Bool, context: ModelContext) {
         reminder.isReminderOn = isOn

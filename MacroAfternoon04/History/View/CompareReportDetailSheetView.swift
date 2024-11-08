@@ -12,6 +12,7 @@ struct CompareReportDetailSheetView: View {
     var selectedReportA: Date?
     var selectedReportB: Date?
     @StateObject var viewModel: ComparisonResultViewModel
+    @EnvironmentObject var healthViewModel: HealthViewModel
     
     @State private var isInfoSheetPresented = false
     
@@ -132,29 +133,16 @@ struct CompareReportDetailSheetView: View {
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("42")
+                                Text(viewModel.sleepData)
                                     .font(.title)
                                 Text("hrs")
                                     .font(.body)
                             }
-                            Text("􀇁 Sleep")
-                                .font(.footnote)
-                        }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
-                        )
-                        
-                        VStack(alignment: .leading){
                             HStack{
-                                Text("100")
-                                    .font(.title)
-                                Text("pts")
-                                    .font(.body)
+                                Image(systemName: "moon.stars.fill")
+                                Text("Sleep")
                             }
-                            Text("􀙌 Stress")
-                                .font(.footnote)
+                            .font(.footnote)
                         }
                         .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
@@ -164,13 +152,16 @@ struct CompareReportDetailSheetView: View {
                         
                         VStack(alignment: .leading){
                             HStack{
-                                Text("371")
+                                Text(viewModel.movementData)
                                     .font(.title)
                                 Text("cal")
                                     .font(.body)
                             }
-                            Text("􀜟 Movement")
-                                .font(.footnote)
+                            HStack{
+                                Image(systemName: "waveform.path.ecg")
+                                Text("Movement")
+                            }
+                            .font(.footnote)
                         }
                         .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
@@ -198,6 +189,8 @@ struct CompareReportDetailSheetView: View {
         .onAppear{
             let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
             renderedImage = renderer.uiImage
+            viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)
+
         }
     }
     

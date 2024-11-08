@@ -23,6 +23,8 @@ class WeeklyReportViewModel: ObservableObject {
     
     @Published var lastDate: Date = Date()
     
+    @Published var sleepData = ""
+    @Published var movementData = ""
     
     private var cancellables = Set<AnyCancellable>()
     private var modelContext: ModelContext
@@ -32,6 +34,19 @@ class WeeklyReportViewModel: ObservableObject {
         self.modelContext = modelContext
         fetchData(weekDate: weekDate)
         fetchLastData()
+    }
+    
+    @MainActor func setPersonalActivity(date: Date, healthViewModel: HealthViewModel){
+        let calendar = Calendar.current
+        let startDate = calendar.date(byAdding: .day, value: -7, to: date)
+        healthViewModel.calculateAverageSleep(startDate: startDate!, endDate: date)
+        healthViewModel.calculateAverageMovement(startDate: startDate!, endDate: date)
+        
+        sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+        movementData = String(format: "%.1f", healthViewModel.averageMovement)
+
+        print("Sleep Data: \(sleepData)")
+        print("Movement Data: \(movementData)")
     }
     
     func fetchData(weekDate: Date) {
@@ -63,6 +78,8 @@ class WeeklyReportViewModel: ObservableObject {
             averageHairPerFollicle = totalAverageHair(targetObjectDetection: detections)
                         
             heatMapArray = createArrayHeatMap(photos: photos, detections: detections, scalpPositions: modelScalpPositions)
+            
+            //setPersonalActivity(date: model.dateTaken)
         } catch {
             print("Failed to fetch data: \(error)")
         }

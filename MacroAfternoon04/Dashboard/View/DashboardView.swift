@@ -26,11 +26,11 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack{
-            //            ScrollView{
+
             ZStack{
                 LinearGradient(
                     gradient: Gradient(colors: [Color("DashboardGray"), Color("SecondaryColor")]),
-                    startPoint: UnitPoint(x: 0.5, y: 0.25),  // Near top-center
+                    startPoint: UnitPoint(x: 0.5, y: 0.25),  
                     endPoint: UnitPoint(x: 0.5, y: 0.75)
                 ).ignoresSafeArea()
                 

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct YourActivityCardView: View {
-    @StateObject var healthViewModel = HealthViewModel() // Integrasi HealthViewModel
+    @EnvironmentObject var healthViewModel: HealthViewModel // Integrasi HealthViewModel
     
     var body: some View {
         ZStack(){
@@ -35,9 +35,7 @@ struct YourActivityCardView: View {
                         
                         if !healthViewModel.sleepData.isEmpty {
                             // Ambil semua sleepSample yang endDate-nya pada hari ini
-                            //                            let sleepTime = healthViewModel.sleepData
-                            //                                .filter {
-                            //                                    Calendar.current.isDate($0.endDate, inSameDayAs: Date())}
+
                             let totalSleepDuration = healthViewModel.sleepData
                                 .filter {
                                     Calendar.current.isDate($0.endDate, inSameDayAs: Date()) // Ambil data yang end date-nya hari ini
@@ -60,11 +58,7 @@ struct YourActivityCardView: View {
                                 Text("Sleep")
                             }
                             .font(.footnote)
-                            //                                .onAppear {
-                            //                                    print("Total Sleep Duration: \(totalSleepDuration) seconds")
-                            //                                    print("==sleep time==")
-                            //                                    print(sleepTime)
-                            //                                    print("==sleep time==")
+     
                             
                         } else {
                             // Placeholder jika tidak ada data tidur untuk hari ini
@@ -163,6 +157,9 @@ struct YourActivityCardView: View {
                             .stroke(.black, lineWidth: 0.5))
                 }
                 
+            }
+            .onAppear {
+                healthViewModel.fetchHealthData()
             }
             
             .frame(width: cardWidthSize()-32, alignment: .center)

@@ -133,7 +133,7 @@ class WeeklyReportViewModel: ObservableObject {
                 "B. Left Side": [7, 8, 13, 18, 22, 23],
                 "C. Right Side": [6, 7, 11, 16, 21, 22],
                 "D. Front Side": [16, 17, 18, 21, 22, 23],
-                "E. Middle Side": [11, 12, 13, 21, 22, 23],
+                "E. Middle Side": [6, 7, 8, 21, 22, 23],
                 "F. Back Side": [6, 7, 8, 11, 12, 13],
             ]
             toAppend = stringToIntArray[scalpPositions]!

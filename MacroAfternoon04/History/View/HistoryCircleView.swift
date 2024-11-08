@@ -20,6 +20,11 @@ struct HistoryCircleView: View {
     @State private var isComparePresented: Bool = false
     @State private var isAnimating = false // State variable for animation
     
+    @State  var showAlert = false
+    @State  var alertMessage: String = ""
+    @State private var navigateToMonthReport = false
+
+    
     public init(modelContext: ModelContext) {
         _historyViewModel = StateObject(wrappedValue: HistoryViewModel(modelContext: modelContext))
     }
@@ -74,14 +79,34 @@ struct HistoryCircleView: View {
     }
     
     private var monthYearCircleView: some View {
+        
+        
         VStack {
             if let selectedMonthYear = selectedMonthYear {
                 ZStack {
-                    NavigationLink {
-                        MonthReportView(date: selectedMonthYear, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear))
-                    } label: {
+                    Button(action: {
+                        // Set the alert message if needed
+                        alertMessage = "The Monthly Report will be available at the end of the month."
+                        showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear).checkMonthlyReportAccess()
+                        
+                        if !showAlert{
+                            navigateToMonthReport = true
+                        }
+                    }) {
                         MonthCircleView(nameOfTheMonth: formattedDate(selectedMonthYear, formatter: monthFormatter))
                             .padding()
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Monthly Report Status"),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK")) {
+                            }
+                        )
+                    }
+                    
+                    NavigationLink(destination: MonthReportView(date: selectedMonthYear, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear)), isActive: $navigateToMonthReport) {
+                        EmptyView() // This is needed to create a link without visible content
                     }
                     
                     ForEach(weeksData, id: \.self) { weekDate in

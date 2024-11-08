@@ -17,7 +17,6 @@ struct MonthReportView: View {
     @StateObject var viewModel: MonthlyReportViewModel
     
     @State private var renderedImage: UIImage?
-
     
     var body: some View {
         ScrollView{

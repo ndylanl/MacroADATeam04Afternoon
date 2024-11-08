@@ -73,7 +73,7 @@ struct AddProgressCameraSheetView: View {
     }
     
     private func calcPoints(points: [Int]) -> Int{
-        var intToReturn = 100
+        let intToReturn = 100
         
         var sum = 0 // Initialize sum to zero
         

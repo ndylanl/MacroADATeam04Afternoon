@@ -31,6 +31,11 @@ class MonthlyReportViewModel: ObservableObject {
     @Published var otherSuggestion = true
     
     @Published var hairGrowthStatus: String = "getting better"
+    
+    @Published var mismatchScalpPositions = false
+    //@Published var showAlert = false
+    @Published var alertStatus: String = "It isn't the time to check this month's report yet."
+    
 
     
     private var cancellables = Set<AnyCancellable>()
@@ -42,8 +47,40 @@ class MonthlyReportViewModel: ObservableObject {
         fetchData(weekDate: selectedMonthYear)
     }
     
-    func fetchData(weekDate: Date) {
-        print("week\(weekNumber)")
+    func checkMonthlyReportAccess() -> Bool{
+        
+        
+        
+        
+        //return false
+        let fetchRequest = FetchDescriptor<TrackProgressModel>(
+            predicate: nil,
+            sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
+        )
+        
+        do {
+            let models = try modelContext.fetch(fetchRequest)
+            let calendar = Calendar.current
+            let day = calendar.component(.day, from: Date())
+            let month = calendar.component(.month, from: Date())
+            
+            if month != calendar.component(.month, from: models.last!.dateTaken){
+                return false
+            }
+
+            if day >= 28{
+                if weekOfMonth(for: Date()) == weekOfMonth(for: models[models.count - 1].dateTaken){
+                    return false
+                }
+            }
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+        
+        return true
+    }
+    
+    func checkMismatch() -> Bool{
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
             sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
@@ -62,7 +99,43 @@ class MonthlyReportViewModel: ObservableObject {
                     comparisonModels.append(i)
                 }
             }
-            print("JUMLAH MODELS: \(comparisonModels.count)")
+            
+            modelA = comparisonModels[0]
+            
+            modelB = comparisonModels[comparisonModels.count - 1]
+            
+            
+            if modelA.scalpPositions != modelB.scalpPositions {
+                return true
+            } else {
+                return false
+            }
+        } catch {
+            print("Failed to fetch data: \(error)")
+        }
+        
+        return true
+    }
+    
+    func fetchData(weekDate: Date) {
+        let fetchRequest = FetchDescriptor<TrackProgressModel>(
+            predicate: nil,
+            sortBy: [SortDescriptor(\.dateTaken, order: .forward)]
+        )
+        
+        do {
+            let models = try modelContext.fetch(fetchRequest)
+            
+            var modelA: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [], scalpPositions: "ScalpFull", appointmentPoint: 100, applyPoint: 100, consumePoint: 100, exercisePoint: 100, otherPoint: 100)
+            var modelB: TrackProgressModel = TrackProgressModel(hairPicture: [], detections: [], scalpPositions: "ScalpFull", appointmentPoint: 100, applyPoint: 100, consumePoint: 100, exercisePoint: 100, otherPoint: 100)
+            
+            var comparisonModels: [TrackProgressModel] = []
+            
+            for i in models{
+                if getMonth(from: i.dateTaken) == getMonth(from: weekDate) {
+                    comparisonModels.append(i)
+                }
+            }
             
             modelA = comparisonModels[0]
             
@@ -74,10 +147,29 @@ class MonthlyReportViewModel: ObservableObject {
             detectionsB = modelB.detections
             
             if modelA.scalpPositions == modelB.scalpPositions{
+                mismatchScalpPositions = false
                 let heatMapArrayA = createArrayHeatMap(detections: detectionsA, scalpPositions: modelScalpPositions)
                 let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: modelScalpPositions)
                 
                 heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
+            } else {
+                //NYARI MAJORITAS SET TO MAJORITAS
+                //NYARI SEMUA YANG MEMILIKI POSITIONS MAJORITAS
+                let majorityModels = findModelsWithMajorityScalpPosition(models: comparisonModels)
+                //BANDING YANG TERKINI DAN PALING LAMA DRI POSITIONS MAJORITAS
+                
+                modelA = majorityModels[0]
+                modelB = majorityModels[majorityModels.count - 1]
+                
+                detectionsA = modelA.detections
+                detectionsB = modelB.detections
+                
+                let heatMapArrayA = createArrayHeatMap(detections: detectionsA, scalpPositions: findMajorityScalpPosition(models: models)!)
+                let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: findMajorityScalpPosition(models: models)!)
+                
+                heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
+                
+                mismatchScalpPositions = true
             }
             
             let totalAverageHairA = totalAverageHair(targetObjectDetection: detectionsA)
@@ -92,12 +184,34 @@ class MonthlyReportViewModel: ObservableObject {
                 hairGrowthStatus = "can be better"
             }
 
-            
             setSuggestions(models: models)
             
         } catch {
             print("Failed to fetch data: \(error)")
         }
+    }
+    
+    func findModelsWithMajorityScalpPosition(models: [TrackProgressModel]) -> [TrackProgressModel] {
+        guard let majorityPosition = findMajorityScalpPosition(models: models) else {
+            return [] // Return an empty array if no majority position is found
+        }
+        
+        // Filter models that match the majority scalpPosition
+        return models.filter { $0.scalpPositions == majorityPosition }
+    }
+    
+    func findMajorityScalpPosition(models: [TrackProgressModel]) -> String? {
+        var positionCount: [String: Int] = [:]
+        
+        // Count occurrences of each scalpPosition
+        for model in models {
+            positionCount[model.scalpPositions, default: 0] += 1
+        }
+        
+        // Find the scalpPosition with the maximum count
+        let majorityPosition = positionCount.max { a, b in a.value < b.value }
+        
+        return majorityPosition?.key // Return the majority scalpPosition or nil if none exist
     }
     
     func totalAverageHair(targetObjectDetection: [[DetectedObject]]) -> Double {
@@ -111,9 +225,6 @@ class MonthlyReportViewModel: ObservableObject {
                 totalObjects += 1
             }
         }
-        print("targetObjectDetection: \(targetObjectDetection.count)")
-        print("totalObjects: \(totalObjects)")
-        print("totalLabels: \(totalLabels)")
         
         // Calculate the average, ensuring to handle division by zero
         let average = totalObjects > 0 ? Double(totalLabels) / Double(totalObjects) : 0.0
@@ -161,9 +272,7 @@ class MonthlyReportViewModel: ObservableObject {
         let consumeAvg = averagePoints(of: consumePoints)
         let exerciseAvg = averagePoints(of: exercisePoints)
         let otherAvg = averagePoints(of: otherPoints)
-        
-        print("applyAvg: \(applyAvg)")
-        
+                
         if applyAvg <= okThreshold{
             applySuggestion = false
         }
@@ -244,11 +353,11 @@ class MonthlyReportViewModel: ObservableObject {
             "E. Middle Side": [3, 4, 5, 6, 7, 8],
             "F. Back Side": [7, 8, 9, 10, 11, 12],
         ]
-        print("scalpPositions: \(scalpPositions)")
+//        print("scalpPositions: \(scalpPositions)")
         
         let currentPositions = optionsDict[scalpPositions]
         
-        print("currentPositions: \(currentPositions)")
+//        print("currentPositions: \(currentPositions)")
 
         
         return currentPositions!
@@ -261,7 +370,7 @@ class MonthlyReportViewModel: ObservableObject {
         var toAppend: [Int] = []
         
         if processCurrentScalpPositions(scalpPositions: scalpPositions).count == 6{
-            print("Scalp Positions: \(scalpPositions)")
+            //print("Scalp Positions: \(scalpPositions)")
             let stringToIntArray: [String: [Int]] = [
                 "B. Left Side": [7, 8, 13, 18, 22, 23],
                 "C. Right Side": [6, 7, 11, 16, 21, 22],
@@ -270,14 +379,11 @@ class MonthlyReportViewModel: ObservableObject {
                 "F. Back Side": [6, 7, 8, 11, 12, 13],
             ]
             toAppend = stringToIntArray[scalpPositions]!
-            print("toAppend: \(toAppend)")
             
             //validNumbers.append(contentsOf: toAppend)
             validNumbers += toAppend
             validNumbers.sort(by: <)
-            print("---------------")
-            print("VALID NUMBERS: \(validNumbers)")
-            print("---------------")
+
         }
         
         var indexDetections = 1
@@ -288,8 +394,6 @@ class MonthlyReportViewModel: ObservableObject {
             if validNumbers.contains(i) {
                 arrayToReturn.append(1.0)
             } else {
-                print("----------------------")
-                print(reverseConvertNumber(i)! + 1)
                 //print(detections[reverseConvertNumber(i)! + 1])
                 //averageToAppend = sequentialAverageHair(targetObjectDetection: detections[reverseConvertNumber(i)! + 1])
                 averageToAppend = sequentialAverageHair(targetObjectDetection: detections[indexDetections])

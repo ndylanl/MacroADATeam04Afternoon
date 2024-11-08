@@ -11,8 +11,11 @@ struct CompareReportDetailSheetView: View {
     
     var selectedReportA: Date?
     var selectedReportB: Date?
+    @StateObject var viewModel: ComparisonResultViewModel
     
     @State private var isInfoSheetPresented = false
+    
+    @State private var renderedImage: UIImage?
     
     var body: some View {
         ScrollView{
@@ -30,45 +33,38 @@ struct CompareReportDetailSheetView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 TabView{
-                    ForEach(1..<4){ index in
+                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
                         
-                        Rectangle()
-                            .frame(width: photoSize(), height: photoSize())
-                        
+                        if let image = renderedImage {
+                            Image(uiImage: applyFisheyeEffect(to: image)!)
+                                .resizable()
+                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                        }
                     }
                 }
                 .frame(height: UIScreen.main.bounds.height * 434 / 932)
                 .tabViewStyle(.page)
+                .padding(.bottom, -24)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 
                 VStack(alignment: .leading){
-                    HStack{
-                        Text("Topograpy Information")
-                        
-                        Spacer()
-                        
-                        Button{
-                            isInfoSheetPresented = true
-                        } label: {
-                            Image(systemName: "info.circle")
-                        }
-                    }
+                    Text("Heat Map Information")
                     
                     Divider()
                     
                     HStack{
                         Text("●")
                             .foregroundStyle(.red)
-                        Text("Hair")
-                    }
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("Hair is growing and growing")
+                        Text("Hair growth can be better")
                     }
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
+                        Text("Hair is stable")
+                    }
+                    HStack{
+                        Text("●")
+                            .foregroundStyle(.blue)
                         Text("Hair is growing")
                     }
                     
@@ -79,71 +75,116 @@ struct CompareReportDetailSheetView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
-                TabView{
-                    ForEach(1..<4){ index in
-                        
-                        Rectangle()
-                            .frame(width: photoSize(), height: photoSize())
-                        
-                    }
-                }
-                .frame(height: UIScreen.main.bounds.height * 434 / 932)
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-                
                 VStack(alignment: .leading){
-                    HStack{
-                        Text("Macro Photo Information")
-                        
-                        Spacer()
-                        
-                        Button{
-                            isInfoSheetPresented = true
-                        } label: {
-                            Image(systemName: "info.circle")
-                        }
-                    }
+                    Text("Last Result & Personal Activities")
                     
                     Divider()
                     
+                    VStack(alignment: .center){
+                        Text("Your hair growth is")
+                            .font(.title2)
+                        Text(viewModel.hairGrowthStatus)
+                            .font(.largeTitle)
+                    }
+                    .frame(width: UIScreen.main.bounds.width * 340 / 430)
+                    .padding(.vertical)
+                    
                     HStack{
-                        Text("●")
-                            .foregroundStyle(.red)
-                        Text("1 Strand per Follicle")
+                        Text("·")
+                        Text("Have more sleep time")
                     }
                     
                     HStack{
-                        Text("●")
-                            .foregroundStyle(.purple)
-                        Text("2 Strand per Follicle")
+                        Text("·")
+                        Text("Reduce your stress")
                     }
                     
                     HStack{
-                        Text("●")
-                            .foregroundStyle(.blue)
-                        Text("3 Strand per Follicle")
+                        Text("·")
+                        Text("Start more workouts")
                     }
                     
                     HStack{
-                        Text("●")
-                            .foregroundStyle(.green)
-                        Text("4 Strand per Follicle")
+                        Text("·")
+                        Text("Be more consistent with applying serum")
                     }
+                    .isHidden(viewModel.applySuggestion, remove: viewModel.applySuggestion)
                     
                     HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("5 Strand per Follicle")
+                        Text("·")
+                        Text("Be more consistent with your appointments")
+                    }
+                    .isHidden(viewModel.appointmentSuggestion, remove: viewModel.appointmentSuggestion)
+
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with consuming medication")
+                    }
+                    .isHidden(viewModel.consumeSuggestion, remove: viewModel.consumeSuggestion)
+                    
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with your exercises")
+                    }
+                    .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
+
+                    HStack{
+                        
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("42")
+                                    .font(.title)
+                                Text("hrs")
+                                    .font(.body)
+                            }
+                            Text("􀇁 Sleep")
+                                .font(.footnote)
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
+                        
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("100")
+                                    .font(.title)
+                                Text("pts")
+                                    .font(.body)
+                            }
+                            Text("􀙌 Stress")
+                                .font(.footnote)
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
+                        
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("371")
+                                    .font(.title)
+                                Text("cal")
+                                    .font(.body)
+                            }
+                            Text("􀜟 Movement")
+                                .font(.footnote)
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
                     }
                     
-                    Text("Average Strands per Follicle: 1,8")
-                        .padding(.top)
                 }
                 .padding()
                 .background(.white)
                 .font(.body)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             
             .navigationTitle("Compare Reports")
@@ -153,6 +194,10 @@ struct CompareReportDetailSheetView: View {
         .sheet(isPresented: $isInfoSheetPresented) {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
                 .background(Color(.systemGray6).ignoresSafeArea(.all))
+        }
+        .onAppear{
+            let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+            renderedImage = renderer.uiImage
         }
     }
     

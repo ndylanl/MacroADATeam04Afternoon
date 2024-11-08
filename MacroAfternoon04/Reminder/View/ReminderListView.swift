@@ -14,18 +14,28 @@ struct ReminderListView: View {
     @Environment(\.modelContext) private var modelContext // Fetch from SwiftData
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
     @ObservedObject var reminderViewModel = ReminderViewModel()
-    
+    @State var isSelected: Bool = false
     var body: some View {
-            
-            VStack {
+        
+        VStack(alignment: .center) {
+            if reminders.isEmpty {
+                // Display the empty state when there are no reminders
+                VStack {
+                    Spacer()
+                    Image("reminder")
+                    Text("You have no reminders yet")
+                        .foregroundColor(.gray)
+                        .font(.body)
+                        .padding()
+                    Spacer()
+                }
+            } else {
                 List {
-                    if reminders.isEmpty {
-                        Text("No reminders yet")
-                            .foregroundColor(.gray)
-                            .font(.headline)
-                            .padding()
-                    } else {
-                        ForEach(reminders) { reminder in
+                    ForEach(reminders) { reminder in
+                        Button {
+                                selectedReminder = reminder
+                                isPresented = true
+                        } label: {
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text(reminder.reminderTime, style: .time) // Fetch reminderTime from ReminderModel
@@ -41,37 +51,44 @@ struct ReminderListView: View {
                                             reminderViewModel.updateReminder(reminder, isOn: newValue, context: modelContext)
                                         }
                                     ))
-                                    .tint(Color.blue) // Set the color of the toggle
+                                    .tint(Color("PrimaryColor")) // Set the color of the toggle
+                                }
+                                HStack {
+                                    Text("\(reminder.label)\( !reminder.label.isEmpty && !reminder.repeatOption.isEmpty && reminder.repeatOption != [.never] ? "," : "")")
+                                    
+                                    if !reminder.repeatOption.isEmpty && reminder.repeatOption != [.never] {
+                                        Text(reminder.repeatOption
+                                            .filter { $0 != .never }
+                                            .map { $0.rawValue }
+                                            .joined(separator: ", "))
+                                    }
                                 }
                                 
-                                Text(reminder.label)
-//                                Text("\(reminder.isCompleted)")
-                            }
-                            .contentShape(Rectangle())  // Makes the entire VStack tappable
-                            .onTapGesture {
-                                // When tapped, set selectedReminder and show AddReminderView for editing
-                                selectedReminder = reminder
-                                isPresented = true
+                                
+                                
+                                
                             }
                         }
-                        .onDelete(perform: deleteReminder) // Add swipe-to-delete functionality
-                        .listRowBackground(Color.clear)
                     }
+                    .onDelete(perform: deleteReminder) // Add swipe-to-delete functionality
+                    //.listRowBackground(Color.clear)
                 }
+                .frame(width: UIScreen.main.bounds.width)
                 .listStyle(.plain)
-                .navigationTitle("Reminders")
-                .navigationBarItems(trailing: Button(action: {
-                    selectedReminder = nil  // Reset selectedReminder for adding a new reminder
-                    isPresented = true  // Show modal sheet to add a new reminder
-                }) {
-                    Image(systemName: "plus").font(.title3)
-                })
-                .sheet(isPresented: $isPresented) {
-                    // Pass the selected reminder for editing, or nil for adding a new one
-                    AddReminderView(reminder: $selectedReminder)
-                }
             }
         }
+        .navigationTitle("Reminders")
+        .navigationBarItems(trailing: Button(action: {
+            selectedReminder = nil  // Reset selectedReminder for adding a new reminder
+            isPresented = true  // Show modal sheet to add a new reminder
+        }) {
+            Image(systemName: "plus").font(.title3)
+        })
+        .sheet(isPresented: $isPresented) {
+            // Pass the selected reminder for editing, or nil for adding a new one
+            AddReminderView(reminder: $selectedReminder)
+        }
+    }
 
     
     // Function to handle deletion of reminders

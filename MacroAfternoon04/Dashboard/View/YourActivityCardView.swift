@@ -164,6 +164,9 @@ struct YourActivityCardView: View {
                 }
                 
             }
+            .onAppear {
+                healthViewModel.fetchHealthData()
+            }
             
             .frame(width: cardWidthSize()-32, alignment: .center)
         }

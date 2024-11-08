@@ -12,7 +12,7 @@ struct CameraView: View {
     @Binding var image: CGImage?
     var onCapture: () -> Void
     var currentPage: Int
-    @State var totalPages: Int
+    @Binding var totalPages: Int
     
     @State private var showCaptureCue: Bool = false
     @State private var tapLocation: CGPoint = .zero

@@ -16,8 +16,8 @@ public func addProgressNotification(selectedDay: Int) {
             cancelProgressNotification()
             
             let content = UNMutableNotificationContent()
-            content.title = "Reminder"
-            content.body = "Take photos today!!!!!!"
+            content.title = "Serene"
+            content.body = "It's time to take your pictures."
             content.sound = .default
             
             var dateComponents = DateComponents()
@@ -25,7 +25,6 @@ public func addProgressNotification(selectedDay: Int) {
             dateComponents.hour = 9
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
             
             let request = UNNotificationRequest(identifier: "progress", content: content, trigger: trigger)
             

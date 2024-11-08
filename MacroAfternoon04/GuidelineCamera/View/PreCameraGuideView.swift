@@ -28,6 +28,7 @@ struct PreCameraGuideView: View {
     @Binding var navigateToSecondOnBoarding: Bool
     
     var body: some View {
+        
         ScrollView{
             VStack(alignment: .leading){
                 Text("Macro Photos Will Be Taken With Assistance")
@@ -256,8 +257,7 @@ struct PreCameraGuideView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }){
-                    
-                    AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
+                    AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
                 }
                 
                 

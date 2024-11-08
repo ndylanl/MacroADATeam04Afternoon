@@ -77,8 +77,11 @@ struct HairGrowthProgressCardView: View {
         .onChange(of: showingAddProgressSheet) { oldValue, newValue in
             checkButtonAvailability()
         }
+        .onChange(of: selectedDay) { oldValue, newValue in
+            checkButtonAvailability()
+        }
         .sheet(isPresented: $showingAddProgressSheet) {
-            AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
+            AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
         }
         .sheet(isPresented: $showingPreCameraGuideView) {
             PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: .constant(true), selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))

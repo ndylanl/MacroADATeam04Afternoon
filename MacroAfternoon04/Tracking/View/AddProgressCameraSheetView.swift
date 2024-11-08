@@ -13,15 +13,17 @@ import SwiftData
 struct AddProgressCameraSheetView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     
     @Binding var showingAddProgressSheet: Bool
+    
+    @Binding var selectedDay: Int
     
     @StateObject private var viewModel = CameraViewModel()
     
     @State private var currentPage = 1
     
-    @State var totalPages = 3
+    @State var totalPages = 0
     
     @State var statusRetry: String = "Begin Taking Pictures"
     
@@ -33,7 +35,7 @@ struct AddProgressCameraSheetView: View {
         NavigationView{
             VStack{
                 Spacer()
-                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: totalPages, viewModel: viewModel, statusRetry: $statusRetry)
+                CameraView(image: $viewModel.currentFrame, onCapture: captureImage, currentPage: currentPage, totalPages: $totalPages, viewModel: viewModel, statusRetry: $statusRetry)
                     .ignoresSafeArea()
             }
             .onAppear {
@@ -93,6 +95,8 @@ struct AddProgressCameraSheetView: View {
         let trackProgressModel = TrackProgressModel(hairPicture: viewModel.tempHairData, detections: [[]], scalpPositions: UserDefaults.standard.string(forKey: "ScalpAreaChosen")!, appointmentPoint: calcPoints(points:reminders.compactMap{$0.appointmentPoint}), applyPoint: calcPoints(points:reminders.compactMap{$0.applyPoint}), consumePoint: calcPoints(points:reminders.compactMap{$0.consumePoint}), exercisePoint: calcPoints(points:reminders.compactMap{$0.exercisePoint}), otherPoint: calcPoints(points:reminders.compactMap{$0.otherPoint}))
         
         detectObjectsInImage(trackProgress: trackProgressModel)
+        
+        addProgressNotification(selectedDay: selectedDay)
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)

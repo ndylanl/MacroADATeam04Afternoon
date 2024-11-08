@@ -41,11 +41,11 @@ struct WeekReportView: View {
                     
                     Spacer()
                     
-                    NavigationLink{
-                        RawPhotoView(photos: viewModel.photos)
-                    }label: {
-                        Text("Raw Photos")
-                    }
+//                    NavigationLink{
+//                        RawPhotoView(photos: viewModel.photos)
+//                    }label: {
+//                        Text("Raw Photos")
+//                    }
                 }
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
@@ -125,10 +125,10 @@ struct WeekReportView: View {
                         
                         Spacer()
                         
-                        Button{
-                            isInfoSheetPresented = true
-                        } label: {
-                            Image(systemName: "info.circle")
+                        NavigationLink{
+                            RawPhotoView(photos: viewModel.photos)
+                        }label: {
+                            Image(systemName: "photo.on.rectangle")
                         }
                     }
                     

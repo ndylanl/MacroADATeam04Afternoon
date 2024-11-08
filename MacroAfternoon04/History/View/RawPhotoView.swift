@@ -32,20 +32,6 @@ struct RawPhotoView: View {
         }
         .navigationTitle("Raw Photos")
         .navigationBarTitleDisplayMode(.large)
-        .toolbar{
-            ToolbarItem(placement: .topBarTrailing){
-                HStack{
-                    Button("Select"){
-                        print("Not yet implemented")
-                    }
-                    Button{
-                        print("Not yet implemented")
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                }
-            }
-        }
     }
     
     private func photoSize() -> CGFloat {

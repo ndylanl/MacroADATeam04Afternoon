@@ -189,8 +189,11 @@ struct WeekReportView: View {
                                 Text("hrs")
                                     .font(.body)
                             }
-                            Text("􀇁 Sleep")
-                                .font(.footnote)
+                            HStack{
+                                Image(systemName: "moon.stars.fill")
+                                Text("Sleep")
+                            }
+                            .font(.footnote)
                         }
                         .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
@@ -221,8 +224,11 @@ struct WeekReportView: View {
                                 Text("cal")
                                     .font(.body)
                             }
-                            Text("􀜟 Movement")
-                                .font(.footnote)
+                            HStack{
+                                Image(systemName: "waveform.path.ecg")
+                                Text("Movement")
+                            }
+                            .font(.footnote)
                         }
                         .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(

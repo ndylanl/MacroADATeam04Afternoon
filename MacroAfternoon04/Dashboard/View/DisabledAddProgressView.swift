@@ -21,7 +21,7 @@ struct DisabledAddProgressView: View {
                 Image(systemName: "camera.fill")
                     .font(.title3)
                 
-                Text("Add Progress \(daysLeft) Days Left")
+                Text("Add Progress \(daysLeft == 0 ? 7 : daysLeft) Days Left")
                     .font(.caption2)
                     .multilineTextAlignment(.center)
             }

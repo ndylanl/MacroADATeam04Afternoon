@@ -21,7 +21,7 @@ struct BrowseAllDataView: View {
         List {
             ForEach(historyViewModel.uniqueMonths, id: \.self) { month in
                 Section(header: Text(formattedDate(month, formatter: monthYearFormatter))) {
-                    NavigationLink(destination: MonthReportView(date: month)) {
+                    NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
                         VStack(alignment: .leading) {
                             Text("Monthly Report")
                                 .bold()

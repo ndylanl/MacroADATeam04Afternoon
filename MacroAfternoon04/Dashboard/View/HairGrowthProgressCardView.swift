@@ -14,11 +14,15 @@ struct HairGrowthProgressCardView: View {
     
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
+    @State var showingPreCameraGuideView: Bool = false
     
     @StateObject var viewModel: RecentProgressViewModel
     
     @State private var isButtonEnabled: Bool = false
     @State private var daysLeft: Int = 7
+    
+    @State private var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen")
+    
     
     init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
         self._showingAddProgressSheet = showingAddProgressSheet
@@ -38,11 +42,17 @@ struct HairGrowthProgressCardView: View {
                 HStack{
                     
                     if isButtonEnabled {
-                        NavigationLink {
-                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
+                        
+                        Button {
+                            if selectedOption == nil {
+                                showingPreCameraGuideView = true
+                            } else {
+                                showingAddProgressSheet = true
+                            }
                         } label: {
                             AddProgressCardView()
                         }
+                        
                     } else {
                         DisabledAddProgressView(daysLeft: $daysLeft)
                     }
@@ -64,6 +74,16 @@ struct HairGrowthProgressCardView: View {
         .onAppear {
             checkButtonAvailability()
         }
+        .onChange(of: showingAddProgressSheet) { oldValue, newValue in
+            checkButtonAvailability()
+        }
+        .sheet(isPresented: $showingAddProgressSheet) {
+            AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
+        }
+        .sheet(isPresented: $showingPreCameraGuideView) {
+            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: .constant(true), selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
+            
+        }
     }
     
     func checkButtonAvailability() {
@@ -84,7 +104,7 @@ struct HairGrowthProgressCardView: View {
                 
             } else {
                 isButtonEnabled = false
-                daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 0
+                daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 6
             }
         }
     }

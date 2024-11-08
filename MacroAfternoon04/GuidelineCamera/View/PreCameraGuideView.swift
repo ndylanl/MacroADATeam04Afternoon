@@ -20,7 +20,8 @@ struct PreCameraGuideView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-    @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
+//    @State var isOnBoardingComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingComplete")
+    @Binding var isOnBoardingComplete: Bool
     
     @Binding var selectedDay: Int
     
@@ -205,14 +206,15 @@ struct PreCameraGuideView: View {
                     .padding(.leading)
                 
                 Button{
-                    selectedOption = "A. All Scalp"
                     // actions here
                     UserDefaults.standard.set(selectedOption, forKey: "ScalpAreaChosen")
                     // this is how to grab it
                     let exampleFetchScalpAreaChosen = UserDefaults.standard.string(forKey: "ScalpAreaChosen")
                     print(exampleFetchScalpAreaChosen!)
                     showingAddProgressSheet.toggle()
-                    
+                    if isOnBoardingComplete{
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 } label: {
                     Text("Take Photos Now")
                 }
@@ -225,11 +227,15 @@ struct PreCameraGuideView: View {
                 
                 NavigationLink{
                     // ISI INI NAVIGATE KE HEALTH ONBOARDING
-                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
+                    if !isOnBoardingComplete{
+                        OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
+                    }
                     
                 } label: {
-                    Text("Skip")
-                        .foregroundStyle(Color("PrimaryColor"))
+                    if !isOnBoardingComplete{
+                        Text("Skip")
+                            .foregroundStyle(Color("PrimaryColor"))
+                    }
                 }
                 .frame(width: frameWidth() - 56, height: 48)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -250,6 +256,7 @@ struct PreCameraGuideView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }){
+                    
                     AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
                 }
                 

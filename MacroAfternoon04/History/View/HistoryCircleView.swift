@@ -132,18 +132,23 @@ struct HistoryCircleView: View {
     }
     
     private var monthYearPickerSheet: some View {
-        VStack {
-            Picker("Select Month and Year", selection: $selectedMonthYear) {
-                ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
-                    Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
+        NavigationView{
+            VStack {
+                Picker("Select Month and Year", selection: $selectedMonthYear) {
+                    ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
+                        Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .labelsHidden()
+            }
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button("Done") {
+                        showPicker.toggle()
+                    }
                 }
             }
-            .pickerStyle(WheelPickerStyle())
-            .labelsHidden()
-            Button("Done") {
-                showPicker.toggle()
-            }
-            .padding()
         }
     }
     

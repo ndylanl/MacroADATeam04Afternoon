@@ -16,8 +16,6 @@ struct WeekReportView: View {
     
     @State private var isInfoSheetPresented = false
     
-    @State var isOnBoardingHistoryComplete: Bool = UserDefaults.standard.bool(forKey: "isOnBoardingHistoryComplete")
-    
     @State private var isComparePresented: Bool = false
     
     @StateObject var viewModel: WeeklyReportViewModel
@@ -181,223 +179,89 @@ struct WeekReportView: View {
                     Divider()
                     
                     HStack{
-                        Text(formattedDate(date, formatter: dateFormatter))
-                            .font(.body)
-                            .opacity(0.5)
                         
-                        Spacer()
-                        
-                        NavigationLink{
-                            RawPhotoView(photos: viewModel.photos)
-                        }label: {
-                            Text("Raw Photos")
-                        }
-                    }
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                    
-                    TabView{
-                        if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
-                            HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
-                        }
-                    }
-                    .frame(height: UIScreen.main.bounds.height * 434 / 932)
-                    .tabViewStyle(.page)
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    
-                    VStack(alignment: .leading){
-                        HStack{
-                            Text("Topograpy Information")
-                            
-                            Spacer()
-                            
-                            Button{
-                                isInfoSheetPresented = true
-                            } label: {
-                                Image(systemName: "info.circle")
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("42")
+                                    .font(.title)
+                                Text("hrs")
+                                    .font(.body)
                             }
+                            Text("􀇁 Sleep")
+                                .font(.footnote)
                         }
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
                         
-                        Divider()
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.red)
-                            Text("Hair")
-                        }
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.yellow)
-                            Text("Hair is growing and growing")
-                        }
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.green)
-                            Text("Hair is growing")
-                        }
-                    }
-                    .padding()
-                    .background(.white)
-                    .font(.body)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                    
-                    TabView{
-                        ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
-                            if let uiImage = UIImage(data: photoData) {
-                                AnnotatedImageView(image: uiImage, detections: viewModel.detections[index + 1], viewModel: viewModel)
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("100")
+                                    .font(.title)
+                                Text("pts")
+                                    .font(.body)
                             }
+                            Text("􀙌 Stress")
+                                .font(.footnote)
                         }
-                    }
-                    .frame(height: UIScreen.main.bounds.height * 434 / 932)
-                    .tabViewStyle(.page)
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    
-                    VStack(alignment: .leading){
-                        HStack{
-                            Text("Macro Photo Information")
-                            
-                            Spacer()
-                            
-                            Button{
-                                isInfoSheetPresented = true
-                            } label: {
-                                Image(systemName: "info.circle")
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
+                        
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text("371")
+                                    .font(.title)
+                                Text("cal")
+                                    .font(.body)
                             }
+                            Text("􀜟 Movement")
+                                .font(.footnote)
                         }
-                        
-                        Divider()
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.red)
-                            Text("1 Strand per Follicle")
-                        }
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.purple)
-                            Text("2 Strand per Follicle")
-                        }
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.blue)
-                            Text("3 Strand per Follicle")
-                        }
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.green)
-                            Text("4 Strand per Follicle")
-                        }
-                        
-                        HStack{
-                            Text("●")
-                                .foregroundStyle(.yellow)
-                            Text("5 Strand per Follicle")
-                        }
-                        
-                        Text("Average Strands per Follicle: \(viewModel.averageHairPerFollicle)")
-                            .padding(.top)
+                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.black, lineWidth: 0.5)
+                        )
                     }
-                    .padding()
-                    .background(.white)
-                    .font(.body)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                    
-                    VStack(alignment: .leading){
-                        Text("Personal Activities")
-                        
-                        Divider()
-                        
-                        HStack{
-                            
-                            VStack(alignment: .leading){
-                                HStack{
-                                    Text("42")
-                                        .font(.title)
-                                    Text("hrs")
-                                        .font(.body)
-                                }
-                                Text("􀇁 Sleep")
-                                    .font(.footnote)
-                            }
-                            .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.black, lineWidth: 0.5)
-                            )
-                            
-                            VStack(alignment: .leading){
-                                HStack{
-                                    Text("100")
-                                        .font(.title)
-                                    Text("pts")
-                                        .font(.body)
-                                }
-                                Text("􀙌 Stress")
-                                    .font(.footnote)
-                            }
-                            .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.black, lineWidth: 0.5)
-                            )
-                            
-                            VStack(alignment: .leading){
-                                HStack{
-                                    Text("371")
-                                        .font(.title)
-                                    Text("cal")
-                                        .font(.body)
-                                }
-                                Text("􀜟 Movement")
-                                    .font(.footnote)
-                            }
-                            .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.black, lineWidth: 0.5)
-                            )
-                        }
-                        
-                    }
-                    .padding()
-                    .background(.white)
-                    .font(.body)
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .padding(.vertical)
-                    
-                    
-                    Button{
-                        isComparePresented = true
-                    } label: {
-                        Text("Compare Reports")
-                            .foregroundStyle(Color("SecondaryColor"))
-                    }
-                    .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
-                    .background(Color("PrimaryColor"))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     
                 }
-                .navigationTitle("Week \(weekOfMonth(for: date))")
+                .padding()
+                .background(.white)
+                .font(.body)
+                .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .padding(.vertical)
+                
+                
+                Button{
+                    isComparePresented = true
+                } label: {
+                    Text("Compare Reports")
+                        .foregroundStyle(Color("SecondaryColor"))
+                }
+                .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+                .background(Color("PrimaryColor"))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
             }
-            .background(Color(.systemGray6))
-            .onAppear {
-                viewModel.weekNumber = weekOfMonth(for: date)
-                viewModel.fetchData(weekDate: date)
-            }
-            .sheet(isPresented: $isInfoSheetPresented) {
-                InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
-            }
-            .sheet(isPresented: $isComparePresented){
-                CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
-                    .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
-            }
-        } else {
-            OnBoardingReportView(isOnBoardingHistoryComplete: $isOnBoardingHistoryComplete)
+            .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")
+        }
+        .background(Color(.systemGray6))
+        .onAppear {
+            viewModel.weekNumber = weekOfMonth(for: date)
+            viewModel.fetchData(weekDate: date)
+        }
+        .sheet(isPresented: $isInfoSheetPresented) {
+            InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
+        }
+        .sheet(isPresented: $isComparePresented){
+            CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
+                .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
         }
     }
     
@@ -419,6 +283,26 @@ struct WeekReportView: View {
         let calendar = Calendar.current
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
+    }
+
+    func convertToRoman(_ number: Int) -> String {
+        let romanValues = [
+            1000: "M", 900: "CM", 500: "D", 400: "CD",
+            100: "C", 90: "XC", 50: "L", 40: "XL",
+            10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
+        ]
+        
+        var num = number
+        var result = ""
+        
+        for (value, numeral) in romanValues.sorted(by: { $0.key > $1.key }) {
+            while num >= value {
+                result += numeral
+                num -= value
+            }
+        }
+        
+        return result
     }
 
 }

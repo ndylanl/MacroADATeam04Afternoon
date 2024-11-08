@@ -85,9 +85,13 @@ struct SelectDateView: View {
             //            .background(Color.white)
             .pickerStyle(WheelPickerStyle())
             .frame(width: UIScreen.main.bounds.width * 297 / 430)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+//            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+        
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .frame(width: UIScreen.main.bounds.width * 374 / 430)
+        
         
     }
     

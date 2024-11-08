@@ -18,7 +18,7 @@ struct SettingsSheetView: View {
     
     @State private var HealthAccess: Bool = false
     
-    @State private var selectedOption = "A. All Scalp"
+    @State private var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen") ?? "A. All Scalp"
     
     let options = ["A. All Scalp", "B. Left Side", "C. Right Side", "D. Front Side", "E. Middle Side", "F. Back Side"]
     
@@ -26,20 +26,19 @@ struct SettingsSheetView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    
-                    VStack{
-                        Toggle("Health Access", isOn: $HealthAccess)
-                            .bold()
-                            .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryColor")))
-                            .padding(.horizontal)
-                        
-                        Text("For more personalized experience, access to Apple Health is required to detect your activities.")
-                            .font(.footnote)
-                            .foregroundStyle(Color("NeutralColor"))
-                            .padding(.horizontal)
-                    }
-                    .frame(width: frameWidth())
-                    .padding(.bottom, 40)
+//                    VStack{
+//                        Toggle("Health Access", isOn: $HealthAccess)
+//                            .bold()
+//                            .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryColor")))
+//                            .padding(.horizontal)
+//                        
+//                        Text("For more personalized experience, access to Apple Health is required to detect your activities.")
+//                            .font(.footnote)
+//                            .foregroundStyle(Color("NeutralColor"))
+//                            .padding(.horizontal)
+//                    }
+//                    .frame(width: frameWidth())
+//                    .padding(.bottom, 40)
                     
                     //-------------------------------------------------------------------------------------------------------------------------------------
                     Spacer()
@@ -51,7 +50,7 @@ struct SettingsSheetView: View {
                                 .font(.title2)
                                 .padding()
                         }
-                        .frame(maxWidth: frameWidth())
+                        .frame(width: frameWidth())
                         
                         VStack(spacing: 0){
                             HStack(spacing: 0){

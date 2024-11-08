@@ -29,9 +29,22 @@
 		92B60BF02CB2A7FE003A35DD /* MacroAfternoon04UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacroAfternoon04UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E12A16F72CDCAD310073A13A /* Exceptions for "MacroAfternoon04" folder in "MacroAfternoon04" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 92B60BD32CB2A7C5003A35DD /* MacroAfternoon04 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		92B60BD62CB2A7C5003A35DD /* MacroAfternoon04 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E12A16F72CDCAD310073A13A /* Exceptions for "MacroAfternoon04" folder in "MacroAfternoon04" target */,
+			);
 			path = MacroAfternoon04;
 			sourceTree = "<group>";
 		};

@@ -12,6 +12,8 @@ import SwiftData
 struct MacroAfternoon04App: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    @StateObject var healthViewModel = HealthViewModel()
+    
     let modelContainer: ModelContainer
     
     init() {
@@ -29,6 +31,7 @@ struct MacroAfternoon04App: App {
             //HeatmapView()
             ContentView()
                 .modelContainer(for: [TrackProgressModel.self, ReminderModel.self])
+                .environmentObject(healthViewModel)
                 .onAppear {
                     setupNotificationActions()
                     //ReminderService.shared.resetWeeklyPointsIfNeeded()

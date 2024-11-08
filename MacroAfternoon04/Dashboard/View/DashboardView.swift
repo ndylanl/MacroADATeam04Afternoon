@@ -23,6 +23,7 @@ struct DashboardView: View {
     
     @State var showingSettingsSheet: Bool = false
     
+    
     var body: some View {
         NavigationStack{
 
@@ -37,7 +38,7 @@ struct DashboardView: View {
                     VStack{
                         Spacer()
                         
-                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
+                        HairGrowthProgressCardView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, modelContext: modelContext)
                         
                         Spacer()
                         
@@ -65,7 +66,7 @@ struct DashboardView: View {
             
             .navigationTitle("Dashboard")
             .toolbarBackground(.clear, for: .navigationBar)
-
+            
             .toolbar{
                 
                 ToolbarItem(placement: .topBarTrailing){

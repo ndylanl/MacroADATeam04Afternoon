@@ -78,7 +78,7 @@ struct OnBoardingFirstPageView: View {
                 Spacer()
                 
                 NavigationLink{
-                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: $navigateToSecondOnBoarding)
+                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay, navigateToSecondOnBoarding: $navigateToSecondOnBoarding)
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }
@@ -116,7 +116,7 @@ struct OnBoardingFirstPageView: View {
         }
     }
 }
-
-#Preview {
-    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false), selectedDay: .constant(1))
-}
+//
+//#Preview {
+//    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false), selectedDay: .constant(1))
+//}

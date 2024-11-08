@@ -8,29 +8,12 @@
 import SwiftUI
 
 struct ComparisonResultView: View {
-    //var viewModel: CompareProgressViewModel // Added viewModel parameter
-//    var reportA: Date
-//    var reportB: Date
-    
     var reportA: Int
     var reportB: Int
-    @State var viewModel: ComparisonResultViewModel?
+    @StateObject var viewModel: ComparisonResultViewModel
     @State var photosA: [Data] = []
     @State var photosB: [Data] = []
     @Environment(\.modelContext) var modelContext  // Environment context
-    // Make sure the initializer is public
-    /*init(viewModel: CompareProgressViewModel, reportA: Date, reportB: Date) {
-        self.viewModel = viewModel
-        self.reportA = reportA
-        self.reportB = reportB
-    }*/
-    init(/*aviewModel: CompareProgressViewModel,*/ reportA: Int, reportB: Int) {
-        //self.viewModel = viewModel
-        self.reportA = reportA
-        self.reportB = reportB
-        //self.viewModel = ComparisonResultViewModel(modelContext: modelContext)
-        
-    }
     
     var body: some View {
         VStack {
@@ -90,12 +73,6 @@ struct ComparisonResultView: View {
                 }
             }
             .padding()
-            .onAppear {
-                self.viewModel = ComparisonResultViewModel(modelContext: modelContext)
-                self.photosA = viewModel?.trackProgressData[reportA - 1].hairPicture.flatMap { $0.hairPicture } ?? []
-                self.photosB = viewModel?.trackProgressData[reportB - 1].hairPicture.flatMap { $0.hairPicture } ?? []
-            }
-            
             
             
             

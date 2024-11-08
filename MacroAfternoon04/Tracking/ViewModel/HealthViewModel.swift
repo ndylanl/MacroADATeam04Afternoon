@@ -38,6 +38,7 @@ class HealthViewModel: ObservableObject {
     }
     
     func fetchHealthData() {
+        print("Fetching Health Data")
         // Fetch sleep data
         healthKitManager.fetchSleepData { data, error in
             if let data = data {
@@ -101,7 +102,6 @@ class HealthViewModel: ObservableObject {
             }
         
         totalMovementToday = totalMovement
-//        print("Total Movement Today: \(movementData)")
     }
     
     func calculateAverageSleep(startDate: Date, endDate: Date) {
@@ -125,13 +125,7 @@ class HealthViewModel: ObservableObject {
         } else {
             averageSleep = 0 // atau nilai default lainnya jika tidak ada hari
         }
-        
-//        // Update nilai rata-rata tidur
-//        self.averageSleep = averageSleep
-//        print("NOTICE ME :D")
-////        print(filteredSleepData)
-//        print(totalSleepDuration)
-//        print(averageSleep)
+        self.averageSleep = averageSleep
 
     }
     

@@ -51,8 +51,6 @@ struct OnBoardingSecondPageView: View {
                     
                     navigateToThirdOnBoarding = true
                 }
-
-                
                 
             } label: {
                 Text("Enable Access Now")

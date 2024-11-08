@@ -18,7 +18,12 @@ struct HistoryCircleView: View {
     @State private var weeksData: [Date] = []
     
     @State private var isComparePresented: Bool = false
-    @State private var isAnimating = false // State variable for animation
+    @State private var isAnimating = false
+    
+    @State  var showAlert = false
+    @State  var alertMessage: String = ""
+    @State private var navigateToMonthReport = false
+
     
     public init(modelContext: ModelContext) {
         _historyViewModel = StateObject(wrappedValue: HistoryViewModel(modelContext: modelContext))
@@ -74,14 +79,34 @@ struct HistoryCircleView: View {
     }
     
     private var monthYearCircleView: some View {
+        
+        
         VStack {
             if let selectedMonthYear = selectedMonthYear {
                 ZStack {
-                    NavigationLink {
-                        MonthReportView(date: selectedMonthYear)
-                    } label: {
+                    Button(action: {
+                        // Set the alert message if needed
+                        alertMessage = "The Monthly Report will be available at the end of the month."
+                        showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear).checkMonthlyReportAccess()
+                        
+                        if !showAlert{
+                            navigateToMonthReport = true
+                        }
+                    }) {
                         MonthCircleView(nameOfTheMonth: formattedDate(selectedMonthYear, formatter: monthFormatter))
                             .padding()
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(
+                            title: Text("Monthly Report Status"),
+                            message: Text(alertMessage),
+                            dismissButton: .default(Text("OK")) {
+                            }
+                        )
+                    }
+                    
+                    NavigationLink(destination: MonthReportView(date: selectedMonthYear, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear)), isActive: $navigateToMonthReport) {
+                        EmptyView() // This is needed to create a link without visible content
                     }
                     
                     ForEach(weeksData, id: \.self) { weekDate in
@@ -112,8 +137,8 @@ struct HistoryCircleView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
             
-            Button {
-                print("all data")
+            NavigationLink {
+                BrowseAllDataView(modelContext: modelContext)
             } label: {
                 Text("Browse All Data")
             }
@@ -132,18 +157,23 @@ struct HistoryCircleView: View {
     }
     
     private var monthYearPickerSheet: some View {
-        VStack {
-            Picker("Select Month and Year", selection: $selectedMonthYear) {
-                ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
-                    Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
+        NavigationView{
+            VStack {
+                Picker("Select Month and Year", selection: $selectedMonthYear) {
+                    ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
+                        Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
+                    }
+                }
+                .pickerStyle(WheelPickerStyle())
+                .labelsHidden()
+            }
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button("Done") {
+                        showPicker.toggle()
+                    }
                 }
             }
-            .pickerStyle(WheelPickerStyle())
-            .labelsHidden()
-            Button("Done") {
-                showPicker.toggle()
-            }
-            .padding()
         }
     }
     

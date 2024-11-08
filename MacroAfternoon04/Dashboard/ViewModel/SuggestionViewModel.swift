@@ -10,7 +10,8 @@ import SwiftUI
 
 
 class SuggestionViewModel: ObservableObject {
-    @ObservedObject var healthViewModel = HealthViewModel()
+    @EnvironmentObject var healthViewModel: HealthViewModel
+
     @Published var suggestions: [String] = []
     
     func calculateAverageHealthData() {

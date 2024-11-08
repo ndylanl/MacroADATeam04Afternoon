@@ -66,7 +66,6 @@ class HairPictureData: RandomAccessCollection {
 }
 
 
-
 @Model
 class TrackProgressModel: Identifiable {
     @Attribute(.unique) var id: UUID
@@ -74,12 +73,23 @@ class TrackProgressModel: Identifiable {
     var hairPicture: [HairPictureData]
     var dateTaken: Date
     var detections: [[DetectedObject]] // Array of detected objects for each image
-    //var scalpPositions: [Int] = []
+    var scalpPositions: String
+    var appointmentPoint: Int
+    var applyPoint: Int
+    var consumePoint: Int
+    var exercisePoint: Int
+    var otherPoint: Int
     
-    init(hairPicture: [HairPictureData], detections: [[DetectedObject]]) {
+    init(hairPicture: [HairPictureData], detections: [[DetectedObject]], scalpPositions: String, appointmentPoint: Int, applyPoint: Int, consumePoint: Int, exercisePoint: Int, otherPoint: Int) {
         self.id = UUID()
         self.hairPicture = hairPicture
         self.dateTaken = Date()
         self.detections = detections
+        self.scalpPositions = scalpPositions
+        self.appointmentPoint = appointmentPoint
+        self.applyPoint = applyPoint
+        self.consumePoint = consumePoint
+        self.exercisePoint = exercisePoint
+        self.otherPoint = otherPoint
     }
 }

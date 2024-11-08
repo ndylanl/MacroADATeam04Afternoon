@@ -10,12 +10,13 @@ import Combine
 import SwiftData
 
 class RecentProgressViewModel: ObservableObject {
-    @Published var lastDate: String = ""
+    @Published var lastDate: Date = Date()
     @Published var lastPhotos: [Data] = []
-    private let modelContext: ModelContext
+    let modelContext: ModelContext
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        fetchLastData()
     }
     
     func fetchLastData() {
@@ -28,8 +29,8 @@ class RecentProgressViewModel: ObservableObject {
             let models = try modelContext.fetch(fetchRequest)
             guard let lastModel = models.first else { return }
             
-            self.lastDate = DateFormatter.localizedString(from: lastModel.dateTaken, dateStyle: .short, timeStyle: .none)
             self.lastPhotos = lastModel.hairPicture.flatMap { $0.hairPicture }
+            self.lastDate = lastModel.dateTaken
         } catch {
             print("Failed to fetch data: \(error)")
         }

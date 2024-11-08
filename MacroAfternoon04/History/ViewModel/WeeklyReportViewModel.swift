@@ -21,6 +21,8 @@ class WeeklyReportViewModel: ObservableObject {
     @Published var modelScalpPositions: String = ""
     @Published var model: TrackProgressModel?
     
+    @Published var lastDate: Date = Date()
+    
     
     private var cancellables = Set<AnyCancellable>()
     private var modelContext: ModelContext
@@ -29,6 +31,7 @@ class WeeklyReportViewModel: ObservableObject {
     init(modelContext: ModelContext, weekDate: Date) {
         self.modelContext = modelContext
         fetchData(weekDate: weekDate)
+        fetchLastData()
     }
     
     func fetchData(weekDate: Date) {
@@ -194,6 +197,22 @@ class WeeklyReportViewModel: ObservableObject {
         } catch {
             print("Failed to fetch data: \(error)")
             return 0
+        }
+    }
+    
+    func fetchLastData() {
+        let fetchRequest = FetchDescriptor<TrackProgressModel>(
+            predicate: nil,
+            sortBy: [SortDescriptor(\.dateTaken, order: .reverse)]
+        )
+        
+        do {
+            let models = try modelContext.fetch(fetchRequest)
+            guard let lastModel = models.first else { return }
+
+            self.lastDate = lastModel.dateTaken
+        } catch {
+            print("Failed to fetch data: \(error)")
         }
     }
 }

@@ -10,44 +10,57 @@ import SwiftData
 
 struct HairGrowthProgressCardView: View {
     
-    @Binding var showingAddProgressSheet: Bool
-    @Binding var selectedDay: Int
-    
     @Environment(\.modelContext) private var modelContext
     
+    @Binding var showingAddProgressSheet: Bool
+    @Binding var selectedDay: Int
+    @State var showingPreCameraGuideView: Bool = false
+    
+    @StateObject var viewModel: RecentProgressViewModel
+    
     @State private var isButtonEnabled: Bool = false
+    @State private var daysLeft: Int = 7
+    
+    @State private var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen")
+    
+    
+    init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
+        self._showingAddProgressSheet = showingAddProgressSheet
+        self._selectedDay = selectedDay
+        self._viewModel = StateObject(wrappedValue: RecentProgressViewModel(modelContext: modelContext))
+    }
     
     var body: some View {
         ZStack(){
             RoundedCornerComponentView()
-//            Image("placeholderDashboardYourActivityCard")
-//                .resizable()
-//                .clipShape(RoundedRectangle(cornerRadius: 18))
             
             VStack(alignment: .leading){
                 
                 Text("✦ Hair Growth Progress")
                     .font(.title3)
                 
-//                Divider()
-                
                 HStack{
                     
                     if isButtonEnabled {
-                        NavigationLink {
-                            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
+                        
+                        Button {
+                            if selectedOption == nil {
+                                showingPreCameraGuideView = true
+                            } else {
+                                showingAddProgressSheet = true
+                            }
                         } label: {
                             AddProgressCardView()
                         }
+                        
                     } else {
-                        AddProgressCardView()
-                            .opacity(0.5)
+                        DisabledAddProgressView(daysLeft: $daysLeft)
                     }
                     
                     Spacer()
                     
                     NavigationLink{
-                        RecentProgressView(viewModel: RecentProgressViewModel(modelContext: modelContext))
+                        WeekReportView(date: viewModel.lastDate, viewModel: WeeklyReportViewModel(modelContext: modelContext, weekDate: viewModel.lastDate))
                     } label: {
                         LastProgressCardView()
                     }
@@ -61,14 +74,24 @@ struct HairGrowthProgressCardView: View {
         .onAppear {
             checkButtonAvailability()
         }
+        .onChange(of: showingAddProgressSheet) { oldValue, newValue in
+            checkButtonAvailability()
+        }
+        .sheet(isPresented: $showingAddProgressSheet) {
+            AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet)
+        }
+        .sheet(isPresented: $showingPreCameraGuideView) {
+            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: .constant(true), selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
+            
+        }
     }
     
     func checkButtonAvailability() {
         
         if isTrackProgressModelEmpty() {
             isButtonEnabled = true
-            
-        }else {
+            daysLeft = 0
+        } else {
             let today = Calendar.current.startOfDay(for: Date())
             let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: today)!
             let dayAfter = Calendar.current.date(byAdding: .day, value: 1, to: today)!
@@ -81,6 +104,7 @@ struct HairGrowthProgressCardView: View {
                 
             } else {
                 isButtonEnabled = false
+                daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 6
             }
         }
     }
@@ -122,7 +146,3 @@ func cardWidthSize() -> CGFloat{
 func cardHeightSize() ->CGFloat{
     (UIScreen.main.bounds.height * 193 / 985)
 }
-
-//#Preview {
-//    HairGrowthProgressCardView(showingAddProgressSheet: .constant(false))
-//}

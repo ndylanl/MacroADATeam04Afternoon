@@ -41,17 +41,16 @@ struct OnBoardingSecondPageView: View {
                 // Request Access for Health
                 Task{
                     await healthManager.requestAuthorization()
+                    //                }
+                    
+                    
+                    // .....
+                    let currentDay = Calendar.current.component(.weekday, from: Date())
+                    selectedDay = currentDay
+                    UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                    
+                    navigateToThirdOnBoarding = true
                 }
-                
-                
-                // .....
-                let currentDay = Calendar.current.component(.weekday, from: Date())
-                selectedDay = currentDay
-                UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
-                
-                
-
-                navigateToThirdOnBoarding = true
                 
             } label: {
                 Text("Enable Access Now")

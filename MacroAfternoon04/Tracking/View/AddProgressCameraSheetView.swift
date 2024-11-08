@@ -13,9 +13,9 @@ import SwiftData
 struct AddProgressCameraSheetView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @Binding var showingAddProgressSheet: Bool
+    @Environment(\.presentationMode) private var presentationMode
     
-    //    @Environment(\.presentationMode) private var presentationMode
+    @Binding var showingAddProgressSheet: Bool
     
     @StateObject private var viewModel = CameraViewModel()
     
@@ -96,6 +96,8 @@ struct AddProgressCameraSheetView: View {
         
         // Save trackProgressModel to your SwiftData context
         saveToModel(trackProgressModel)
+        
+        presentationMode.wrappedValue.dismiss()
     }
     
     private func saveToModel(_ model: TrackProgressModel) {

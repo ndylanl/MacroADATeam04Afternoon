@@ -1,21 +1,15 @@
 //
-//  OnBoardingFirstPage.swift
+//  OnBoardingThirdPage.swift
 //  MacroAfternoon04
 //
-//  Created by Alvin Lionel on 31/10/24.
+//  Created by Alvin Lionel on 05/11/24.
 //
 
 import SwiftUI
 
-struct OnBoardingFirstPageView: View {
+struct OnBoardingReportView: View {
     
-    @Binding var isOnBoardingComplete: Bool
-    
-    @Binding var showingAddProgressSheet: Bool
-    
-    @Binding var selectedDay: Int
-    
-    @State var navigateToSecondOnBoarding: Bool = false
+    @Binding var isOnBoardingHistoryComplete: Bool
     
     var body: some View {
         NavigationStack{
@@ -31,54 +25,43 @@ struct OnBoardingFirstPageView: View {
                     .padding(.vertical)
                 
                 HStack{
-                    Image(systemName: "camera.fill")
+                    Image(systemName: "circle.circle")
                         .font(.largeTitle)
                         .frame(width: UIScreen.main.bounds.width * 64 / 430 )
                     
                     VStack (alignment: .leading){
-                        Text("Camera")
+                        Text("Heat Map")
                             .bold()
                         
-                        Text("take photos of your hair treatment progress every week to track changes.")
+                        Text("See your hair growth progress visualized in a Heat Map with information about your hair’s condition over certain timeline.")
                             .opacity(0.7)
                     }
                 }
                 .padding(.vertical, 14)
                 
                 HStack{
-                    Image(systemName: "bell.fill")
+                    Image(systemName: "camera.viewfinder")
                         .font(.largeTitle)
                         .frame(width: UIScreen.main.bounds.width * 64 / 430 )
                     
                     VStack (alignment: .leading){
-                        Text("Reminder")
+                        Text("Macro Photo")
                             .bold()
                         
-                        Text("Set reminders for your medications, treatments, appointments, and others.")
+                        Text("Get insights with macro photos that reveal number of hairs per follicle.")
                             .opacity(0.7)
                     }
                 }
                 .padding(.vertical, 14)
                 
-                HStack{
-                    Image(systemName: "text.document.fill")
-                        .font(.largeTitle)
-                        .frame(width: UIScreen.main.bounds.width * 64 / 430 )
-                    
-                    VStack (alignment: .leading){
-                        Text("Report")
-                            .bold()
-                        
-                        Text("Check your weekly and monthly reports to see the details of your hair growth.")
-                            .opacity(0.7)
-                    }
-                }
-                .padding(.vertical, 14)
+                
                 
                 Spacer()
                 
-                NavigationLink{
-                    PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay, navigateToSecondOnBoarding: $navigateToSecondOnBoarding)
+                Button{
+                    isOnBoardingHistoryComplete = true
+                    
+                    UserDefaults.standard.set(isOnBoardingHistoryComplete, forKey: "isOnBoardingHistoryComplete")
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }
@@ -90,23 +73,16 @@ struct OnBoardingFirstPageView: View {
                 
                 Button{
                     
-                    let currentDay = Calendar.current.component(.weekday, from: Date())
-                    selectedDay = currentDay
-                    UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
-                    
-                    navigateToSecondOnBoarding = true
                     
                 } label: {
-                    Text("Skip")
+                    Text(" ")
                 }
+                .disabled(true)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .foregroundStyle(Color("PrimaryColor"))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
-                .navigationDestination(isPresented: $navigateToSecondOnBoarding, destination: {
-                    OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
-                })
             }
             .padding()
             .frame(width: UIScreen.main.bounds.width)
@@ -116,7 +92,7 @@ struct OnBoardingFirstPageView: View {
         }
     }
 }
-//
-//#Preview {
-//    OnBoardingFirstPageView(isOnBoardingComplete: .constant(false), showingAddProgressSheet: .constant(false), selectedDay: .constant(1))
-//}
+
+#Preview {
+    OnBoardingReportView(isOnBoardingHistoryComplete: .constant(false))
+}

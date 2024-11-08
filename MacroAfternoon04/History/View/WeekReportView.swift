@@ -41,11 +41,11 @@ struct WeekReportView: View {
                     
                     Spacer()
                     
-                    NavigationLink{
-                        RawPhotoView(photos: viewModel.photos)
-                    }label: {
-                        Text("Raw Photos")
-                    }
+//                    NavigationLink{
+//                        RawPhotoView(photos: viewModel.photos)
+//                    }label: {
+//                        Text("Raw Photos")
+//                    }
                 }
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
@@ -125,10 +125,10 @@ struct WeekReportView: View {
                         
                         Spacer()
                         
-                        Button{
-                            isInfoSheetPresented = true
-                        } label: {
-                            Image(systemName: "info.circle")
+                        NavigationLink{
+                            RawPhotoView(photos: viewModel.photos)
+                        }label: {
+                            Image(systemName: "photo.on.rectangle")
                         }
                     }
                     
@@ -249,7 +249,7 @@ struct WeekReportView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
             }
-            .navigationTitle("Week \(weekOfMonth(for: date))")
+            .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")
         }
         .background(Color(.systemGray6))
         .onAppear {
@@ -283,6 +283,26 @@ struct WeekReportView: View {
         let calendar = Calendar.current
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
+    }
+
+    func convertToRoman(_ number: Int) -> String {
+        let romanValues = [
+            1000: "M", 900: "CM", 500: "D", 400: "CD",
+            100: "C", 90: "XC", 50: "L", 40: "XL",
+            10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
+        ]
+        
+        var num = number
+        var result = ""
+        
+        for (value, numeral) in romanValues.sorted(by: { $0.key > $1.key }) {
+            while num >= value {
+                result += numeral
+                num -= value
+            }
+        }
+        
+        return result
     }
 
 }

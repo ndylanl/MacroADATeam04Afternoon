@@ -13,7 +13,7 @@ struct OnBoardingThirdPageView: View {
     
     var body: some View {
         VStack(alignment: .center){
-            Text("Congratulation")
+            Text("Congratulations")
                 .font(.title)
             
             Text("You have completed your first hair progress tracking")

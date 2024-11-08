@@ -20,7 +20,7 @@ func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, rep
                 dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
                 print("dispatching notification ")
             }
-//            dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+
         case .denied:
              break
         case .notDetermined:
@@ -29,7 +29,7 @@ func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, rep
                     for repeatOption in repeatOptions {
                         dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
                     }
-//                    dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+
                 }
             }
         case .provisional:

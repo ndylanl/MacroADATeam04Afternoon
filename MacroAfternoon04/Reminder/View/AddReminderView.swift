@@ -71,14 +71,7 @@ struct AddReminderView: View {
                                 }
                             }
                             
-                            
-//                            Picker("Repeat", selection: $repeatOption) {
-//                                ForEach(RepeatOption.allCases, id: \.self) { option in
-//                                    Text(option.rawValue)
-//                                        .tag(option)
-//                                }
-//                            }
-//                            .tint(.blue)
+                        
                             
 //                            Picker("Sound", selection: $sound) {
 //                                ForEach(Sound.allCases, id: \.self) { soundOption in

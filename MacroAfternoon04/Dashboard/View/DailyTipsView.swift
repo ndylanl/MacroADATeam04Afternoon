@@ -30,8 +30,7 @@ struct DailyTipsView: View {
             }
             .onAppear {
                 startTimer()
-                // Jika ingin tip harian berganti setiap hari, bisa ditambahkan logika pengaturan tanggal
-                //currentTipIndex = calculateDailyTipIndex()
+
             }
             .padding()
         }
@@ -39,11 +38,7 @@ struct DailyTipsView: View {
         
     }
 
-    // Fungsi untuk menentukan tip berdasarkan tanggal agar berbeda setiap hari
-//    private func calculateDailyTipIndex() -> Int {
-//        let dayOfYear = Calendar.current.ordinality(of: .day, in: .year, for: Date()) ?? 0
-//        return dayOfYear % tips.count
-//    }
+
     
     private func startTimer() {
             // Mengatur timer untuk mengganti tips setiap 20 detik

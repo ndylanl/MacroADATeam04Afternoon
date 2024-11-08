@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-public func addProgressNotification(selectedDay: Int) {
+public func addProgressNotification(selectedDay: Int, selectedHour: Int = 9, selectedMinute: Int = 0) {
     
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
         if success {
@@ -22,7 +22,8 @@ public func addProgressNotification(selectedDay: Int) {
             
             var dateComponents = DateComponents()
             dateComponents.weekday = selectedDay
-            dateComponents.hour = 9
+            dateComponents.hour = selectedHour
+            dateComponents.minute = selectedMinute
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
             

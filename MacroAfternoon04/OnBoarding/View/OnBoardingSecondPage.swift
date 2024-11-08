@@ -40,7 +40,7 @@ struct OnBoardingSecondPageView: View {
                 
                 // Request Access for Health
                 Task{
-                    await healthManager.requestAuthorization()
+                    healthManager.requestAuthorization()
 //                    if UserDefaults.standard.bool(forKey: "shouldRequestAuthorization") {
 //                        healthManager.requestAuthorization()
 //                    }
@@ -69,6 +69,8 @@ struct OnBoardingSecondPageView: View {
                 let currentDay = Calendar.current.component(.weekday, from: Date())
                 selectedDay = currentDay
                 UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
+                UserDefaults.standard.set(8, forKey: "selectedHour")
+                UserDefaults.standard.set(0, forKey: "selectedMinute")
                 
                 print(selectedDay)
                 

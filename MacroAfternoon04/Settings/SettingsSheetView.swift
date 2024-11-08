@@ -22,35 +22,41 @@ struct SettingsSheetView: View {
     
     let options = ["A. All Scalp", "B. Left Side", "C. Right Side", "D. Front Side", "E. Middle Side", "F. Back Side"]
     
+    @State var selectedHour: Int = UserDefaults.standard.integer(forKey: "selectedHour")
+    @State var selectedMinute: Int = UserDefaults.standard.integer(forKey: "selectedMinute")
+    let hours = Array(0...23)
+    let minutes = Array(0...59)
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack {
-//                    VStack{
-//                        Toggle("Health Access", isOn: $HealthAccess)
-//                            .bold()
-//                            .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryColor")))
-//                            .padding(.horizontal)
-//                        
-//                        Text("For more personalized experience, access to Apple Health is required to detect your activities.")
-//                            .font(.footnote)
-//                            .foregroundStyle(Color("NeutralColor"))
-//                            .padding(.horizontal)
-//                    }
-//                    .frame(width: frameWidth())
-//                    .padding(.bottom, 40)
+                    //                    VStack{
+                    //                        Toggle("Health Access", isOn: $HealthAccess)
+                    //                            .bold()
+                    //                            .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryColor")))
+                    //                            .padding(.horizontal)
+                    //
+                    //                        Text("For more personalized experience, access to Apple Health is required to detect your activities.")
+                    //                            .font(.footnote)
+                    //                            .foregroundStyle(Color("NeutralColor"))
+                    //                            .padding(.horizontal)
+                    //                    }
+                    //                    .frame(width: frameWidth())
+                    //                    .padding(.bottom, 40)
                     
                     //-------------------------------------------------------------------------------------------------------------------------------------
                     Spacer()
                     
                     VStack{
-                        VStack(alignment: .leading){
+                        HStack{
                             Text("Select Scalp Area")
                                 .bold()
                                 .font(.title2)
                                 .padding()
+                            
+                            Spacer()
                         }
-                        .frame(width: frameWidth())
                         
                         VStack(spacing: 0){
                             HStack(spacing: 0){
@@ -229,7 +235,7 @@ struct SettingsSheetView: View {
                             .font(.footnote)
                             .foregroundStyle(Color("NeutralColor"))
                     }
-                    .frame(width: UIScreen.main.bounds.width)
+                    .frame(width: frameWidth())
                     
                     Section{
                         Picker("Select Day", selection: $selectedPickerDay) {
@@ -238,9 +244,9 @@ struct SettingsSheetView: View {
                             }
                         }
                         .pickerStyle(.inline)
-//                        .onChange(of: selectedDay) { beforeValue, afterValue in
-//                            UserDefaults.standard.set(self.selectedDay, forKey: "selectedDay")
-//                        }
+                        //                        .onChange(of: selectedDay) { beforeValue, afterValue in
+                        //                            UserDefaults.standard.set(self.selectedDay, forKey: "selectedDay")
+                        //                        }
                     }
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -248,6 +254,38 @@ struct SettingsSheetView: View {
                     .padding()
                     
                     //---------------------------------------------------------------------------------------------------------------------------------------------------
+                    Spacer()
+                    
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("Select Time Photo Taking")
+                                .font(.title2).bold()
+                            
+                            Spacer()
+                        }
+                    }
+                    .padding()
+                    .frame(width: frameWidth())
+                    
+                    HStack {
+                        Picker("Hour", selection: $selectedHour) {
+                            ForEach(0..<hours.count) { index in
+                                Text("\(self.hours[index]) h").tag(index)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        
+                        Picker("Minute", selection: $selectedMinute) {
+                            ForEach(0..<minutes.count) { index in
+                                Text("\(self.minutes[index]) m").tag(index)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                    }
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .frame(width: frameWidth() * 240 / 430)
+                    .padding()
                     
                 }
                 .background(Color(.systemGray6))
@@ -266,7 +304,9 @@ struct SettingsSheetView: View {
                             selectedDay = selectedPickerDay
                             UserDefaults.standard.set(self.selectedDay, forKey: "selectedDay")
                             //---- notification
-                            addProgressNotification(selectedDay: selectedDay)
+                            UserDefaults.standard.set(self.selectedHour, forKey: "selectedHour")
+                            UserDefaults.standard.set(self.selectedMinute, forKey: "selectedMinute")
+                            addProgressNotification(selectedDay: selectedDay, selectedHour: selectedHour, selectedMinute: selectedMinute)
                             
                             //----
                             presentationMode.wrappedValue.dismiss()
@@ -282,7 +322,7 @@ struct SettingsSheetView: View {
             .background(
                 LinearGradient(gradient: Gradient(colors: [.white, Color(.systemGray6), Color(.systemGray6)]), startPoint: .top, endPoint: .bottom)
             )
-
+            
         }
     }
     

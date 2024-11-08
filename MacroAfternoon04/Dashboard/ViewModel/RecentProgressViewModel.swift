@@ -12,6 +12,7 @@ import SwiftData
 class RecentProgressViewModel: ObservableObject {
     @Published var lastDate: Date = Date()
     @Published var lastPhotos: [Data] = []
+    
     let modelContext: ModelContext
     
     init(modelContext: ModelContext) {

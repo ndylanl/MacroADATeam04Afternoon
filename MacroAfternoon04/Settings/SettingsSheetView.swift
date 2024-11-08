@@ -265,7 +265,7 @@ struct SettingsSheetView: View {
                             //---- selectedDay
                             selectedDay = selectedPickerDay
                             UserDefaults.standard.set(self.selectedDay, forKey: "selectedDay")
-                            
+                            //---- notification
                             addProgressNotification(selectedDay: selectedDay)
                             
                             //----

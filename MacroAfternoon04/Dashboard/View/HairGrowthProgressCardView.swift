@@ -78,6 +78,7 @@ struct HairGrowthProgressCardView: View {
         .onChange(of: showingAddProgressSheet) { oldValue, newValue in
             checkButtonAvailability()
             checkRecentAvailability()
+            viewModel.fetchLastData()
         }
         .onChange(of: selectedDay) { oldValue, newValue in
             checkButtonAvailability()

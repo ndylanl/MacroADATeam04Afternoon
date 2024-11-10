@@ -60,7 +60,7 @@ func detectObjectsInImage(trackProgress: TrackProgressModel) {
             guard let uiImage = imageData.toUIImage() else { continue }
             
             do{
-                guard let model = try? VNCoreMLModel(for: best().model) else { return }
+                guard let model = try? VNCoreMLModel(for: NewModel().model) else { return }
                 
                 let request = VNCoreMLRequest(model: model) { (request, error) in
                     if let results = request.results as? [VNRecognizedObjectObservation] {
@@ -90,7 +90,7 @@ func checkPicHasDetection(uiImage: UIImage) -> Bool{
     var detectedObjects = 0
     
     do{
-        guard let model = try? VNCoreMLModel(for: best().model) else { return false}
+        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false}
         
         let request = VNCoreMLRequest(model: model) { (request, error) in
             if let results = request.results as? [VNRecognizedObjectObservation] {

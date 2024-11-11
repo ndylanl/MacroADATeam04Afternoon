@@ -185,6 +185,7 @@ struct YourActivityCardView: View {
         //        .task {
         //            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
         //        }
+        .padding(.vertical, 10)
     }
     func cardActivityWidthSize() -> CGFloat{
         (UIScreen.main.bounds.width * 170 / 430)

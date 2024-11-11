@@ -41,14 +41,14 @@ struct SuggestionCardView: View {
             movementData = String(format: "%.1f", healthViewModel.averageMovement)
         }
         
-        if Int(sleepData)! <= 6{
+        if Int(sleepData) ?? 7 <= 6{
             HStack{
                 Text("·")
                 Text("Have more sleep time")
             }
         }
         
-        if Int(movementData)! <= 2000 {
+        if Int(movementData) ?? 2001 <= 2000 {
             HStack{
                 Text("·")
                 Text("Daily workout is recommended")

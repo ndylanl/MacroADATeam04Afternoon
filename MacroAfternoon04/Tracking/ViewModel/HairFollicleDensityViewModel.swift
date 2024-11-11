@@ -123,7 +123,7 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
 import UIKit
 import Vision
 
-func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.1) {
+func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.2) {
     // Iterate through each image in hairPicture
     print("DETECT OBJECTS IN IMAGE")
     
@@ -177,7 +177,7 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
 }
 
 
-func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.1) -> Bool {
+func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) -> Bool {
     var detectedObjects = 0
     
     do {

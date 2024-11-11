@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InfoSubtractionSheetView: View {
-    
+
     @Binding var isPresented: Bool
     
     var body: some View {

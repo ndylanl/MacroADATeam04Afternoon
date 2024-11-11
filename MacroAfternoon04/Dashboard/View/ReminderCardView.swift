@@ -90,7 +90,8 @@ struct ReminderCardView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color("PrimaryColor"), lineWidth: 0.5))
-        .shadow(radius:3, x:0, y:1)
+        //.shadow(radius:3, x:0, y:1)
+        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
     }
     
     func cardWidthSize() -> CGFloat {

@@ -90,15 +90,14 @@ struct CompareReportDetailSheetView: View {
                     .frame(width: UIScreen.main.bounds.width * 340 / 430)
                     .padding(.vertical)
                     
-                    if Int(viewModel.sleepData)! <= 6{
+                    if Int(viewModel.sleepData) ?? 7 <= 6{
                         HStack{
                             Text("·")
                             Text("Have more sleep time")
                         }
                     }
                     
-                    
-                    if Int(viewModel.movementData)! <= 2000 {
+                    if Int(viewModel.movementData) ?? 2001 <= 2000 {
                         HStack{
                             Text("·")
                             Text("Daily workout is recommended")

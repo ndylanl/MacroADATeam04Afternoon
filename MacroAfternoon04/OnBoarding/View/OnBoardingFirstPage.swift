@@ -94,6 +94,9 @@ struct OnBoardingFirstPageView: View {
                     selectedDay = currentDay
                     UserDefaults.standard.set(selectedDay, forKey: "selectedDay")
                     
+                    UserDefaults.standard.set(8, forKey: "selectedHour")
+                    UserDefaults.standard.set(0, forKey: "selectedMinute")
+                    
                     navigateToSecondOnBoarding = true
                     
                 } label: {

@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-public func addProgressNotification(selectedDay: Int, selectedHour: Int = 9, selectedMinute: Int = 0) {
+public func addProgressNotification(selectedDay: Int, selectedHour: Int = 8, selectedMinute: Int = 0) {
     
     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
         if success {

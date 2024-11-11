@@ -22,6 +22,8 @@ struct WeekReportView: View {
 
     @State private var renderedImage: UIImage?
     
+    @State var isOnBoardingReportCompleted = UserDefaults.standard.bool(forKey: "onBoardingReportCompleted")
+    
     let labelColors: [Int: Color] = [
         1: .red,
         2: .purple,
@@ -32,227 +34,231 @@ struct WeekReportView: View {
     ]
     
     var body: some View {
-        ScrollView{
-            VStack{
-                HStack{
-                    Text(formattedDate(date, formatter: dateFormatter))
-                        .font(.body)
-                        .opacity(0.5)
-                    
-                    Spacer()
-                    
-                }
-                .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                
-                TabView{
-                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
-                        //HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
-                        //.clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
-                        // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
-                        
-                        if let image = renderedImage {
-                            Image(uiImage: applyFisheyeEffect(to: image)!)
-                                .resizable()
-                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
-                        }
-                    }
-                }
-                .frame(height: UIScreen.main.bounds.height * 354 / 932)
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-                .padding(.bottom, -24)
-                .onAppear{
-                    let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
-                    renderedImage = renderer.uiImage
-                }
-                
-                VStack(alignment: .leading){
+        if isOnBoardingReportCompleted{
+            ScrollView{
+                VStack{
                     HStack{
-                        Text("Heat Map Information")
+                        Text(formattedDate(date, formatter: dateFormatter))
+                            .font(.body)
+                            .opacity(0.5)
                         
                         Spacer()
                         
-                        Button{
-                            isInfoSheetPresented = true
-                        } label: {
-                            Image(systemName: "info.circle")
-                        }
                     }
+                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
                     
-                    Divider()
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.red)
-                        Text("Hair is unhealthy")
-                    }
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.green)
-                        Text("Hair is normal")
-                    }
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.blue)
-                        Text("Hair is healthy")
-                    }
-                }
-                .padding()
-                .background(.white)
-                .font(.body)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                
-                TabView{
-                    ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
-                        if let uiImage = UIImage(data: photoData) {
-                            AnnotatedImageView(image: uiImage, detections: viewModel.detections[index + 1], viewModel: viewModel)
-                        }
-                    }
-                }
-                .frame(height: UIScreen.main.bounds.height * 434 / 932)
-                .tabViewStyle(.page)
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-                
-                VStack(alignment: .leading){
-                    HStack{
-                        Text("Macro Photo Information")
-                        
-                        Spacer()
-                        
-                        NavigationLink{
-                            RawPhotoView(photos: viewModel.photos)
-                        }label: {
-                            Image(systemName: "photo.on.rectangle")
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.red)
-                        Text("1 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.purple)
-                        Text("2 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.blue)
-                        Text("3 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.green)
-                        Text("4 Strand per Follicle")
-                    }
-                    
-                    HStack{
-                        Text("●")
-                            .foregroundStyle(.yellow)
-                        Text("5 Strand per Follicle")
-                    }
-                    
-                    Text("Average Strands per Follicle: \(String(format: "%.2f", viewModel.averageHairPerFollicle))")
-                        .padding(.top)
-                }
-                .padding()
-                .background(.white)
-                .font(.body)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                
-                VStack(alignment: .leading){
-                    Text("Personal Activities")
-                    
-                    Divider()
-                    
-                    HStack{
-//                        Spacer()
-                        
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text(viewModel.sleepData)
-                                    .font(.title)
-                                Text("hrs")
-                                    .font(.body)
+                    TabView{
+                        if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
+                            //HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4))
+                            //.clipShape(RoundedRectangle(cornerRadius: 110)) // Apply a rounded rectangle mask with a large corner radius
+                            // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
+                            
+                            if let image = renderedImage {
+                                Image(uiImage: applyFisheyeEffect(to: image)!)
+                                    .resizable()
+                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
                             }
-                            HStack{
-                                Image(systemName: "moon.stars.fill")
-                                Text("Sleep")
-                            }
-                            .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
-                        )
-                        
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text(viewModel.movementData)
-                                    .font(.title)
-                                Text("cal")
-                                    .font(.body)
-                            }
-                            HStack{
-                                Image(systemName: "waveform.path.ecg")
-                                Text("Movement")
-                            }
-                            .font(.footnote)
-                        }
-                        .padding()
-                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
-                        )
-                        
-//                        Spacer()
+                    }
+                    .frame(height: UIScreen.main.bounds.height * 354 / 932)
+                    .tabViewStyle(.page)
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .padding(.bottom, -24)
+                    .onAppear{
+                        let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+                        renderedImage = renderer.uiImage
                     }
                     
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("Heat Map Information")
+                            
+                            Spacer()
+                            
+                            Button{
+                                isInfoSheetPresented = true
+                            } label: {
+                                Image(systemName: "info.circle")
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.red)
+                            Text("Hair is unhealthy")
+                        }
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.green)
+                            Text("Hair is normal")
+                        }
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.blue)
+                            Text("Hair is healthy")
+                        }
+                    }
+                    .padding()
+                    .background(.white)
+                    .font(.body)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                    
+                    TabView{
+                        ForEach(Array(viewModel.photos.enumerated()), id: \.element) { index, photoData in
+                            if let uiImage = UIImage(data: photoData) {
+                                AnnotatedImageView(image: uiImage, detections: viewModel.detections[index + 1], viewModel: viewModel)
+                            }
+                        }
+                    }
+                    .frame(height: UIScreen.main.bounds.height * 434 / 932)
+                    .tabViewStyle(.page)
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    
+                    VStack(alignment: .leading){
+                        HStack{
+                            Text("Macro Photo Information")
+                            
+                            Spacer()
+                            
+                            NavigationLink{
+                                RawPhotoView(photos: viewModel.photos)
+                            }label: {
+                                Image(systemName: "photo.on.rectangle")
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.red)
+                            Text("1 Strand per Follicle")
+                        }
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.purple)
+                            Text("2 Strand per Follicle")
+                        }
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.blue)
+                            Text("3 Strand per Follicle")
+                        }
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.green)
+                            Text("4 Strand per Follicle")
+                        }
+                        
+                        HStack{
+                            Text("●")
+                                .foregroundStyle(.yellow)
+                            Text("5 Strand per Follicle")
+                        }
+                        
+                        Text("Average Strands per Follicle: \(String(format: "%.2f", viewModel.averageHairPerFollicle))")
+                            .padding(.top)
+                    }
+                    .padding()
+                    .background(.white)
+                    .font(.body)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                    
+                    VStack(alignment: .leading){
+                        Text("Personal Activities")
+                        
+                        Divider()
+                        
+                        HStack{
+                            //                        Spacer()
+                            
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text(viewModel.sleepData)
+                                        .font(.title)
+                                    Text("hrs")
+                                        .font(.body)
+                                }
+                                HStack{
+                                    Image(systemName: "moon.stars.fill")
+                                    Text("Sleep")
+                                }
+                                .font(.footnote)
+                            }
+                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(.black, lineWidth: 0.5)
+                            )
+                            
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text(viewModel.movementData)
+                                        .font(.title)
+                                    Text("cal")
+                                        .font(.body)
+                                }
+                                HStack{
+                                    Image(systemName: "waveform.path.ecg")
+                                    Text("Movement")
+                                }
+                                .font(.footnote)
+                            }
+                            .padding()
+                            .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(.black, lineWidth: 0.5)
+                            )
+                            
+                            //                        Spacer()
+                        }
+                        
+                    }
+                    .padding()
+                    .background(.white)
+                    .font(.body)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                    //                .padding(.vertical)
+                    
+                    
+                    Button{
+                        isComparePresented = true
+                    } label: {
+                        Text("Compare Reports")
+                            .foregroundStyle(Color("SecondaryColor"))
+                    }
+                    .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+                    .background(Color("PrimaryColor"))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    
                 }
-                .padding()
-                .background(.white)
-                .font(.body)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .frame(width: UIScreen.main.bounds.width * 374 / 430)
-//                .padding(.vertical)
-                
-                
-                Button{
-                    isComparePresented = true
-                } label: {
-                    Text("Compare Reports")
-                        .foregroundStyle(Color("SecondaryColor"))
-                }
-                .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
-                .background(Color("PrimaryColor"))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                
+                .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")
             }
-            .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")
-        }
-        .background(Color(.systemGray6))
-        .onAppear {
-            viewModel.weekNumber = weekOfMonth(for: date)
-            viewModel.fetchData(weekDate: date)
-            healthViewModel.fetchHealthData()
-            viewModel.setPersonalActivity(date: date, healthViewModel: healthViewModel)
-        }
-        .sheet(isPresented: $isInfoSheetPresented) {
-            InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
-        }
-        .sheet(isPresented: $isComparePresented){
-            CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
-                .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
+            .background(Color(.systemGray6))
+            .onAppear {
+                viewModel.weekNumber = weekOfMonth(for: date)
+                viewModel.fetchData(weekDate: date)
+                healthViewModel.fetchHealthData()
+                viewModel.setPersonalActivity(date: date, healthViewModel: healthViewModel)
+            }
+            .sheet(isPresented: $isInfoSheetPresented) {
+                InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
+            }
+            .sheet(isPresented: $isComparePresented){
+                CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
+                    .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
+            }
+        } else {
+            OnBoardingReportView(isOnBoardingHistoryComplete: $isOnBoardingReportCompleted)
         }
     }
     

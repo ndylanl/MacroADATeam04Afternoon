@@ -12,7 +12,7 @@ struct OnBoardingReportView: View {
     @Binding var isOnBoardingHistoryComplete: Bool
     
     var body: some View {
-        NavigationStack{
+//        NavigationStack{
             VStack(alignment: .leading){
                 Text("Track Your Hair Growth")
                     .font(.title)
@@ -61,7 +61,7 @@ struct OnBoardingReportView: View {
                 Button{
                     isOnBoardingHistoryComplete = true
                     
-                    UserDefaults.standard.set(isOnBoardingHistoryComplete, forKey: "isOnBoardingHistoryComplete")
+                    UserDefaults.standard.set(isOnBoardingHistoryComplete, forKey: "onBoardingReportCompleted")
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }
@@ -89,8 +89,9 @@ struct OnBoardingReportView: View {
             .background(
                 LinearGradient(colors: [Color("SecondaryColor"), .white], startPoint: .bottom, endPoint: .top)
             )
+            .toolbarVisibility(.hidden)
         }
-    }
+//    }
 }
 
 #Preview {

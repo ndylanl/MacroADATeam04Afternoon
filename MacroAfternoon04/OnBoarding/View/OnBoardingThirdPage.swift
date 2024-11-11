@@ -39,6 +39,10 @@ struct OnBoardingThirdPageView: View {
                 isOnBoardingComplete = true
                 UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
                 
+                UserDefaults.standard.set(8, forKey: "selectedHour")
+                UserDefaults.standard.set(0, forKey: "selectedMinute")
+
+                
             } label: {
                 Text("Go to Dashboard")
             }

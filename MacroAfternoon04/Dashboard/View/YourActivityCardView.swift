@@ -9,6 +9,7 @@ import SwiftUI
 
 struct YourActivityCardView: View {
     @EnvironmentObject var healthViewModel: HealthViewModel // Integrasi HealthViewModel
+    @Binding var isInfoSheetPresented: Bool
     
     var body: some View {
         ZStack(){
@@ -18,8 +19,18 @@ struct YourActivityCardView: View {
             //                .clipShape(RoundedRectangle(cornerRadius: 18))
             
             VStack(alignment: .leading){
-                Text("Last Result & Activity")
-                    .font(.body)
+                HStack{
+                    Text("Last Result & Activity")
+                        .font(.body)
+                    
+                    Spacer()
+                    
+                    Button{
+                        isInfoSheetPresented = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                }
                 
                 Divider()
                 
@@ -188,6 +199,3 @@ struct YourActivityCardView: View {
     }
 }
 
-#Preview {
-    YourActivityCardView()
-}

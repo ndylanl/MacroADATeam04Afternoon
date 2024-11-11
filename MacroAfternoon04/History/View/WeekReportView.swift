@@ -11,8 +11,6 @@ import SwiftData
 struct WeekReportView: View {
     var date: Date
     @Environment(\.modelContext) private var modelContext
-    //    @State private var photos: [Data] = []
-    //    @State private var detections: [[DetectedObject]] = []
     
     @State private var isInfoSheetPresented = false
     
@@ -43,11 +41,6 @@ struct WeekReportView: View {
                     
                     Spacer()
                     
-//                    NavigationLink{
-//                        RawPhotoView(photos: viewModel.photos)
-//                    }label: {
-//                        Text("Raw Photos")
-//                    }
                 }
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
@@ -200,22 +193,6 @@ struct WeekReportView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(.black, lineWidth: 0.5)
                         )
-                        
-//                        VStack(alignment: .leading){
-//                            HStack{
-//                                Text("100")
-//                                    .font(.title)
-//                                Text("pts")
-//                                    .font(.body)
-//                            }
-//                            Text("􀙌 Stress")
-//                                .font(.footnote)
-//                        }
-//                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 12)
-//                                .stroke(.black, lineWidth: 0.5)
-//                        )
                         
                         VStack(alignment: .leading){
                             HStack{

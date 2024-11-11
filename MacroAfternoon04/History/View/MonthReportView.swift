@@ -20,6 +20,9 @@ struct MonthReportView: View {
     
     @State private var renderedImage: UIImage?
     
+    @State var showingSleepAndMovementReport = false
+
+    
     var body: some View {
         ScrollView{
             VStack{
@@ -85,7 +88,18 @@ struct MonthReportView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 VStack(alignment: .leading){
-                    Text("Last Result & Personal Activities")
+                    HStack{
+                        Text("Last Result & Personal Activites")
+                            .font(.body)
+                        
+                        Spacer()
+                        
+                        Button{
+                            showingSleepAndMovementReport = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
                     
                     Divider()
                     
@@ -216,6 +230,9 @@ struct MonthReportView: View {
         .sheet(isPresented: $isInfoSheetPresented) {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
         }
+        .sheet(isPresented: $showingSleepAndMovementReport, content: {
+            InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
+        })
     }
     
     private func  photoSize() -> CGFloat {

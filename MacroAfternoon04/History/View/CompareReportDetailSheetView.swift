@@ -18,6 +18,8 @@ struct CompareReportDetailSheetView: View {
     
     @State private var renderedImage: UIImage?
     
+    @State var showingSleepAndMovementReport = false
+    
     var body: some View {
         ScrollView{
             VStack{
@@ -87,7 +89,18 @@ struct CompareReportDetailSheetView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 VStack(alignment: .leading){
-                    Text("Last Result & Personal Activities")
+                    HStack{
+                        Text("Last Result & Personal Activites")
+                            .font(.body)
+                        
+                        Spacer()
+                        
+                        Button{
+                            showingSleepAndMovementReport = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
                     
                     Divider()
                     
@@ -196,6 +209,9 @@ struct CompareReportDetailSheetView: View {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
                 .background(Color(.systemGray6).ignoresSafeArea(.all))
         }
+        .sheet(isPresented: $showingSleepAndMovementReport, content: {
+            InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
+        })
         .onAppear{
             let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
             renderedImage = renderer.uiImage

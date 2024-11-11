@@ -47,7 +47,17 @@ struct MonthReportView: View {
                 }
                 
                 VStack(alignment: .leading){
-                    Text("Heat Map Information")
+                    HStack{
+                        Text("Heat Map Information")
+                        
+                        Spacer()
+                        
+                        Button{
+                            isInfoSheetPresented = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
                     
                     Divider()
                     

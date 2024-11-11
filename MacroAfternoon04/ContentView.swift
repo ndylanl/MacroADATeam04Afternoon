@@ -19,6 +19,8 @@ struct ContentView: View {
     
     @State var showingAddProgressSheet = false
     
+    @State var showingSleepAndMovementSheet = false
+    
     @State var currentScalpPosition: Int = 1
       
     @State var selectedDay: Int = UserDefaults.standard.integer(forKey: "selectedDay")
@@ -32,7 +34,7 @@ struct ContentView: View {
         } else {
             TabView(selection: $selectedTab) {
                 Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
-                    DashboardView(showingAddProgressSheet: $showingAddProgressSheet, selectedTab: $selectedTab, currentScalpPosition: $currentScalpPosition, selectedDay: $selectedDay)
+                    DashboardView(showingAddProgressSheet: $showingAddProgressSheet, showingSleepAndMovementSheet: $showingSleepAndMovementSheet, selectedTab: $selectedTab, currentScalpPosition: $currentScalpPosition, selectedDay: $selectedDay)
                 }
                 
                 Tab("History", systemImage: "hourglass", value: 1) {

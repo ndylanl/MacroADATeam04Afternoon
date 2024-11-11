@@ -15,6 +15,8 @@ struct DashboardView: View {
     
     @Binding var showingAddProgressSheet: Bool
     
+    @Binding var showingSleepAndMovementSheet: Bool
+    
     @Binding var selectedTab: Int
     
     @Binding var currentScalpPosition: Int
@@ -49,7 +51,7 @@ struct DashboardView: View {
                         
                         HStack {
                             Spacer()
-                            YourActivityCardView()
+                            YourActivityCardView(isInfoSheetPresented: $showingSleepAndMovementSheet)
                             Spacer()
                         }
                         Spacer()
@@ -82,10 +84,9 @@ struct DashboardView: View {
             .sheet(isPresented: $showingSettingsSheet, content: {
                 SettingsSheetView(selectedDay: $selectedDay)
             })
+            .sheet(isPresented: $showingSleepAndMovementSheet, content: {
+                InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementSheet)
+            })
         }
     }
 }
-//
-//#Preview {
-//    DashboardView(userName: .constant("Anin"), showingAddProgressSheet: .constant(false), selectedTab: .constant(0))
-//}

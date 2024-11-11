@@ -76,7 +76,8 @@ struct HairGrowthProgressCardView: View {
                     .disabled(selectedOption == "")
                     
                 }
-                .shadow(radius: 4, x: 0, y: 2)
+                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+                //.shadow(radius:3, x:0, y:1)
             }
             .frame(width: cardWidthSize() - 32)
         }

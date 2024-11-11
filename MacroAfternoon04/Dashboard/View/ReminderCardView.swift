@@ -63,11 +63,20 @@ struct ReminderCardView: View {
                             .foregroundStyle(Color.black)
                     } else {
                         // Jika ada reminder tapi tidak ada yang aktif
-                        Text("+ Add New Reminder")
-                            .font(.title)
+                        HStack{
+                            Image(systemName: "bell.fill")
+                            Text("Add New Reminder")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                            
+                        }
+                        .font(.title)
+                        .foregroundStyle(Color("PrimaryColor"))
                         
-                        Text("You have no active reminders")
+                        
+                        Text("You have no reminders yet")
                             .font(.body)
+                            .foregroundStyle(Color("NeutralColor"))
                     }
 
                 }
@@ -81,7 +90,8 @@ struct ReminderCardView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color("PrimaryColor"), lineWidth: 0.5))
-        .shadow(radius:3, x:0, y:1)
+        //.shadow(radius:3, x:0, y:1)
+        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
     }
     
     func cardWidthSize() -> CGFloat {

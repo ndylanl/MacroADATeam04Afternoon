@@ -38,7 +38,7 @@ struct ReminderListView: View {
                         } label: {
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Text(reminder.reminderTime, style: .time) // Fetch reminderTime from ReminderModel
+                                    Text(reminder.reminderTime, style: .time)
                                         .font(.system(size: 48, weight: .light, design: .default))
                                     
                                     Spacer()
@@ -53,19 +53,39 @@ struct ReminderListView: View {
                                     ))
                                     .tint(Color("PrimaryColor")) // Set the color of the toggle
                                 }
+                                
                                 HStack {
-                                    Text("\(reminder.label)\( !reminder.label.isEmpty && !reminder.repeatOption.isEmpty && reminder.repeatOption != [.never] ? "," : "")")
-                                    
-                                    if !reminder.repeatOption.isEmpty && reminder.repeatOption != [.never] {
-                                        Text(reminder.repeatOption
+                                    Text(
+                                        "\(reminder.label)" +
+                                        (!reminder.label.isEmpty && !reminder.repeatOption.isEmpty && reminder.repeatOption != [.never] ? ", " : "") +
+                                        reminder.repeatOption
                                             .filter { $0 != .never }
-                                            .map { $0.rawValue }
-                                            .joined(separator: ", "))
-                                    }
+                                            .sorted { RepeatOption.allCases.firstIndex(of: $0)! < RepeatOption.allCases.firstIndex(of: $1)! }
+                                            .enumerated()
+                                            .map { index, option in
+                                                let isLastItem = index == reminder.repeatOption.count - 1
+                                                _ = index == reminder.repeatOption.count - 2
+                                                
+                                                // For exactly two options, use full names with "and" between
+                                                if reminder.repeatOption.count == 2 {
+                                                    return index == 0 ? option.rawValue : " and \(option.rawValue)"
+                                                }
+                                                // For more than two options, abbreviate and add "and" before the last item
+                                                else if reminder.repeatOption.count > 2 {
+                                                    let abbreviated = String(option.rawValue.prefix(3))
+                                                    return isLastItem ? "and \(abbreviated)" : abbreviated
+                                                }
+                                                // For only one option, show the full name
+                                                else {
+                                                    return option.rawValue
+                                                }
+                                            }
+                                            .joined(separator: reminder.repeatOption.count > 2 ? ", " : "")
+                                    )
+                                    .font(.system(size: 15))
                                 }
-                                
-                                
-                                
+
+
                                 
                             }
                         }

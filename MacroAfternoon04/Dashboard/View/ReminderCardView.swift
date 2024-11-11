@@ -63,11 +63,20 @@ struct ReminderCardView: View {
                             .foregroundStyle(Color.black)
                     } else {
                         // Jika ada reminder tapi tidak ada yang aktif
-                        Text("+ Add New Reminder")
-                            .font(.title)
+                        HStack{
+                            Image(systemName: "bell.fill")
+                            Text("Add New Reminder")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                            
+                        }
+                        .font(.title)
+                        .foregroundStyle(Color("PrimaryColor"))
                         
-                        Text("You have no active reminders")
+                        
+                        Text("You have no reminders yet")
                             .font(.body)
+                            .foregroundStyle(Color("NeutralColor"))
                     }
 
                 }

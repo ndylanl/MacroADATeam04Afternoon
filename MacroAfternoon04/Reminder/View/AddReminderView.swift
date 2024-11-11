@@ -55,6 +55,22 @@ struct AddReminderView: View {
                             }
                             .tint(.gray)
                             
+//                            NavigationLink(destination: {
+//                                MultiSelectPickerView(selectedItems: $selectedRepeatOptions)
+//                                    .navigationTitle("Repeat")
+//                            }) {
+//                                HStack {
+//                                    Text("Repeat")
+//                                    Spacer()
+//                                    Text(selectedRepeatOptions
+//                                        .sorted { RepeatOption.allCases.firstIndex(of: $0)! < RepeatOption.allCases.firstIndex(of: $1)! }
+//                                        .map { selectedRepeatOptions.count > 2 ? String($0.rawValue.prefix(3)) : $0.rawValue }
+//                                        .joined(separator: ", "))
+//                                        .foregroundColor(.gray)
+//                                    
+//                                }
+//                            }
+                            
                             NavigationLink(destination: {
                                 MultiSelectPickerView(selectedItems: $selectedRepeatOptions)
                                     .navigationTitle("Repeat")
@@ -62,14 +78,37 @@ struct AddReminderView: View {
                                 HStack {
                                     Text("Repeat")
                                     Spacer()
-                                    Text(selectedRepeatOptions
-                                        .sorted { RepeatOption.allCases.firstIndex(of: $0)! < RepeatOption.allCases.firstIndex(of: $1)! }
-                                        .map { $0.rawValue }
-                                        .joined(separator: ", "))
-                                        .foregroundColor(.gray)
                                     
+                                    Text(
+                                        selectedRepeatOptions
+                                            .sorted { RepeatOption.allCases.firstIndex(of: $0)! < RepeatOption.allCases.firstIndex(of: $1)! }
+                                            .enumerated()
+                                            .map { index, option in
+                                                let isLastItem = index == selectedRepeatOptions.count - 1
+                                                _ = index == selectedRepeatOptions.count - 2
+                                                
+                                                // If exactly two options, use full names with "and" in between without commas
+                                                if selectedRepeatOptions.count == 2 {
+                                                    return index == 0 ? "\(option.rawValue)" : " and \(option.rawValue)"
+                                                }
+                                                // If more than two options, use abbreviations with commas and "and" before the last item
+                                                else if selectedRepeatOptions.count > 2 {
+                                                    let formattedOption = String(option.rawValue.prefix(3))
+                                                    return isLastItem ? "and \(formattedOption)" : formattedOption
+                                                }
+                                                // If only one option, show full name
+                                                else {
+                                                    return option.rawValue
+                                                }
+                                            }
+                                            .joined(separator: selectedRepeatOptions.count > 2 ? ", " : "")
+                                    )
+                                    .foregroundColor(.gray)
                                 }
                             }
+
+
+
                             
                         
                             

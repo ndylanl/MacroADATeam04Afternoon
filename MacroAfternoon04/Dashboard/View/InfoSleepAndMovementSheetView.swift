@@ -15,7 +15,7 @@ struct InfoSleepAndMovementSheetView: View {
         NavigationView{
             ScrollView{
                 VStack (alignment: .leading){
-                    Text("How do we get this information")
+                    Text("How do we get this information?")
                         .font(.title2).bold()
                     
                     Text("Average Sleep Duration")

@@ -22,6 +22,8 @@ struct WeekReportView: View {
 
     @State private var renderedImage: UIImage?
     
+    @State var showingSleepAndMovementReport = false
+    
     let labelColors: [Int: Color] = [
         1: .red,
         2: .purple,
@@ -169,12 +171,22 @@ struct WeekReportView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 VStack(alignment: .leading){
-                    Text("Personal Activities")
+                    HStack{
+                        Text("Personal Activities")
+                            .font(.body)
+                        
+                        Spacer()
+                        
+                        Button{
+                            showingSleepAndMovementReport = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                    }
                     
                     Divider()
                     
                     HStack{
-//                        Spacer()
                         
                         VStack(alignment: .leading){
                             HStack{
@@ -215,7 +227,6 @@ struct WeekReportView: View {
                                 .stroke(.black, lineWidth: 0.5)
                         )
                         
-//                        Spacer()
                     }
                     
                 }
@@ -224,8 +235,6 @@ struct WeekReportView: View {
                 .font(.body)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
-//                .padding(.vertical)
-                
                 
                 Button{
                     isComparePresented = true
@@ -254,6 +263,9 @@ struct WeekReportView: View {
             CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
                 .background(Color(.systemGray6).edgesIgnoringSafeArea(.all))
         }
+        .sheet(isPresented: $showingSleepAndMovementReport, content: {
+            InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
+        })
     }
     
     func photoSize() -> CGFloat {

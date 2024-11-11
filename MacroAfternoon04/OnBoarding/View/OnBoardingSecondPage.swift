@@ -20,8 +20,8 @@ struct OnBoardingSecondPageView: View {
     var body: some View {
         VStack(alignment: .leading){
             Text("Sleep, Stress, and Movement Detection")
-                .font(.title)
-                .frame(height: UIScreen.main.bounds.height * 80 / 932)
+                .font(.largeTitle)
+                .frame(height: UIScreen.main.bounds.height * 100 / 932)
             
             Text("For more personalized experience, access to Apple Health is required to detect your activities.")
                 .multilineTextAlignment(.leading)
@@ -65,9 +65,6 @@ struct OnBoardingSecondPageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
             Button{
-                //                isOnBoardingComplete = true
-                //                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
-                //                UserDefaults.standard.set(false, forKey: "shouldRequestAuthorization")
                 
                 let currentDay = Calendar.current.component(.weekday, from: Date())
                 selectedDay = currentDay

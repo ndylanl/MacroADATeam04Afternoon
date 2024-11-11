@@ -11,6 +11,8 @@ struct OnBoardingReportView: View {
     
     @Binding var isOnBoardingHistoryComplete: Bool
     
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
 //        NavigationStack{
             VStack(alignment: .leading){
@@ -59,9 +61,11 @@ struct OnBoardingReportView: View {
                 Spacer()
                 
                 Button{
-                    isOnBoardingHistoryComplete = true
+                    isOnBoardingHistoryComplete = false
                     
                     UserDefaults.standard.set(isOnBoardingHistoryComplete, forKey: "onBoardingReportCompleted")
+                    
+                    
                 } label: {
                     Text("Start Tracking Hair Growth")
                 }

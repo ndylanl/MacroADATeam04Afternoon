@@ -14,7 +14,7 @@ struct OnBoardingThirdPageView: View {
     var body: some View {
         VStack(alignment: .center){
             Text("Congratulations")
-                .font(.title)
+                .font(.largeTitle)
             
             Text("You have completed your first hair progress tracking")
                 .font(.title2)
@@ -42,6 +42,7 @@ struct OnBoardingThirdPageView: View {
                 UserDefaults.standard.set(8, forKey: "selectedHour")
                 UserDefaults.standard.set(0, forKey: "selectedMinute")
 
+                UserDefaults.standard.set(true, forKey: "onBoardingReportCompleted")
                 
             } label: {
                 Text("Go to Dashboard")

@@ -181,6 +181,7 @@ struct WeekReportView: View {
                     Divider()
                     
                     HStack{
+//                        Spacer()
                         
                         VStack(alignment: .leading){
                             HStack{
@@ -195,11 +196,13 @@ struct WeekReportView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(.black, lineWidth: 0.5)
                         )
+                        
+                        Spacer()
                         
 //                        VStack(alignment: .leading){
 //                            HStack{
@@ -230,20 +233,23 @@ struct WeekReportView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .padding()
+                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(.black, lineWidth: 0.5)
                         )
+                        
+//                        Spacer()
                     }
                     
                 }
                 .padding()
                 .background(.white)
                 .font(.body)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .padding(.vertical)
+//                .padding(.vertical)
                 
                 
                 Button{

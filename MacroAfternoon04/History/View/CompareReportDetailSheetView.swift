@@ -129,7 +129,6 @@ struct CompareReportDetailSheetView: View {
                     .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
 
                     HStack{
-                        
                         VStack(alignment: .leading){
                             HStack{
                                 Text(viewModel.sleepData)
@@ -143,11 +142,13 @@ struct CompareReportDetailSheetView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(.black, lineWidth: 0.5)
                         )
+                        
+                        Spacer()
                         
                         VStack(alignment: .leading){
                             HStack{
@@ -162,7 +163,7 @@ struct CompareReportDetailSheetView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 111 / 430, height: UIScreen.main.bounds.height * 79 / 932)
+                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(.black, lineWidth: 0.5)
@@ -173,8 +174,8 @@ struct CompareReportDetailSheetView: View {
                 .padding()
                 .background(.white)
                 .font(.body)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             
             .navigationTitle("Compare Reports")

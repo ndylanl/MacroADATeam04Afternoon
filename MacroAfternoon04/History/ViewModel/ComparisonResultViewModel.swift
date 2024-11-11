@@ -39,7 +39,7 @@ class ComparisonResultViewModel: ObservableObject {
     }
     
     @MainActor func setPersonalActivity(dateA: Date, dateB: Date,healthViewModel: HealthViewModel){
-        let calendar = Calendar.current
+        _ = Calendar.current
         healthViewModel.calculateAverageSleep(startDate: dateA, endDate: dateB)
         healthViewModel.calculateAverageMovement(startDate: dateA, endDate: dateB)
         

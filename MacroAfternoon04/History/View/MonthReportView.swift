@@ -88,19 +88,18 @@ struct MonthReportView: View {
                     .frame(width: UIScreen.main.bounds.width * 340 / 430)
                     .padding(.vertical)
                     
-                    HStack{
-                        Text("·")
-                        Text("Have more sleep time")
+                    if Int(viewModel.sleepData)! <= 6{
+                        HStack{
+                            Text("·")
+                            Text("Have more sleep time")
+                        }
                     }
                     
-                    HStack{
-                        Text("·")
-                        Text("Reduce your stress")
-                    }
-                    
-                    HStack{
-                        Text("·")
-                        Text("Start more workouts")
+                    if Int(viewModel.movementData)! <= 2000 {
+                        HStack{
+                            Text("·")
+                            Text("Daily workout is recommended")
+                        }
                     }
                     
                     HStack{

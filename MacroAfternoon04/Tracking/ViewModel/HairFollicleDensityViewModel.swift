@@ -50,76 +50,169 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
     return (maxValue, maxLabel)
 }
 
-func detectObjectsInImage(trackProgress: TrackProgressModel) {
+//func detectObjectsInImage(trackProgress: TrackProgressModel) {
+//    // Iterate through each image in hairPicture
+//    print("DETECT OBJECTS IN IMAGE")
+//    for imageDataArray in trackProgress.hairPicture {
+//        var detectedObjects: [DetectedObject] = []
+//        
+//        for imageData in imageDataArray.hairPicture {
+//            guard let uiImage = imageData.toUIImage() else { continue }
+//            
+//            do{
+//                guard let model = try? VNCoreMLModel(for: NewModel().model) else { return }
+//                
+//                let request = VNCoreMLRequest(model: model) { (request, error) in
+//                    if let results = request.results as? [VNRecognizedObjectObservation] {
+//                        detectedObjects = results.map { observation in
+//                            // Extract bounding box and label
+//                            let boundingBox = observation.boundingBox
+//                            let label = observation.labels.first?.identifier ?? "Unknown"
+//
+//                            let detectedObject = DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
+//                            
+//                            detectedObjects.append(detectedObject)
+//                            return detectedObject
+//                        }
+//                    }
+//                }
+//                
+//                let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
+//                try? handler.perform([request])
+//                
+//            }
+//            trackProgress.detections.append(detectedObjects)
+//        }
+//    }
+//}
+
+//func checkPicHasDetection(uiImage: UIImage) -> Bool{
+//    var detectedObjects = 0
+//    
+//    do{
+//        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false}
+//        
+//        let request = VNCoreMLRequest(model: model) { (request, error) in
+//            if let results = request.results as? [VNRecognizedObjectObservation] {
+//                detectedObjects = results.count { observation in
+//                    // Extract bounding box and label
+//                    if results.count > 0 {
+//                        detectedObjects = results.count
+//                        print("TRUE")
+//                        return true
+//                    } else {
+//                        detectedObjects = 0
+//                        print("FALSE")
+//                        return false
+//                    }
+//                }
+//            }
+//        }
+//        
+//        let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
+//        try? handler.perform([request])
+//    }
+//    
+//    if detectedObjects > 0 {
+//        return true
+//    } else{
+//        return false
+//    }
+//}
+
+import UIKit
+import Vision
+
+func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.1) {
     // Iterate through each image in hairPicture
     print("DETECT OBJECTS IN IMAGE")
+    
     for imageDataArray in trackProgress.hairPicture {
         var detectedObjects: [DetectedObject] = []
         
         for imageData in imageDataArray.hairPicture {
             guard let uiImage = imageData.toUIImage() else { continue }
             
-            do{
+            do {
+                // Create a VNCoreMLModel from your ML model
                 guard let model = try? VNCoreMLModel(for: NewModel().model) else { return }
-                
+
+                // Create a request for the model
                 let request = VNCoreMLRequest(model: model) { (request, error) in
                     if let results = request.results as? [VNRecognizedObjectObservation] {
-                        detectedObjects = results.map { observation in
+                        // Filter results based on the confidence threshold
+                        detectedObjects = results.filter { observation in
+                            observation.confidence >= confidenceThreshold
+                        }.map { observation in
                             // Extract bounding box and label
                             let boundingBox = observation.boundingBox
                             let label = observation.labels.first?.identifier ?? "Unknown"
 
-                            let detectedObject = DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
-                            
-                            detectedObjects.append(detectedObject)
-                            return detectedObject
+                            return DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
                         }
+                        
+                        // Print detected objects for debugging
+                        if detectedObjects.isEmpty {
+                            print("No objects detected above confidence threshold.")
+                        } else {
+                            print("Detected \(detectedObjects.count) objects above confidence threshold.")
+                        }
+                    } else if let error = error {
+                        print("Error during request processing: \(error.localizedDescription)")
                     }
                 }
                 
+                // Create an image request handler and perform the request
                 let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
-                try? handler.perform([request])
+                try handler.perform([request])
                 
+            } catch {
+                print("Error during image processing: \(error.localizedDescription)")
             }
+            
+            // Add filtered detected objects to trackProgress.detections
             trackProgress.detections.append(detectedObjects)
         }
     }
 }
 
-func checkPicHasDetection(uiImage: UIImage) -> Bool{
+
+func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.1) -> Bool {
     var detectedObjects = 0
     
-    do{
-        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false}
+    do {
+        // Create a VNCoreMLModel from your ML model
+        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false }
         
+        // Create a request for the model
         let request = VNCoreMLRequest(model: model) { (request, error) in
             if let results = request.results as? [VNRecognizedObjectObservation] {
-                detectedObjects = results.count { observation in
-                    // Extract bounding box and label
-                    if results.count > 0 {
-                        detectedObjects = results.count
-                        print("TRUE")
-                        return true
-                    } else {
-                        detectedObjects = 0
-                        print("FALSE")
-                        return false
-                    }
+                // Count detected objects that meet the confidence threshold
+                detectedObjects = results.filter { observation in
+                    // Check if the confidence of the observation is above the threshold
+                    return observation.confidence >= confidenceThreshold
+                }.count
+                
+                // Print detection status for debugging
+                if detectedObjects > 0 {
+                    print("TRUE: Detected \(detectedObjects) objects with sufficient confidence.")
+                } else {
+                    print("FALSE: No objects detected above confidence threshold.")
                 }
             }
         }
         
+        // Create an image request handler and perform the request
         let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
         try? handler.perform([request])
+        
+    } catch {
+        print("Error during image processing: \(error)")
     }
     
-    if detectedObjects > 0 {
-        return true
-    } else{
-        return false
-    }
+    // Return true if any objects were detected above the confidence threshold
+    return detectedObjects > 0
 }
-
 
 
 

@@ -215,10 +215,13 @@ struct PreCameraGuideView: View {
                     // this is how to grab it
                     let exampleFetchScalpAreaChosen = UserDefaults.standard.string(forKey: "ScalpAreaChosen")
                     print(exampleFetchScalpAreaChosen!)
-                    showingAddProgressSheet.toggle()
-                    if isOnBoardingComplete{
-                        presentationMode.wrappedValue.dismiss()
-                    }
+                    
+                    showingAddProgressSheet = true
+                    
+//                    if isOnBoardingComplete{
+//                        presentationMode.wrappedValue.dismiss()
+//                    }
+                    
                 } label: {
                     Text("Take Photos Now")
                 }
@@ -259,10 +262,14 @@ struct PreCameraGuideView: View {
                         navigateToSecondOnBoarding = true
                         
                     } else {
+                        
                         presentationMode.wrappedValue.dismiss()
+                        
                     }
                 }){
-                    AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
+                    
+                    AddProgressCameraSheetView(selectedDay: $selectedDay)
+                    
                 }
                 
                 

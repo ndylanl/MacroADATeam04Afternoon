@@ -8,13 +8,23 @@
 import SwiftUI
 import SwiftData
 
+public enum SheetDestination: Identifiable {
+    case addProgress
+    case preCameraGuide
+    
+    public var id: Int {
+        hashValue
+    }
+}
+
 struct HairGrowthProgressCardView: View {
     
     @Environment(\.modelContext) private var modelContext
     
     @Binding var showingAddProgressSheet: Bool
     @Binding var selectedDay: Int
-    @State var showingPreCameraGuideView: Bool = false
+    
+    @State var sheetDestination: SheetDestination?
     
     @StateObject var viewModel: RecentProgressViewModel
     
@@ -22,7 +32,6 @@ struct HairGrowthProgressCardView: View {
     @State private var daysLeft: Int = 7
     
     @State var selectedOption = UserDefaults.standard.string(forKey: "ScalpAreaChosen") ?? ""
-    
     
     init(showingAddProgressSheet: Binding<Bool>, selectedDay: Binding<Int>, modelContext: ModelContext) {
         self._showingAddProgressSheet = showingAddProgressSheet
@@ -45,9 +54,9 @@ struct HairGrowthProgressCardView: View {
                         
                         Button {
                             if selectedOption == "" {
-                                showingPreCameraGuideView = true
+                                sheetDestination = .preCameraGuide
                             } else {
-                                showingAddProgressSheet = true
+                                sheetDestination = .addProgress
                             }
                         } label: {
                             AddProgressCardView()
@@ -83,12 +92,13 @@ struct HairGrowthProgressCardView: View {
         .onChange(of: selectedDay) { oldValue, newValue in
             checkButtonAvailability()
         }
-        .sheet(isPresented: $showingAddProgressSheet) {
-            AddProgressCameraSheetView(showingAddProgressSheet: $showingAddProgressSheet, selectedDay: $selectedDay)
-        }
-        .sheet(isPresented: $showingPreCameraGuideView) {
-            PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: .constant(true), selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
-            
+        .sheet(item: $sheetDestination) { destination in
+            switch destination {
+            case .addProgress:
+                AddProgressCameraSheetView(selectedDay: $selectedDay)
+            case .preCameraGuide:
+                PreCameraGuideView(showingAddProgressSheet: $showingAddProgressSheet, isOnBoardingComplete: .constant(true), selectedDay: $selectedDay, navigateToSecondOnBoarding: .constant(false))
+            }
         }
     }
     

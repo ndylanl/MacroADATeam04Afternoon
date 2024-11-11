@@ -15,7 +15,7 @@ struct AddProgressCameraSheetView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var showingAddProgressSheet: Bool
+//    @Binding var showingAddProgressSheet: Bool
     
     @Binding var selectedDay: Int
     
@@ -51,7 +51,7 @@ struct AddProgressCameraSheetView: View {
             .toolbar{
                 ToolbarItem(placement: .topBarLeading){
                     Button("Cancel") {
-                        showingAddProgressSheet = false
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
@@ -61,12 +61,16 @@ struct AddProgressCameraSheetView: View {
     private func captureImage() {
         if checkPicHasDetection(uiImage: UIImage(cgImage: viewModel.currentFrame!)){
             viewModel.captureImage()
+            
             if currentPage < totalPages {
+                
                 currentPage += 1
                 viewModel.currentScalpPosition = viewModel.currentScalpPositions[currentPage - 1]
+                
             } else {
+                
                 saveImages()
-                showingAddProgressSheet = false
+                
             }
             statusRetry = "Photo Done Successfully"
         } else {

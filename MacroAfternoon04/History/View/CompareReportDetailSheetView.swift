@@ -97,6 +97,7 @@ struct CompareReportDetailSheetView: View {
                         }
                     }
                     
+                    
                     if Int(viewModel.movementData)! <= 2000 {
                         HStack{
                             Text("·")

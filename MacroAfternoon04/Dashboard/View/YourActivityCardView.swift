@@ -30,7 +30,11 @@ struct YourActivityCardView: View {
                     .foregroundStyle(Color("NeutralColor"))
                 
                 AnyLayout(HStackLayout()){
+                    
                     //                HStack{
+                    
+//                    Spacer()
+                    
                     VStack(alignment: .leading){
                         
                         if !healthViewModel.sleepData.isEmpty {
@@ -155,7 +159,7 @@ struct YourActivityCardView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(.black, lineWidth: 0.5))
                     
-                    Spacer()
+//                    Spacer()
 
                 }
                 
@@ -163,8 +167,8 @@ struct YourActivityCardView: View {
             .onAppear {
                 healthViewModel.fetchHealthData()
             }
-            
-            .frame(width: cardWidthSize()-32, alignment: .center)
+            .padding()
+            .frame(width: cardWidthSize(), alignment: .center)
         }
         .frame(width: cardWidthSize(), height: cardHeightSize())
         //        .task {
@@ -172,7 +176,7 @@ struct YourActivityCardView: View {
         //        }
     }
     func cardActivityWidthSize() -> CGFloat{
-        (UIScreen.main.bounds.width * 111 / 430)
+        (UIScreen.main.bounds.width * 170 / 430)
     }
     
     func cardActivityHeightSize() -> CGFloat{

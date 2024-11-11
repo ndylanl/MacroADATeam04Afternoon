@@ -1,0 +1,10 @@
+{
+  "MLModelCreatorDefinedKey" : {
+    "com.apple.createml.version" : "15.0.1",
+    "com.apple.createml.app.tag" : "150",
+    "com.apple.coreml.model.preview.type" : "objectDetector",
+    "iterations" : "30000",
+    "com.apple.createml.app.version" : "6.0 Beta"
+  },
+  "MLModelAuthorKey" : "Nicholas Dylan Lienardi"
+}

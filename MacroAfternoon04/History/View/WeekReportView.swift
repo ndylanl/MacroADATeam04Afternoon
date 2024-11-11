@@ -166,7 +166,7 @@ struct WeekReportView: View {
                         Text("5 Strand per Follicle")
                     }
                     
-                    Text("Average Strands per Follicle: \(viewModel.averageHairPerFollicle)")
+                    Text("Average Strands per Follicle: \(String(format: "%.2f", viewModel.averageHairPerFollicle))")
                         .padding(.top)
                 }
                 .padding()

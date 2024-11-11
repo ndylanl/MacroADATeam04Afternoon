@@ -81,44 +81,43 @@ struct YourActivityCardView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(.black, lineWidth: 0.5))
                     
-                    Spacer()
                     
                     // Menampilkan data Heart Rate dari healthViewModel
-                    VStack(alignment: .leading){
-                        if let heartRateSample = healthViewModel.heartRateData.last {
-                            let heartRate = heartRateSample.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
-                            HStack{
-                                Text(String(format: "%.0f", heartRate))
-                                    .font(.title)
-                                Text("bpm")
-                                    .font(.subheadline)
-                            }
-                            HStack{
-                                Image(systemName: "heart.fill")
-                                Text("Heart rate")
-                            }
-                            .font(.footnote)
-                        } else {
-                            // Placeholder jika tidak ada data heart rate
-                            HStack{
-                                Text("--")
-                                    .font(.title)
-                                Text("bpm")
-                                    .font(.subheadline)
-                            }
-                            HStack{
-                                Image(systemName: "heart.fill")
-                                Text("Heart rate")
-                            }
-                            .font(.footnote)
-                        }
-                    }
-                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(.black, lineWidth: 0.5))
-                    
-                    Spacer()
+//                    VStack(alignment: .leading){
+//                        if let heartRateSample = healthViewModel.heartRateData.last {
+//                            let heartRate = heartRateSample.quantity.doubleValue(for: .count().unitDivided(by: .minute()))
+//                            HStack{
+//                                Text(String(format: "%.0f", heartRate))
+//                                    .font(.title)
+//                                Text("bpm")
+//                                    .font(.subheadline)
+//                            }
+//                            HStack{
+//                                Image(systemName: "heart.fill")
+//                                Text("Heart rate")
+//                            }
+//                            .font(.footnote)
+//                        } else {
+//                            // Placeholder jika tidak ada data heart rate
+//                            HStack{
+//                                Text("--")
+//                                    .font(.title)
+//                                Text("bpm")
+//                                    .font(.subheadline)
+//                            }
+//                            HStack{
+//                                Image(systemName: "heart.fill")
+//                                Text("Heart rate")
+//                            }
+//                            .font(.footnote)
+//                        }
+//                    }
+//                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+//                    .overlay(
+//                        RoundedRectangle(cornerRadius: 12)
+//                            .stroke(.black, lineWidth: 0.5))
+//                    
+//                    Spacer()
                     
                     // Menampilkan data Movement dari healthViewModel
                     VStack(alignment: .leading){
@@ -155,6 +154,9 @@ struct YourActivityCardView: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(.black, lineWidth: 0.5))
+                    
+                    Spacer()
+
                 }
                 
             }

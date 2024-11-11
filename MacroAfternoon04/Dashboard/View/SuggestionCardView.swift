@@ -16,6 +16,12 @@ struct SuggestionCardView: View {
     @State var exerciseSuggestion = true
     @State var otherSuggestion = true
     
+    @State var sleepData = ""
+    @State var movementData = ""
+    
+    @EnvironmentObject var healthViewModel: HealthViewModel
+
+    
     var body: some View {
         VStack(alignment: .center){
             Text("Your hair growth is")
@@ -25,22 +31,29 @@ struct SuggestionCardView: View {
         }
         .frame(width: UIScreen.main.bounds.width * 340 / 430)
         .padding(.vertical)
-        
-        HStack{
-            Text("·")
-            Text("Have more sleep time")
+        .onAppear{
+            let calendar = Calendar.current
+            let startDate = calendar.date(byAdding: .day, value: -1, to: Date())!
+            healthViewModel.calculateAverageSleep(startDate: startDate, endDate: Date())
+            healthViewModel.calculateAverageMovement(startDate: startDate, endDate: Date())
+            
+            sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+            movementData = String(format: "%.1f", healthViewModel.averageMovement)
         }
         
-        HStack{
-            Text("·")
-            Text("Reduce your stress")
+        if Int(sleepData)! <= 6{
+            HStack{
+                Text("·")
+                Text("Have more sleep time")
+            }
         }
         
-        HStack{
-            Text("·")
-            Text("Start more workouts")
+        if Int(movementData)! <= 2000 {
+            HStack{
+                Text("·")
+                Text("Daily workout is recommended")
+            }
         }
-        
         HStack{
             Text("·")
             Text("Be more consistent with applying serum")

@@ -56,6 +56,7 @@ struct HistoryCircleView: View {
         }
         .sheet(isPresented: $showPicker) {
             monthYearPickerSheet
+                .presentationDetents([.fraction(0.2)])
         }
         .sheet(isPresented: $isComparePresented) {
             CompareReportSheetView(viewModel: CompareReportViewModel(modelContext: modelContext))
@@ -66,6 +67,17 @@ struct HistoryCircleView: View {
     private var monthYearPickerButton: some View {
         Button {
             showPicker.toggle()
+//        Menu {
+//            VStack {
+//                Picker("Select Month and Year", selection: $selectedMonthYear) {
+//                    ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
+//                        Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
+//                    }
+//                }
+////                .pickerStyle(WheelPickerStyle())
+////                .labelsHidden()
+//                .pickerStyle(.menu)
+//            }
         } label: {
             Text(selectedMonthYear != nil ? formattedDate(selectedMonthYear!, formatter: monthYearFormatter) : "Select Month and Year")
                 .foregroundColor(Color("PrimaryColor"))
@@ -175,6 +187,7 @@ struct HistoryCircleView: View {
                 }
             }
         }
+        .interactiveDismissDisabled()
     }
     
     private func updateWeeksData() {

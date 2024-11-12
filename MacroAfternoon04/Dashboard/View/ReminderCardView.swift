@@ -39,44 +39,83 @@ struct ReminderCardView: View {
                     // Filter reminders yang aktif dan sort berdasarkan waktu terdekat
                     let nextReminder = reminders
                         .filter { $0.isReminderOn }
-                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
+                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow > $1.reminderTime.timeIntervalSinceNow })
                         .first
-                    // Tampilkan reminder terdekat berdasarkan waktunya
-                    if let nextReminder = nextReminder {
+                    if nextReminder?.reminderTime ?? Date() < Date() {
+                        let nextReminderOverflow = reminders
+                            .filter { $0.isReminderOn }
+                            .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
+                            .first
+
                         // Tampilkan reminder terdekat berdasarkan waktunya
-                        HStack{
-                            Image(systemName: "bell.fill")
-                            Text(nextReminder.label)
-                            Spacer()
-                            Image(systemName: "chevron.right")
+                        if let nextReminders = nextReminderOverflow {
+                                
+                            // Tampilkan reminder terdekat berdasarkan waktunya
+                            HStack{
+                                Image(systemName: "bell.fill")
+                                Text(nextReminders.label)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                
+                            }
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color("PrimaryColor"))
                             
+                            Text("\(nextReminders.reminderTime, style: .time)")
+                                .font(.body)
+                                .foregroundStyle(Color.black)
+                        } else {
+                            // Jika ada reminder tapi tidak ada yang aktif
+                            HStack{
+                                Image(systemName: "bell.fill")
+                                Text("Add New Reminder")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                
+                            }
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color("PrimaryColor"))
+                            
+                            
+                            Text("You have no reminders yet")
+                                .font(.body)
+                                .foregroundStyle(Color("NeutralColor"))
                         }
-                        .font(.system(size: 24))
-                        .foregroundStyle(Color("PrimaryColor"))
-                        
-//                        Text(nextReminder.label)
-//                            .font(.title)
-//                            .multilineTextAlignment(.leading)
-//                            .foregroundStyle(Color("PrimaryColor"))
-                        Text("\(nextReminder.reminderTime, style: .time)")
-                            .font(.body)
-                            .foregroundStyle(Color.black)
                     } else {
-                        // Jika ada reminder tapi tidak ada yang aktif
-                        HStack{
-                            Image(systemName: "bell.fill")
-                            Text("Add New Reminder")
-                            Spacer()
-                            Image(systemName: "chevron.right")
+                        
+                        if let nextReminders = nextReminder {
+                                
+                            // Tampilkan reminder terdekat berdasarkan waktunya
+                            HStack{
+                                Image(systemName: "bell.fill")
+                                Text(nextReminders.label)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                
+                            }
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color("PrimaryColor"))
                             
+                            Text("\(nextReminders.reminderTime, style: .time)")
+                                .font(.body)
+                                .foregroundStyle(Color.black)
+                        } else {
+                            // Jika ada reminder tapi tidak ada yang aktif
+                            HStack{
+                                Image(systemName: "bell.fill")
+                                Text("Add New Reminder")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                
+                            }
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color("PrimaryColor"))
+                            
+                            
+                            Text("You have no reminders yet")
+                                .font(.body)
+                                .foregroundStyle(Color("NeutralColor"))
                         }
-                        .font(.system(size: 24))
-                        .foregroundStyle(Color("PrimaryColor"))
-                        
-                        
-                        Text("You have no reminders yet")
-                            .font(.body)
-                            .foregroundStyle(Color("NeutralColor"))
                     }
 
                 }

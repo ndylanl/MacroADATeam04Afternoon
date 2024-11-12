@@ -39,9 +39,14 @@ struct CompareReportDetailSheetView: View {
                     if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
                         
                         if let image = renderedImage {
-                            Image(uiImage: applyFisheyeEffect(to: image)!)
-                                .resizable()
-                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                            HStack(spacing: 0){
+                                HeatMapBar2()
+                                Image(uiImage: applyFisheyeEffect(to: image)!)
+                                    .resizable()
+                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                                    .offset(x: -70)
+                            }
+                            .padding(.leading, 185)
                         }
                     }
                 }
@@ -138,7 +143,7 @@ struct CompareReportDetailSheetView: View {
                         Text("Be more consistent with your appointments")
                     }
                     .isHidden(viewModel.appointmentSuggestion, remove: viewModel.appointmentSuggestion)
-
+                    
                     HStack{
                         Text("·")
                         Text("Be more consistent with consuming medication")
@@ -150,7 +155,7 @@ struct CompareReportDetailSheetView: View {
                         Text("Be more consistent with your exercises")
                     }
                     .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
-
+                    
                     HStack{
                         VStack(alignment: .leading){
                             HStack{
@@ -216,7 +221,7 @@ struct CompareReportDetailSheetView: View {
             let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
             renderedImage = renderer.uiImage
             viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)
-
+            
         }
     }
     

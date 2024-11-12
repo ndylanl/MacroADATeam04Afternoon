@@ -50,80 +50,10 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
     return (maxValue, maxLabel)
 }
 
-//func detectObjectsInImage(trackProgress: TrackProgressModel) {
-//    // Iterate through each image in hairPicture
-//    print("DETECT OBJECTS IN IMAGE")
-//    for imageDataArray in trackProgress.hairPicture {
-//        var detectedObjects: [DetectedObject] = []
-//        
-//        for imageData in imageDataArray.hairPicture {
-//            guard let uiImage = imageData.toUIImage() else { continue }
-//            
-//            do{
-//                guard let model = try? VNCoreMLModel(for: NewModel().model) else { return }
-//                
-//                let request = VNCoreMLRequest(model: model) { (request, error) in
-//                    if let results = request.results as? [VNRecognizedObjectObservation] {
-//                        detectedObjects = results.map { observation in
-//                            // Extract bounding box and label
-//                            let boundingBox = observation.boundingBox
-//                            let label = observation.labels.first?.identifier ?? "Unknown"
-//
-//                            let detectedObject = DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
-//                            
-//                            detectedObjects.append(detectedObject)
-//                            return detectedObject
-//                        }
-//                    }
-//                }
-//                
-//                let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
-//                try? handler.perform([request])
-//                
-//            }
-//            trackProgress.detections.append(detectedObjects)
-//        }
-//    }
-//}
-
-//func checkPicHasDetection(uiImage: UIImage) -> Bool{
-//    var detectedObjects = 0
-//    
-//    do{
-//        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false}
-//        
-//        let request = VNCoreMLRequest(model: model) { (request, error) in
-//            if let results = request.results as? [VNRecognizedObjectObservation] {
-//                detectedObjects = results.count { observation in
-//                    // Extract bounding box and label
-//                    if results.count > 0 {
-//                        detectedObjects = results.count
-//                        print("TRUE")
-//                        return true
-//                    } else {
-//                        detectedObjects = 0
-//                        print("FALSE")
-//                        return false
-//                    }
-//                }
-//            }
-//        }
-//        
-//        let handler = VNImageRequestHandler(cgImage: uiImage.cgImage!, options: [:])
-//        try? handler.perform([request])
-//    }
-//    
-//    if detectedObjects > 0 {
-//        return true
-//    } else{
-//        return false
-//    }
-//}
-
 import UIKit
 import Vision
 
-func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.2) {
+func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.20) {
     // Iterate through each image in hairPicture
     print("DETECT OBJECTS IN IMAGE")
     
@@ -148,11 +78,14 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
                             let boundingBox = observation.boundingBox
                             let label = observation.labels.first?.identifier ?? "Unknown"
 
+                            
                             return DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
                         }
                         
                         // Print detected objects for debugging
-                        if detectedObjects.isEmpty {
+                        if detectedObjects.count > 8 {
+                            // Add filtered detected objects to trackProgress.detections
+                            trackProgress.detections.append(detectedObjects)
                             print("No objects detected above confidence threshold.")
                         } else {
                             print("Detected \(detectedObjects.count) objects above confidence threshold.")
@@ -170,14 +103,12 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
                 print("Error during image processing: \(error.localizedDescription)")
             }
             
-            // Add filtered detected objects to trackProgress.detections
-            trackProgress.detections.append(detectedObjects)
         }
     }
 }
 
 
-func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) -> Bool {
+func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.20) -> Bool {
     var detectedObjects = 0
     
     do {
@@ -194,7 +125,7 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) ->
                 }.count
                 
                 // Print detection status for debugging
-                if detectedObjects > 0 {
+                if detectedObjects > 8 {
                     print("TRUE: Detected \(detectedObjects) objects with sufficient confidence.")
                 } else {
                     print("FALSE: No objects detected above confidence threshold.")
@@ -211,73 +142,8 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) ->
     }
     
     // Return true if any objects were detected above the confidence threshold
-    return detectedObjects > 0
+    return detectedObjects > 8
 }
-
-
-
-//
-//func processImages(trackProgress: TrackProgressModel) {
-//    var allDetections: [[DetectedObject]] = []
-//
-//    // Iterate through each image in hairPicture
-//    for imageDataArray in trackProgress.hairPicture {
-//        var detectedObjects: [DetectedObject] = []
-//
-//        for imageData in imageDataArray {
-//            guard let uiImage = imageData.toUIImage() else { continue }
-//            let cvPixImage = uiImage.toCVPixelBuffer(size: 416)!
-//
-//            do{
-//                let model = try best(configuration: MLModelConfiguration())
-//                let prediction = try model.prediction(input: bestInput(imagePath: cvPixImage, iouThreshold: 0.85, confidenceThreshold: 0.019))
-//
-//
-//                let numberOfRows = prediction.confidence.shape[0].intValue
-//                let numberOfColumns = prediction.confidence.shape[1].intValue
-//
-//                // Define your labels
-//                let labels: [Int] = [1, 2, 3, 4, 5, 6]
-//
-//                // Loop through each row of the MLMultiArray
-//                for row in 0..<numberOfRows {
-//                    for col in 0..<numberOfColumns {
-//                        // Access the MLMultiArray element using its index
-//                        //confidence is a multiarray double of all classes signifying confidence for all classes
-//                        let confidence = prediction.confidence[row * numberOfColumns + col].doubleValue
-//
-//                        let x = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 0)]].doubleValue
-//                        let y = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 1)]].doubleValue
-//                        let width = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 2)]].doubleValue
-//                        let height = prediction.coordinates[[NSNumber(value: row), NSNumber(value: 3)]].doubleValue
-//
-//
-//                        let coordinates = Coordinates(x: x, y: y, height: height, width: width)
-//                        let detectedObject = DetectedObject(index: row, confidence: confidence, label: labels[col], coordinates: coordinates)
-//                        detectedObjects.append(detectedObject)
-//                        print(coordinates)
-//                    }
-//                    if !detectedObjects.isEmpty{
-//                        trackProgress.detections.append(detectedObjects)
-//                    } else {
-//                        print("!!!!!!!")
-//                        print("!!!!!!!")
-//                        print("!!!!!!!")
-//                        print("!!!!!!!")
-//                        print("!!!!!!!")
-//                    }
-//                }
-//
-//
-//            } catch let error {
-//                print(error.localizedDescription)
-//            }
-//        }
-//        allDetections.append(detectedObjects)
-//    }
-//    // Assign detections back to the model
-//    trackProgress.detections = allDetections
-//}
 
 
 extension UIImage {

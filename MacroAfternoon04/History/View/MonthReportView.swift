@@ -34,9 +34,14 @@ struct MonthReportView: View {
                         // BAHAS SAMA TIM MAU PAKE DESIG NUTUPIN ATO GA
                         
                         if let image = renderedImage {
-                            Image(uiImage: applyFisheyeEffect(to: image)!)
-                                .resizable()
-                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                            HStack(spacing: 0){
+                                HeatMapBar()
+                                Image(uiImage: applyFisheyeEffect(to: image)!)
+                                    .resizable()
+                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 454 / 932)
+                                    .offset(x: -65)
+                            }
+                            .padding(.leading, 180)
                         }
                     }
                 }

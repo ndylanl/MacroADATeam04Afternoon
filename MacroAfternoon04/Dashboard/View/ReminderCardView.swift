@@ -28,7 +28,7 @@ struct ReminderCardView: View {
                         Image(systemName: "chevron.right")
                         
                     }
-                    .font(.title)
+                    .font(.system(size: 24))
                     .foregroundStyle(Color("PrimaryColor"))
                     
                     
@@ -51,7 +51,7 @@ struct ReminderCardView: View {
                             Image(systemName: "chevron.right")
                             
                         }
-                        .font(.title)
+                        .font(.system(size: 24))
                         .foregroundStyle(Color("PrimaryColor"))
                         
 //                        Text(nextReminder.label)
@@ -70,7 +70,7 @@ struct ReminderCardView: View {
                             Image(systemName: "chevron.right")
                             
                         }
-                        .font(.title)
+                        .font(.system(size: 24))
                         .foregroundStyle(Color("PrimaryColor"))
                         
                         

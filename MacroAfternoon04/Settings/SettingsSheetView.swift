@@ -238,54 +238,67 @@ struct SettingsSheetView: View {
                     .frame(width: frameWidth())
                     
                     Section{
-                        Picker("Select Day", selection: $selectedPickerDay) {
-                            ForEach(1..<8) { day in
-                                Text(self.dayName(for: day)).tag(day)
+                        HStack{
+                            Picker("Select Day", selection: $selectedPickerDay) {
+                                ForEach(1..<8) { day in
+                                    Text(self.dayName(for: day)).tag(day)
+                                }
                             }
+                            .pickerStyle(.inline)
+                            
+                            Picker("Hour", selection: $selectedHour) {
+                                ForEach(0..<hours.count) { index in
+                                    Text("\(self.hours[index])").tag(index)
+                                }
+                            }
+                            .pickerStyle(WheelPickerStyle())
+                            
+                            Picker("Minute", selection: $selectedMinute) {
+                                ForEach(0..<minutes.count) { index in
+                                    Text("\(self.minutes[index])").tag(index)
+                                }
+                            }
+                            .pickerStyle(WheelPickerStyle())
                         }
-                        .pickerStyle(.inline)
-                        //                        .onChange(of: selectedDay) { beforeValue, afterValue in
-                        //                            UserDefaults.standard.set(self.selectedDay, forKey: "selectedDay")
-                        //                        }
                     }
                     .background(Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .frame(width: frameWidth() * 198 / 430)
+                    .frame(width: frameWidth() * 374 / 430)
                     .padding()
                     
                     //---------------------------------------------------------------------------------------------------------------------------------------------------
-                    Spacer()
-                    
-                    VStack(alignment: .leading){
-                        HStack{
-                            Text("Select Time Photo Taking")
-                                .font(.title2).bold()
-                            
-                            Spacer()
-                        }
-                    }
-                    .padding()
-                    .frame(width: frameWidth())
-                    
-                    HStack {
-                        Picker("Hour", selection: $selectedHour) {
-                            ForEach(0..<hours.count) { index in
-                                Text("\(self.hours[index]) h").tag(index)
-                            }
-                        }
-                        .pickerStyle(WheelPickerStyle())
-                        
-                        Picker("Minute", selection: $selectedMinute) {
-                            ForEach(0..<minutes.count) { index in
-                                Text("\(self.minutes[index]) m").tag(index)
-                            }
-                        }
-                        .pickerStyle(WheelPickerStyle())
-                    }
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .frame(width: frameWidth() * 240 / 430)
-                    .padding()
+//                    Spacer()
+//                    
+//                    VStack(alignment: .leading){
+//                        HStack{
+//                            Text("Select Time Photo Taking")
+//                                .font(.title2).bold()
+//                            
+//                            Spacer()
+//                        }
+//                    }
+//                    .padding()
+//                    .frame(width: frameWidth())
+//                    
+//                    HStack {
+//                        Picker("Hour", selection: $selectedHour) {
+//                            ForEach(0..<hours.count) { index in
+//                                Text("\(self.hours[index]) h").tag(index)
+//                            }
+//                        }
+//                        .pickerStyle(WheelPickerStyle())
+//                        
+//                        Picker("Minute", selection: $selectedMinute) {
+//                            ForEach(0..<minutes.count) { index in
+//                                Text("\(self.minutes[index]) m").tag(index)
+//                            }
+//                        }
+//                        .pickerStyle(WheelPickerStyle())
+//                    }
+//                    .background(Color.white)
+//                    .clipShape(RoundedRectangle(cornerRadius: 12))
+//                    .frame(width: frameWidth() * 240 / 430)
+//                    .padding()
                     
                 }
                 .background(Color(.systemGray6))

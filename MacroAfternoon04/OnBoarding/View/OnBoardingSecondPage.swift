@@ -20,11 +20,15 @@ struct OnBoardingSecondPageView: View {
     var body: some View {
         VStack(alignment: .leading){
             Text("Sleep, Stress, and Movement Detection")
-                .font(.title)
+                .font(.largeTitle)
+                .frame(height: UIScreen.main.bounds.height * 100 / 932)
             
             Text("For more personalized experience, access to Apple Health is required to detect your activities.")
+                .multilineTextAlignment(.leading)
                 .font(.body)
-                .padding(.vertical)
+                .frame(height: UIScreen.main.bounds.height * 120 / 932)
+//                .padding(.vertical)
+                
             
             HStack{
                 Image("OnBoardingSecond")
@@ -32,7 +36,6 @@ struct OnBoardingSecondPageView: View {
                     .frame(width: UIScreen.main.bounds.width * 253 / 430, height: UIScreen.main.bounds.width * 253 / 430)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 100)
             
             Spacer()
             
@@ -41,9 +44,9 @@ struct OnBoardingSecondPageView: View {
                 // Request Access for Health
                 Task{
                     healthManager.requestAuthorization()
-//                    if UserDefaults.standard.bool(forKey: "shouldRequestAuthorization") {
-//                        healthManager.requestAuthorization()
-//                    }
+                    //                    if UserDefaults.standard.bool(forKey: "shouldRequestAuthorization") {
+                    //                        healthManager.requestAuthorization()
+                    //                    }
                     
                     let currentDay = Calendar.current.component(.weekday, from: Date())
                     selectedDay = currentDay
@@ -62,9 +65,6 @@ struct OnBoardingSecondPageView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             
             Button{
-//                isOnBoardingComplete = true
-//                UserDefaults.standard.set(isOnBoardingComplete, forKey: "isOnBoardingComplete")
-//                UserDefaults.standard.set(false, forKey: "shouldRequestAuthorization")
                 
                 let currentDay = Calendar.current.component(.weekday, from: Date())
                 selectedDay = currentDay
@@ -86,12 +86,12 @@ struct OnBoardingSecondPageView: View {
             .navigationDestination(isPresented: $navigateToThirdOnBoarding, destination: {
                 OnBoardingThirdPageView(isOnBoardingComplete: $isOnBoardingComplete)
             })
-//            .onAppear {
-//                // Set default to true if not already set
-//                if UserDefaults.standard.object(forKey: "shouldRequestAuthorization") == nil {
-//                    UserDefaults.standard.set(true, forKey: "shouldRequestAuthorization")
-//                }
-//            }
+            //            .onAppear {
+            //                // Set default to true if not already set
+            //                if UserDefaults.standard.object(forKey: "shouldRequestAuthorization") == nil {
+            //                    UserDefaults.standard.set(true, forKey: "shouldRequestAuthorization")
+            //                }
+            //            }
         }
         .padding()
         .frame(width: UIScreen.main.bounds.width)

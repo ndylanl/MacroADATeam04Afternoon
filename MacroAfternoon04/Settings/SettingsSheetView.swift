@@ -31,21 +31,7 @@ struct SettingsSheetView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    //                    VStack{
-                    //                        Toggle("Health Access", isOn: $HealthAccess)
-                    //                            .bold()
-                    //                            .toggleStyle(SwitchToggleStyle(tint: Color("PrimaryColor")))
-                    //                            .padding(.horizontal)
-                    //
-                    //                        Text("For more personalized experience, access to Apple Health is required to detect your activities.")
-                    //                            .font(.footnote)
-                    //                            .foregroundStyle(Color("NeutralColor"))
-                    //                            .padding(.horizontal)
-                    //                    }
-                    //                    .frame(width: frameWidth())
-                    //                    .padding(.bottom, 40)
-                    
-                    //-------------------------------------------------------------------------------------------------------------------------------------
+  
                     Spacer()
                     
                     VStack{
@@ -54,6 +40,8 @@ struct SettingsSheetView: View {
                                 .bold()
                                 .font(.title2)
                                 .padding()
+                                .padding(.horizontal, 12)
+
                             
                             Spacer()
                         }
@@ -200,6 +188,8 @@ struct SettingsSheetView: View {
                             }
                         }
                         .pickerStyle(DefaultPickerStyle())
+                        .padding(.horizontal)
+                        .padding(.horizontal, 12)
                         .frame(maxWidth: frameWidth()) // Make it expand horizontally
                         .background(
                             RoundedRectangle(cornerRadius: 10)
@@ -211,20 +201,19 @@ struct SettingsSheetView: View {
                                     
                                 )
                         )
+                        .padding(.horizontal, 12)
                         .padding()
-                        
-                        
                         
                         Text("By choosing a more specific scalp area based on your current condition, you will be able to track more accurately.")
                             .font(.footnote)
                             .foregroundColor(Color("NeutralColor")) // Set the color here
-                            .padding(.top)
+                            .padding(.horizontal)
+                            .padding(.horizontal)
                             .multilineTextAlignment(.leading)
                     }
                     .frame(width: frameWidth())
                     .padding(.bottom, 40)
                     
-                    //---------------------------------------------------------------------------------------------------------------------------------------------------
                     Spacer()
                     
                     VStack(alignment: .leading){
@@ -233,9 +222,14 @@ struct SettingsSheetView: View {
                         
                         Text("When selecting a day to take a hair photo, users can upload photos for that day, the day before, and the day after.")
                             .font(.footnote)
+                            .padding(.top, 2)
                             .foregroundStyle(Color("NeutralColor"))
                     }
+                    .padding(.horizontal)
+                    .padding(.top, -4)
+                    .padding(.horizontal, 12)
                     .frame(width: frameWidth())
+                    
                     
                     Section{
                         HStack{
@@ -265,41 +259,6 @@ struct SettingsSheetView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .frame(width: frameWidth() * 374 / 430)
                     .padding()
-                    
-                    //---------------------------------------------------------------------------------------------------------------------------------------------------
-//                    Spacer()
-//                    
-//                    VStack(alignment: .leading){
-//                        HStack{
-//                            Text("Select Time Photo Taking")
-//                                .font(.title2).bold()
-//                            
-//                            Spacer()
-//                        }
-//                    }
-//                    .padding()
-//                    .frame(width: frameWidth())
-//                    
-//                    HStack {
-//                        Picker("Hour", selection: $selectedHour) {
-//                            ForEach(0..<hours.count) { index in
-//                                Text("\(self.hours[index]) h").tag(index)
-//                            }
-//                        }
-//                        .pickerStyle(WheelPickerStyle())
-//                        
-//                        Picker("Minute", selection: $selectedMinute) {
-//                            ForEach(0..<minutes.count) { index in
-//                                Text("\(self.minutes[index]) m").tag(index)
-//                            }
-//                        }
-//                        .pickerStyle(WheelPickerStyle())
-//                    }
-//                    .background(Color.white)
-//                    .clipShape(RoundedRectangle(cornerRadius: 12))
-//                    .frame(width: frameWidth() * 240 / 430)
-//                    .padding()
-                    
                 }
                 .background(Color(.systemGray6))
                 .padding()

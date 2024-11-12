@@ -123,7 +123,7 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
 import UIKit
 import Vision
 
-func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.2) {
+func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.20) {
     // Iterate through each image in hairPicture
     print("DETECT OBJECTS IN IMAGE")
     
@@ -148,11 +148,14 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
                             let boundingBox = observation.boundingBox
                             let label = observation.labels.first?.identifier ?? "Unknown"
 
+                            
                             return DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
                         }
                         
                         // Print detected objects for debugging
-                        if detectedObjects.isEmpty {
+                        if detectedObjects.count > 10 {
+                            // Add filtered detected objects to trackProgress.detections
+                            trackProgress.detections.append(detectedObjects)
                             print("No objects detected above confidence threshold.")
                         } else {
                             print("Detected \(detectedObjects.count) objects above confidence threshold.")
@@ -170,14 +173,12 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
                 print("Error during image processing: \(error.localizedDescription)")
             }
             
-            // Add filtered detected objects to trackProgress.detections
-            trackProgress.detections.append(detectedObjects)
         }
     }
 }
 
 
-func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) -> Bool {
+func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.20) -> Bool {
     var detectedObjects = 0
     
     do {
@@ -194,7 +195,7 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) ->
                 }.count
                 
                 // Print detection status for debugging
-                if detectedObjects > 0 {
+                if detectedObjects > 10 {
                     print("TRUE: Detected \(detectedObjects) objects with sufficient confidence.")
                 } else {
                     print("FALSE: No objects detected above confidence threshold.")
@@ -211,7 +212,7 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.2) ->
     }
     
     // Return true if any objects were detected above the confidence threshold
-    return detectedObjects > 0
+    return detectedObjects > 10
 }
 
 

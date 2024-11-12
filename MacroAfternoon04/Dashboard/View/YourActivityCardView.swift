@@ -42,9 +42,6 @@ struct YourActivityCardView: View {
                 
                 AnyLayout(HStackLayout()){
                     
-                    //                HStack{
-                    
-//                    Spacer()
                     
                     VStack(alignment: .leading){
                         

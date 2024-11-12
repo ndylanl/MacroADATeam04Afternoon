@@ -16,6 +16,7 @@ struct CameraView: View {
     
     @State private var showCaptureCue: Bool = false
     @State private var tapLocation: CGPoint = .zero
+    @State private var showFocusIndicator: Bool = false
     
     @State private var isAnimating = false
     
@@ -24,26 +25,26 @@ struct CameraView: View {
     @Binding var statusRetry: String
     
     var textColor: Color {
-            switch statusRetry {
-            case "Photo Done Successfully":
-                return .green
-            case "No Detections in Photo":
-                return .red
-            default:
-                return .gray // Default color
-            }
+        switch statusRetry {
+        case "Photo Done Successfully":
+            return .green
+        case "No Detections in Photo":
+            return .red
+        default:
+            return .gray // Default color
         }
+    }
     
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
                 
                 AddProgressTrackingBarView(progress: currentPage, viewModel: viewModel, totalPages: $totalPages)
-
+                
                 Text(statusRetry)
                     .foregroundColor(textColor)
                     .padding(.vertical, -10)
-
+                
                 ZStack {
                     if let image = image {
                         
@@ -56,6 +57,27 @@ struct CameraView: View {
                             .scaledToFill()
                             .frame(width: UIScreen.main.bounds.width - 32,
                                    height: UIScreen.main.bounds.width - 32)
+                            .gesture(
+                                DragGesture(minimumDistance: 0)
+                                    .onEnded { value in
+                                        let location = value.location
+                                        tapLocation = location
+                                        showFocusIndicator = true
+                                        viewModel.focus(at: location, in: geometry.size)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            showFocusIndicator = false
+                                        }
+                                    }
+                            )
+                        
+                        if showFocusIndicator {
+                            
+                            Rectangle()
+                                .stroke(Color.yellow, lineWidth: 2)
+                                .frame(width: 50, height: 50)
+                                .position(tapLocation)
+                                .transition(.opacity)
+                        }
                         
                     } else {
                         ContentUnavailableView("Please wait", systemImage: "camera.fill")
@@ -70,15 +92,9 @@ struct CameraView: View {
                                    height: UIScreen.main.bounds.width - 32)
                     }
                 }
+                .frame(width: UIScreen.main.bounds.width - 32,
+                       height: UIScreen.main.bounds.width - 32)
                 .padding()
-                
-                //                Slider(value: $viewModel.focusValue, in: 0...1, step: 0.01) {
-                //                    Text("Focus")
-                //                }
-                //                .onChange(of: viewModel.focusValue) { newValue in
-                //                    viewModel.updateFocus(value: newValue)
-                //                }
-                
                 
                 VStack{
                     Text("Please bring the camera very close to the scalp until it looks clear enough.")
@@ -89,12 +105,10 @@ struct CameraView: View {
                         .font(.footnote).opacity(0.5)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
-
+                    
                 }
                 .padding(.horizontal)
                 .padding(.horizontal)
-
-                
                 
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.2)){

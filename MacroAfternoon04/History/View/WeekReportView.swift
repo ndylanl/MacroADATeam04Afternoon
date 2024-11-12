@@ -19,10 +19,12 @@ struct WeekReportView: View {
     @StateObject var viewModel: WeeklyReportViewModel
     
     @EnvironmentObject var healthViewModel: HealthViewModel
-
+    
     @State private var renderedImage: UIImage?
     
     @State var showingSleepAndMovementReport = false
+    
+    @State var isOnBoardingReportComplete: Bool = UserDefaults.standard.bool(forKey: "onBoardingReportCompleted")
     
     let labelColors: [Int: Color] = [
         1: .red,
@@ -248,6 +250,9 @@ struct WeekReportView: View {
                 
             }
             .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")
+            .fullScreenCover(isPresented: $isOnBoardingReportComplete){
+                OnBoardingReportView(isOnBoardingHistoryComplete: $isOnBoardingReportComplete)
+            }
         }
         .background(Color(.systemGray6))
         .onAppear {
@@ -266,6 +271,9 @@ struct WeekReportView: View {
         .sheet(isPresented: $showingSleepAndMovementReport, content: {
             InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
         })
+        .onAppear(){
+            isOnBoardingReportComplete = UserDefaults.standard.bool(forKey: "onBoardingReportCompleted")
+        }
     }
     
     func photoSize() -> CGFloat {
@@ -287,7 +295,7 @@ struct WeekReportView: View {
         let weekOfMonth = calendar.component(.weekOfMonth, from: date)
         return weekOfMonth
     }
-
+    
     func convertToRoman(_ number: Int) -> String {
         let romanValues = [
             1000: "M", 900: "CM", 500: "D", 400: "CD",
@@ -307,5 +315,5 @@ struct WeekReportView: View {
         
         return result
     }
-
+    
 }

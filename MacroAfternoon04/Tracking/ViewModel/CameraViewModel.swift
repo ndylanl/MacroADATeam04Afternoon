@@ -83,4 +83,8 @@ class CameraViewModel: ObservableObject {
         currentScalpPosition = currentScalpPositions[0]
     }
 
+    func focus(at location: CGPoint, in size: CGSize) {
+            let focusPoint = CGPoint(x: location.x / size.width, y: location.y / size.height)
+            cameraManager.focus(at: focusPoint)
+        }
 }

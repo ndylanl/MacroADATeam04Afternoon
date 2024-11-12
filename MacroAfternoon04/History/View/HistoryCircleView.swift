@@ -30,7 +30,7 @@ struct HistoryCircleView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack {
                     if !historyViewModel.trackProgress.isEmpty {

@@ -60,23 +60,30 @@ struct HairGrowthProgressCardView: View {
                             }
                         } label: {
                             AddProgressCardView()
+                                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
                         }
                         
                     } else {
                         DisabledAddProgressView(daysLeft: $daysLeft)
+                            .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
                     }
                     
                     Spacer()
                     
                     NavigationLink{
+                        
                         WeekReportView(date: viewModel.lastDate, viewModel: WeeklyReportViewModel(modelContext: modelContext, weekDate: viewModel.lastDate))
+                        
                     } label: {
+                        
                         LastProgressCardView()
+                            .shadow(color: selectedOption == "" ? Color.gray.opacity(0) : Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+                        
                     }
                     .disabled(selectedOption == "")
                     
                 }
-                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+//                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
                 //.shadow(radius:3, x:0, y:1)
             }
             .frame(width: cardWidthSize() - 32)

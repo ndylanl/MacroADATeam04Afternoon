@@ -6,6 +6,11 @@
 	<array>
 		<string>updateReminderStatusCount</string>
 	</array>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>CreateReminderIntent</string>
+		<string>IntentIntent</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>processing</string>

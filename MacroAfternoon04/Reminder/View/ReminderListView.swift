@@ -15,6 +15,7 @@ struct ReminderListView: View {
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
     @ObservedObject var reminderViewModel = ReminderViewModel()
     @State var isSelected: Bool = false
+    
     var body: some View {
         
         VStack(alignment: .center) {
@@ -31,7 +32,8 @@ struct ReminderListView: View {
                 }
             } else {
                 List {
-                    ForEach(reminders) { reminder in
+                    ForEach(reminders.sorted(by: { $0.reminderTime < $1.reminderTime })) { reminder in
+
                         Button {
                                 selectedReminder = reminder
                                 isPresented = true

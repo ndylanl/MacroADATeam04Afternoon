@@ -27,8 +27,8 @@ struct InfoSubtractionSheetView: View {
                     The article utilizes Mask R-CNN, a multitask learning AI that detects and localizes hair follicles while assessing hair loss severity. This offers users high-accuracy insights comparable to clinical tools.
                     
                     The app classifies hair follicles based on our main criteria: number of hairs per follicle, with the classification:
-                    Healthy: 2 or more hairs.
-                    Normal: 1 hair.
+                    Healthy: 3 or more hairs.
+                    Normal: 2 hair.
                     Severe: 1 hair.
                     
                     Significance: Multiple hairs per follicle indicate good follicle health, while single-hair follicles may suggest issues.

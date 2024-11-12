@@ -29,6 +29,7 @@ struct HeatmapView: View {
     
     var body: some View {
         
+        
         VStack(spacing:0){
             ForEach(0..<Int(countNMinusOne(startValue: 6, multiple: multiple)), id:\.self){ row in
                 HStack(alignment: .bottom, spacing: 0){
@@ -42,9 +43,6 @@ struct HeatmapView: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 110))
-        .onAppear(){
-            //print("Data from heatmapView: \(data)")
-        }
         
     }
     

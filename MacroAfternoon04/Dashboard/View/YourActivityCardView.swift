@@ -36,10 +36,36 @@ struct YourActivityCardView: View {
                 Divider()
                 
                 
-                Text("You have no monthly results yet.")
-                    .padding([.top, .bottom, .trailing])
-                    .font(.title3)
-                    .foregroundStyle(Color("NeutralColor"))
+                //                Text("You have no monthly results yet.")
+                //                    .padding([.top, .bottom, .trailing])
+                //                    .font(.title3)
+                //                    .foregroundStyle(Color("NeutralColor"))
+                
+                VStack(alignment: .leading){
+                    HStack{
+                        Text("·")
+                        Text("Have more sleep time")
+                            .frame(width: cardWidthSize() - 30, alignment: .leading)
+
+                    }
+                        
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with applying serum")
+                            .frame(width: cardWidthSize() - 30, alignment: .leading)
+
+                    }
+                    
+                    HStack{
+                        Text("·")
+                        Text("Be more consistent with consuming medication")
+                            .frame(width: cardWidthSize() - 30, alignment: .leading)
+
+                    }
+                }
+                .font(.body)
+                .padding(.top, 4)
+                
                 
                 AnyLayout(HStackLayout()){
                     
@@ -48,7 +74,7 @@ struct YourActivityCardView: View {
                         
                         if !healthViewModel.sleepData.isEmpty {
                             // Ambil semua sleepSample yang endDate-nya pada hari ini
-
+                            
                             let totalSleepDuration = healthViewModel.sleepData
                                 .filter {
                                     Calendar.current.isDate($0.endDate, inSameDayAs: Date()) // Ambil data yang end date-nya hari ini
@@ -71,12 +97,12 @@ struct YourActivityCardView: View {
                                 Text("Sleep")
                             }
                             .font(.footnote)
-     
+                            
                             
                         } else {
                             // Placeholder jika tidak ada data tidur untuk hari ini
                             HStack {
-                                Text("--")
+                                Text("8.0")
                                     .font(.title)
                                 Text("hrs")
                                     .font(.subheadline)
@@ -115,7 +141,7 @@ struct YourActivityCardView: View {
                         } else {
                             // Placeholder jika tidak ada data movement
                             HStack {
-                                Text("--")
+                                Text("200.0")
                                     .font(.title)
                                 Text("kcal")
                                     .font(.subheadline)
@@ -135,8 +161,8 @@ struct YourActivityCardView: View {
                             .stroke(.black, lineWidth: 0.1)
                     )
                     
-//                    Spacer()
-
+                    //                    Spacer()
+                    
                 }
                 
             }
@@ -146,7 +172,7 @@ struct YourActivityCardView: View {
             .padding()
             .frame(width: cardWidthSize(), alignment: .center)
         }
-        .frame(width: cardWidthSize(), height: cardHeightSize())
+        .frame(width: cardWidthSize())
         //        .task {
         //            healthViewModel.healthRequest() // Meminta data kesehatan saat tampilan muncul
         //        }

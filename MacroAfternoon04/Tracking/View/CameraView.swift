@@ -100,6 +100,7 @@ struct CameraView: View {
                     Text("Please bring the camera very close to the scalp until it looks clear enough.")
                         .font(.body)
                         .multilineTextAlignment(.center)
+                        .padding(.bottom, 4)
                     
                     Text("Make sure you have a good lighting and another person to help take photos.")
                         .font(.footnote).opacity(0.5)
@@ -108,7 +109,7 @@ struct CameraView: View {
                     
                 }
                 .padding(.horizontal)
-                .padding(.horizontal)
+//                .padding(.horizontal)
                 
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.2)){

@@ -67,17 +67,6 @@ struct HistoryCircleView: View {
     private var monthYearPickerButton: some View {
         Button {
             showPicker.toggle()
-//        Menu {
-//            VStack {
-//                Picker("Select Month and Year", selection: $selectedMonthYear) {
-//                    ForEach(historyViewModel.uniqueMonths, id: \.self) { date in
-//                        Text(formattedDate(date, formatter: monthYearFormatter)).tag(date as Date?)
-//                    }
-//                }
-////                .pickerStyle(WheelPickerStyle())
-////                .labelsHidden()
-//                .pickerStyle(.menu)
-//            }
         } label: {
             Text(selectedMonthYear != nil ? formattedDate(selectedMonthYear!, formatter: monthYearFormatter) : "Select Month and Year")
                 .foregroundColor(Color("PrimaryColor"))
@@ -85,6 +74,7 @@ struct HistoryCircleView: View {
                 .padding(.horizontal, 8)
                 .background(Color("SecondaryColor"))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
         }
         .frame(width:UIScreen.main.bounds.width - 24, height: 50, alignment: .leading)
         .padding(.horizontal)
@@ -147,7 +137,7 @@ struct HistoryCircleView: View {
             .background(Color("PrimaryColor"))
             .foregroundStyle(Color("SecondaryColor"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(color: Color.black.opacity(0.25), radius: 8, x: 0, y: 4)
+            .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
             
             NavigationLink {
                 BrowseAllDataView(modelContext: modelContext)

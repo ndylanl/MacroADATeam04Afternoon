@@ -66,6 +66,8 @@ struct MonthReportView: View {
                             Image(systemName: "info.circle")
                         }
                     }
+                    .padding(.bottom, -4)
+
                     
                     Divider()
                     
@@ -74,6 +76,7 @@ struct MonthReportView: View {
                             .foregroundStyle(.red)
                         Text("Hair growth can be better")
                     }
+                    .padding(.top, 4)
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
@@ -105,6 +108,8 @@ struct MonthReportView: View {
                             Image(systemName: "info.circle")
                         }
                     }
+                    .padding(.bottom, -4)
+
                     
                     Divider()
                     
@@ -116,6 +121,7 @@ struct MonthReportView: View {
                     }
                     .frame(width: UIScreen.main.bounds.width * 340 / 430)
                     .padding(.vertical)
+                    
                     
                     if Int(viewModel.sleepData) ?? 7 <= 6{
                         HStack{
@@ -170,10 +176,11 @@ struct MonthReportView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                        .padding(.horizontal)
+                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
+                                .stroke(.black, lineWidth: 0.1)
                         )
                         
                         VStack(alignment: .leading){
@@ -189,10 +196,11 @@ struct MonthReportView: View {
                             }
                             .font(.footnote)
                         }
-                        .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                        .padding(.horizontal)
+                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.5)
+                                .stroke(.black, lineWidth: 0.1)
                         )
                         
                         Spacer()
@@ -218,6 +226,7 @@ struct MonthReportView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
                 .background(Color("PrimaryColor"))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
+                .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
                 
             }
             .navigationTitle(formattedDate(date, formatter: dateFormatter))

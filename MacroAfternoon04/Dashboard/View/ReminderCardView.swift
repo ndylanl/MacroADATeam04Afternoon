@@ -30,6 +30,7 @@ struct ReminderCardView: View {
                     }
                     .font(.system(size: 24))
                     .foregroundStyle(Color("PrimaryColor"))
+                    .padding(.bottom, 2)
                     
                     
                     Text("You have no reminders yet")
@@ -60,6 +61,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             Text("\(nextReminders.reminderTime, style: .time)")
                                 .font(.body)
@@ -75,6 +77,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             
                             Text("You have no reminders yet")
@@ -95,6 +98,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             Text("\(nextReminders.reminderTime, style: .time)")
                                 .font(.body)
@@ -110,6 +114,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             
                             Text("You have no reminders yet")

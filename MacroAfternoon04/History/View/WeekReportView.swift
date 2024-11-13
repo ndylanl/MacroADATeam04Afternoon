@@ -87,6 +87,8 @@ struct WeekReportView: View {
                                 Image(systemName: "info.circle")
                             }
                         }
+                        .padding(.bottom, -4)
+
                         
                         Divider()
                         
@@ -95,6 +97,7 @@ struct WeekReportView: View {
                                 .foregroundStyle(.red)
                             Text("Hair is unhealthy")
                         }
+                        .padding(.top, 4)
                         HStack{
                             Text("●")
                                 .foregroundStyle(.green)
@@ -135,6 +138,8 @@ struct WeekReportView: View {
                                 Image(systemName: "photo.on.rectangle")
                             }
                         }
+                        .padding(.bottom, -4)
+
                         
                         Divider()
                         
@@ -143,6 +148,7 @@ struct WeekReportView: View {
                                 .foregroundStyle(.red)
                             Text("1 Strand per Follicle")
                         }
+                        .padding(.top, 4)
                         
                         HStack{
                             Text("●")
@@ -190,6 +196,8 @@ struct WeekReportView: View {
                                 Image(systemName: "info.circle")
                             }
                         }
+                        .padding(.bottom, -4)
+
                         
                         Divider()
                         
@@ -208,11 +216,13 @@ struct WeekReportView: View {
                                 }
                                 .font(.footnote)
                             }
-                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                            .padding(.horizontal)
+                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.black, lineWidth: 0.5)
+                                    .stroke(.black, lineWidth: 0.1)
                             )
+                            .padding(.top, 4)
                             
                             VStack(alignment: .leading){
                                 HStack{
@@ -227,11 +237,11 @@ struct WeekReportView: View {
                                 }
                                 .font(.footnote)
                             }
-                            .padding()
-                            .frame(width: UIScreen.main.bounds.width * 374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932)
+                            .padding(.horizontal)
+                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(.black, lineWidth: 0.5)
+                                    .stroke(.black, lineWidth: 0.1)
                             )
                             
                         }
@@ -252,6 +262,7 @@ struct WeekReportView: View {
                     .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
                     .background(Color("PrimaryColor"))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
                     
                 }
                 .navigationTitle("Week \(convertToRoman(weekOfMonth(for: date)))")

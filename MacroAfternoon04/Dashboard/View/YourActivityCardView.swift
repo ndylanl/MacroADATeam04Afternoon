@@ -31,6 +31,7 @@ struct YourActivityCardView: View {
                         Image(systemName: "info.circle")
                     }
                 }
+                .padding(.bottom, -4)
                 
                 Divider()
                 
@@ -88,10 +89,12 @@ struct YourActivityCardView: View {
                             
                         }
                     }
-                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+                    .padding(.horizontal)
+                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize(), alignment: .leading)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(.black, lineWidth: 0.5))
+                            .stroke(.black, lineWidth: 0.1)
+                    )
                     
                     
                     // Menampilkan data Movement dari healthViewModel
@@ -124,11 +127,13 @@ struct YourActivityCardView: View {
                             .font(.footnote)
                         }
                     }
-                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize())
+                    .padding(.horizontal)
+                    .frame(width: cardActivityWidthSize(), height: cardActivityHeightSize(), alignment: .leading)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(.black, lineWidth: 0.5))
+                            .stroke(.black, lineWidth: 0.1)
+                    )
                     
 //                    Spacer()
 

@@ -67,6 +67,7 @@ struct CompareReportDetailSheetView: View {
                             Image(systemName: "info.circle")
                         }
                     }
+                    .padding(.bottom, -4)
                     
                     Divider()
                     
@@ -75,6 +76,7 @@ struct CompareReportDetailSheetView: View {
                             .foregroundStyle(.red)
                         Text("Hair growth can be better")
                     }
+                    .padding(.top, 4)
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
@@ -106,6 +108,7 @@ struct CompareReportDetailSheetView: View {
                             Image(systemName: "info.circle")
                         }
                     }
+                    .padding(.bottom, -4)
                     
                     Divider()
                     
@@ -117,6 +120,7 @@ struct CompareReportDetailSheetView: View {
                     }
                     .frame(width: UIScreen.main.bounds.width * 340 / 430)
                     .padding(.vertical)
+                    .padding(.top, 4)
                     
                     if Int(viewModel.sleepData) ?? 7 <= 6{
                         HStack{

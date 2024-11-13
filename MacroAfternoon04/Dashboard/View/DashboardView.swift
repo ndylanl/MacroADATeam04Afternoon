@@ -49,12 +49,8 @@ struct DashboardView: View {
                         })
                         .padding(10)
                         
-                        HStack {
-                            Spacer()
-                            YourActivityCardView(isInfoSheetPresented: $showingSleepAndMovementSheet)
-                            Spacer()
-                        }
-                        Spacer()
+                        
+                        YourActivityCardView(isInfoSheetPresented: $showingSleepAndMovementSheet)
                         
                         
                         DailyTipsView()

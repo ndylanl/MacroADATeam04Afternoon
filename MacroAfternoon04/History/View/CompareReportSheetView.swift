@@ -39,21 +39,6 @@ struct CompareReportSheetView: View {
                     SelectDateView(selectedReport: $viewModel.selectedReportB, availableDates: viewModel.availableDates)
                         .padding()
                     
-                    //                    NavigationLink {
-                    //                        CompareReportDetailSheetView(selectedReportA: viewModel.selectedReportA, selectedReportB: viewModel.selectedReportB, viewModel: ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB))
-                    //                    } label: {
-                    //                        Text("Compare")
-                    //                            .font(.headline)
-                    //                            .foregroundColor(Color("SecondaryColor"))
-                    //                            .padding()
-                    //                            .frame(maxWidth: .infinity)
-                    //                            .background(Color("PrimaryColor"))
-                    //                            .cornerRadius(12)
-                    //                            .padding()
-                    //                    }
-                    //                    .padding()
-                    //                    .disabled((viewModel.selectedReportA == nil) && (viewModel.selectedReportB == nil))
-                    
                     ZStack {
                         Button(action: {
                             // Set the alert message if needed
@@ -65,14 +50,13 @@ struct CompareReportSheetView: View {
                             }
                         }) {
                             Text("Compare")
-                                .font(.headline)
-                                .foregroundColor(Color("SecondaryColor"))
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color("PrimaryColor"))
-                                .cornerRadius(12)
-                                .padding()
+                                .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
                         }
+                        .background(Color("PrimaryColor"))
+                        .foregroundStyle(Color("SecondaryColor"))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+                        
                         .alert(isPresented: $showAlert) {
                             Alert(
                                 title: Text("Compare Report Status"),

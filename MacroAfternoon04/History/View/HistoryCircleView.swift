@@ -36,7 +36,7 @@ struct HistoryCircleView: View {
                     if !historyViewModel.trackProgress.isEmpty {
                         monthYearPickerButton
                         monthYearCircleView
-                            .padding(.trailing)
+                            .padding(.trailing, weeksData.count > 1 ? 36 : 0)
                             .padding(.top, UIScreen.main.bounds.height / 24)
                         actionButtons
                             .padding(.top, UIScreen.main.bounds.height / 20)
@@ -86,7 +86,7 @@ struct HistoryCircleView: View {
     private var monthYearCircleView: some View {
         
         
-        VStack {
+        VStack(alignment: .center) {
             if let selectedMonthYear = selectedMonthYear {
                 ZStack {
                     Button(action: {
@@ -126,9 +126,9 @@ struct HistoryCircleView: View {
                 }
             }
         }
-        .padding(.trailing)
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 370 / 932)
     }
+    
     
     private var actionButtons: some View {
         VStack {

@@ -36,7 +36,9 @@ struct HistoryCircleView: View {
                     if !historyViewModel.trackProgress.isEmpty {
                         monthYearPickerButton
                         monthYearCircleView
+                            .padding(.top, UIScreen.main.bounds.height / 20)
                         actionButtons
+                            .padding(.top, UIScreen.main.bounds.height / 20)
                     } else {
                         emptyView
                     }
@@ -145,7 +147,7 @@ struct HistoryCircleView: View {
                 Text("Browse All Data")
             }
             .foregroundStyle(Color("PrimaryColor"))
-            .padding(.top)
+
         }
     }
     

@@ -56,7 +56,7 @@ struct DashboardView: View {
                         DailyTipsView()
                             .padding(10)
                     }
-                    
+                    .frame(width: UIScreen.main.bounds.width)
                     .edgesIgnoringSafeArea(.all)
                 }
                 .frame(width: UIScreen.main.bounds.width)

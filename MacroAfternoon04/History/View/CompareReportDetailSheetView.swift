@@ -52,7 +52,7 @@ struct CompareReportDetailSheetView: View {
                 }
                 .frame(height: UIScreen.main.bounds.height * 434 / 932)
                 .tabViewStyle(.page)
-                .padding(.bottom, -24)
+                .padding(.bottom, -64)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 
                 VStack(alignment: .leading){
@@ -94,7 +94,7 @@ struct CompareReportDetailSheetView: View {
                 .font(.body)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
-                .padding(.bottom, 4)
+                .padding(.bottom, 10)
                 
                 VStack(alignment: .leading){
                     HStack{

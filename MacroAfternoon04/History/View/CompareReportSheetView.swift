@@ -88,9 +88,11 @@ struct CompareReportSheetView: View {
                         }
                     }
                 }
+                .padding(.bottom, 20)
             }
+            .background(Color(.systemGray6))
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-//            .background(Color(.systemGray6))
+            
         }
     }
     

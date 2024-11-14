@@ -77,7 +77,7 @@ struct YourActivityCardView: View {
                         } else {
                             // Placeholder jika tidak ada data tidur untuk hari ini
                             HStack {
-                                Text("8.0")
+                                Text("--.-")
                                     .font(.title)
                                 Text("hrs")
                                     .font(.subheadline)
@@ -116,7 +116,7 @@ struct YourActivityCardView: View {
                         } else {
                             // Placeholder jika tidak ada data movement
                             HStack {
-                                Text("200.0")
+                                Text("--.-")
                                     .font(.title)
                                 Text("kcal")
                                     .font(.subheadline)

@@ -160,7 +160,7 @@ class MonthlyReportViewModel: ObservableObject {
                 let heatMapArrayA = createArrayHeatMap(detections: detectionsA, scalpPositions: modelScalpPositions)
                 let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: modelScalpPositions)
                 
-                heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
+                heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA, scalpPositions: modelScalpPositions)!
             } else {
                 //NYARI MAJORITAS SET TO MAJORITAS
                 //NYARI SEMUA YANG MEMILIKI POSITIONS MAJORITAS
@@ -176,7 +176,7 @@ class MonthlyReportViewModel: ObservableObject {
                 let heatMapArrayA = createArrayHeatMap(detections: detectionsA, scalpPositions: findMajorityScalpPosition(models: models)!)
                 let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: findMajorityScalpPosition(models: models)!)
                 
-                heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
+                heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA, scalpPositions: modelScalpPositions)!
                 print("""
                 --------------
                 HEATMAP ARRAY IN MONTH
@@ -263,7 +263,7 @@ class MonthlyReportViewModel: ObservableObject {
         return components.month ?? 0 // Return month or 0 if nil
     }
     
-    func differenceBetweenArrays(arrayA: [Float], arrayB: [Float]) -> [Float]? {
+    func differenceBetweenArrays(arrayA: [Float], arrayB: [Float], scalpPositions: String) -> [Float]? {
         // Check if both arrays have the same count
         guard arrayA.count == arrayB.count else {
             return nil // Return nil if the arrays do not have the same length
@@ -272,11 +272,35 @@ class MonthlyReportViewModel: ObservableObject {
         // Create a new array to hold the differences
         var differences: [Float] = []
         
+        var validNumbers = [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 24, 25, 26, 27, 28, 29]
+        var toAppend: [Int] = []
+        
+        if processCurrentScalpPositions(scalpPositions: scalpPositions).count == 6{
+            //print("Scalp Positions: \(scalpPositions)")
+            let stringToIntArray: [String: [Int]] = [
+                "B. Left Side": [7, 8, 13, 18, 22, 23],
+                "C. Right Side": [6, 7, 11, 16, 21, 22],
+                "D. Front Side": [16, 17, 18, 21, 22, 23],
+                "E. Middle Side": [11, 12, 13, 21, 22, 23],
+                "F. Back Side": [6, 7, 8, 11, 12, 13],
+            ]
+            toAppend = stringToIntArray[scalpPositions]!
+            
+            //validNumbers.append(contentsOf: toAppend)
+            validNumbers += toAppend
+            validNumbers.sort(by: <)
+
+        }
+        
         // Iterate through both arrays and calculate the difference
         for i in 0..<arrayA.count {
-            var difference = arrayA[i] - arrayB[i] // Calculate the difference
-            difference = difference/2 + 0.5
-            differences.append(difference) // Add the difference to the new array
+            if validNumbers.contains(i) {
+                differences.append(1.0)
+            } else {
+                var difference = arrayA[i] - arrayB[i] // Calculate the difference
+                difference = difference/2 + 0.5
+                differences.append(difference) // Add the difference to the new array
+            }
         }
         
         return differences // Return the array of differences

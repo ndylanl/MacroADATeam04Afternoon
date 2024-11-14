@@ -95,120 +95,126 @@ struct MonthReportView: View {
                 .font(.body)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                .padding(.bottom, 10)
                 
                 VStack(alignment: .leading){
-                    HStack{
-                        Text("Last Result & Personal Activites")
-                            .font(.body)
-                        
-                        Spacer()
-                        
-                        Button{
-                            showingSleepAndMovementReport = true
-                        } label: {
-                            Image(systemName: "info.circle")
+                    VStack{
+                        HStack{
+                            Text("Last Result & Personal Activites")
+                                .font(.body)
+                            
+                            Spacer()
+                            
+                            Button{
+                                showingSleepAndMovementReport = true
+                            } label: {
+                                Image(systemName: "info.circle")
+                            }
                         }
-                    }
-                    .padding(.bottom, -4)
+                        .padding(.horizontal)
+                        .padding(.bottom, -4)
 
-                    
-                    Divider()
-                    
-                    VStack(alignment: .center){
-                        Text("Your hair growth is")
-                            .font(.title2)
-                        Text(viewModel.hairGrowthStatus)
-                            .font(.largeTitle)
+                        
+                        Divider()
+                            .padding(.horizontal)
+                        
+                        VStack(alignment: .center){
+                            Text("Your hair growth is")
+                                .font(.title2)
+                            Text(viewModel.hairGrowthStatus)
+                                .font(.largeTitle)
+                        }
+                        .frame(width: UIScreen.main.bounds.width * 340 / 430)
+                        .padding(.vertical)
+                        
+                        
+                        if Int(viewModel.sleepData) ?? 7 <= 6{
+                            HStack{
+                                Text("·")
+                                Text("Have more sleep time")
+                            }
+                        }
+                        
+                        if Int(viewModel.movementData) ?? 2001 <= 2000 {
+                            HStack{
+                                Text("·")
+                                Text("Daily workout is recommended")
+                            }
+                        }
+                        
+                        HStack{
+                            Text("·")
+                            Text("Be more consistent with applying serum")
+                        }
+                        .isHidden(viewModel.applySuggestion, remove: viewModel.applySuggestion)
+                        
+                        HStack{
+                            Text("·")
+                            Text("Be more consistent with your appointments")
+                        }
+                        .isHidden(viewModel.appointmentSuggestion, remove: viewModel.appointmentSuggestion)
+
+                        HStack{
+                            Text("·")
+                            Text("Be more consistent with consuming medication")
+                        }
+                        .isHidden(viewModel.consumeSuggestion, remove: viewModel.consumeSuggestion)
+                        
+                        HStack{
+                            Text("·")
+                            Text("Be more consistent with your exercises")
+                        }
+                        .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
+
+                        HStack{
+                            Spacer()
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text(viewModel.sleepData)
+                                        .font(.title)
+                                    Text("hrs")
+                                        .font(.body)
+                                }
+                                HStack{
+                                    Image(systemName: "moon.stars.fill")
+                                    Text("Sleep")
+                                }
+                                .font(.footnote)
+                            }
+                            .padding(.horizontal)
+                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(.black, lineWidth: 0.1)
+                            )
+                            
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text(viewModel.movementData)
+                                        .font(.title)
+                                    Text("cal")
+                                        .font(.body)
+                                }
+                                HStack{
+                                    Image(systemName: "waveform.path.ecg")
+                                    Text("Movement")
+                                }
+                                .font(.footnote)
+                            }
+                            .padding(.horizontal)
+                            .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(.black, lineWidth: 0.1)
+                            )
+                            
+                            Spacer()
+                        }
+                        
                     }
-                    .frame(width: UIScreen.main.bounds.width * 340 / 430)
                     .padding(.vertical)
-                    
-                    
-                    if Int(viewModel.sleepData) ?? 7 <= 6{
-                        HStack{
-                            Text("·")
-                            Text("Have more sleep time")
-                        }
-                    }
-                    
-                    if Int(viewModel.movementData) ?? 2001 <= 2000 {
-                        HStack{
-                            Text("·")
-                            Text("Daily workout is recommended")
-                        }
-                    }
-                    
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with applying serum")
-                    }
-                    .isHidden(viewModel.applySuggestion, remove: viewModel.applySuggestion)
-                    
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with your appointments")
-                    }
-                    .isHidden(viewModel.appointmentSuggestion, remove: viewModel.appointmentSuggestion)
-
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with consuming medication")
-                    }
-                    .isHidden(viewModel.consumeSuggestion, remove: viewModel.consumeSuggestion)
-                    
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with your exercises")
-                    }
-                    .isHidden(viewModel.exerciseSuggestion, remove: viewModel.exerciseSuggestion)
-
-                    HStack{
-                        Spacer()
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text(viewModel.sleepData)
-                                    .font(.title)
-                                Text("hrs")
-                                    .font(.body)
-                            }
-                            HStack{
-                                Image(systemName: "moon.stars.fill")
-                                Text("Sleep")
-                            }
-                            .font(.footnote)
-                        }
-                        .padding(.horizontal)
-                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.1)
-                        )
-                        
-                        VStack(alignment: .leading){
-                            HStack{
-                                Text(viewModel.movementData)
-                                    .font(.title)
-                                Text("cal")
-                                    .font(.body)
-                            }
-                            HStack{
-                                Image(systemName: "waveform.path.ecg")
-                                Text("Movement")
-                            }
-                            .font(.footnote)
-                        }
-                        .padding(.horizontal)
-                        .frame(width: UIScreen.main.bounds.width *  374 / 430 / 2 - 20, height: UIScreen.main.bounds.height * 79 / 932, alignment: .leading)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.black, lineWidth: 0.1)
-                        )
-                        
-                        Spacer()
-                    }
-                    
                 }
-                .padding()
+                
                 .background(.white)
                 .font(.body)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -216,6 +222,7 @@ struct MonthReportView: View {
                 .onAppear{
                     viewModel.setPersonalActivity(date: date, healthViewModel: healthViewModel)
                 }
+                .padding(.bottom, 10)
                 
                 
                 Button{

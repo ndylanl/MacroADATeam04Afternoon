@@ -182,6 +182,7 @@ struct WeekReportView: View {
                     .font(.body)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                    .padding(.bottom, 10)
                     
                     VStack(alignment: .leading){
                         HStack{
@@ -252,6 +253,7 @@ struct WeekReportView: View {
                     .font(.body)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                    .padding(.bottom, 10)
                     
                     Button{
                         isComparePresented = true

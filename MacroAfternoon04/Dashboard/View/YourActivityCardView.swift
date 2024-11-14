@@ -35,46 +35,12 @@ struct YourActivityCardView: View {
                 
                 Divider()
                 
+                SuggestionCardView()
                 
-                //                Text("You have no monthly results yet.")
-                //                    .padding([.top, .bottom, .trailing])
-                //                    .font(.title3)
-                //                    .foregroundStyle(Color("NeutralColor"))
-                
-                VStack(alignment: .center){
-                    Text("Your hair growth is")
-                        .font(.title2)
-                    Text("getting better")
-                        .font(.largeTitle)
-                }
-                .frame(width: UIScreen.main.bounds.width * 340 / 430)
-                .padding(.vertical)
-                
-                VStack(alignment: .leading){
-                    HStack{
-                        Text("·")
-                        Text("Have more sleep time")
-                            .frame(width: cardWidthSize() - 30, alignment: .leading)
-
-                    }
-                        
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with applying serum")
-                            .frame(width: cardWidthSize() - 30, alignment: .leading)
-
-                    }
-                    
-                    HStack{
-                        Text("·")
-                        Text("Be more consistent with consuming medication")
-                            .frame(width: cardWidthSize() - 30, alignment: .leading)
-
-                    }
-                }
-                .font(.body)
-                .padding(.top, 4)
-                
+//                Text("You have no monthly results yet.")
+//                    .padding([.top, .bottom, .trailing])
+//                    .font(.title3)
+//                    .foregroundStyle(Color("NeutralColor"))
                 
                 AnyLayout(HStackLayout()){
                     

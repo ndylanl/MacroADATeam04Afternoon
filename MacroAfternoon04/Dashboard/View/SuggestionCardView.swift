@@ -19,65 +19,87 @@ struct SuggestionCardView: View {
     @State var sleepData = ""
     @State var movementData = ""
     
+    @State var emptyState = true
+    
     @EnvironmentObject var healthViewModel: HealthViewModel
-
+    
     
     var body: some View {
-        VStack(alignment: .center){
-            Text("Your hair growth is")
-                .font(.title2)
-            Text("getting better")
-                .font(.largeTitle)
-        }
-        .frame(width: UIScreen.main.bounds.width * 340 / 430)
-        .padding(.vertical)
-        .onAppear{
-            let calendar = Calendar.current
-            let startDate = calendar.date(byAdding: .day, value: -1, to: Date())!
-            healthViewModel.calculateAverageSleep(startDate: startDate, endDate: Date())
-            healthViewModel.calculateAverageMovement(startDate: startDate, endDate: Date())
+        if emptyState{
+            Text("You have no monthly results yet.")
+                .padding([.top, .bottom, .trailing])
+                .font(.title3)
+                .foregroundStyle(Color("NeutralColor"))
+                .onAppear{
+                    let calendar = Calendar.current
+                    let startDate = calendar.date(byAdding: .day, value: -1, to: Date())!
+                    healthViewModel.calculateAverageSleep(startDate: startDate, endDate: Date())
+                    healthViewModel.calculateAverageMovement(startDate: startDate, endDate: Date())
+                    
+                    sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+                    movementData = String(format: "%.1f", healthViewModel.averageMovement)
+                    setSuggestions()
+                }
+        } else {
+            VStack(alignment: .center){
+                Text("Your hair growth is")
+                    .font(.title2)
+                Text("getting better")
+                    .font(.largeTitle)
+            }
+            .frame(width: UIScreen.main.bounds.width * 340 / 430)
+            .padding(.vertical)
+            .onAppear{
+                let calendar = Calendar.current
+                let startDate = calendar.date(byAdding: .day, value: -1, to: Date())!
+                healthViewModel.calculateAverageSleep(startDate: startDate, endDate: Date())
+                healthViewModel.calculateAverageMovement(startDate: startDate, endDate: Date())
+                
+                sleepData = String(format: "%.1f", healthViewModel.averageSleep)
+                movementData = String(format: "%.1f", healthViewModel.averageMovement)
+                setSuggestions()
+            }
             
-            sleepData = String(format: "%.1f", healthViewModel.averageSleep)
-            movementData = String(format: "%.1f", healthViewModel.averageMovement)
-        }
-        
-        if Int(sleepData) ?? 7 <= 6{
+            if Int(sleepData) ?? 7 <= 6{
+                HStack{
+                    Text("·")
+                    Text("Have more sleep time")
+                }
+            }
+            
+            if Int(movementData) ?? 2001 <= 2000 {
+                HStack{
+                    Text("·")
+                    Text("Daily workout is recommended")
+                }
+            }
             HStack{
                 Text("·")
-                Text("Have more sleep time")
+                Text("Be more consistent with applying serum")
             }
-        }
-        
-        if Int(movementData) ?? 2001 <= 2000 {
+            .isHidden(applySuggestion, remove: applySuggestion)
+            
             HStack{
                 Text("·")
-                Text("Daily workout is recommended")
+                Text("Be more consistent with your appointments")
             }
+            .isHidden(appointmentSuggestion, remove:appointmentSuggestion)
+            
+            HStack{
+                Text("·")
+                Text("Be more consistent with consuming medication")
+            }
+            .isHidden(consumeSuggestion, remove:consumeSuggestion)
+            
+            HStack{
+                Text("·")
+                Text("Be more consistent with your exercises")
+            }
+            .isHidden(exerciseSuggestion, remove: exerciseSuggestion)
+            
         }
-        HStack{
-            Text("·")
-            Text("Be more consistent with applying serum")
-        }
-        .isHidden(applySuggestion, remove: applySuggestion)
         
-        HStack{
-            Text("·")
-            Text("Be more consistent with your appointments")
-        }
-        .isHidden(appointmentSuggestion, remove:appointmentSuggestion)
-
-        HStack{
-            Text("·")
-            Text("Be more consistent with consuming medication")
-        }
-        .isHidden(consumeSuggestion, remove:consumeSuggestion)
         
-        HStack{
-            Text("·")
-            Text("Be more consistent with your exercises")
-        }
-        .isHidden(exerciseSuggestion, remove: exerciseSuggestion)
-
     }
     
     // Function to get the month from a Date
@@ -104,21 +126,33 @@ struct SuggestionCardView: View {
         
         if day >= 28{
             if weekOfMonth(for: Date()) != weekOfMonth(for: models[models.count - 1].dateTaken){
-               lastMonth -= 1
+                lastMonth -= 1
             }
         } else {
             lastMonth -= 1
         }
         
         for model in models{
+            
             if !allMonths.contains(getMonth(from: model.dateTaken)){
                 allMonths.append(getMonth(from: model.dateTaken))
             }
-                        
+            
             if getMonth(from: model.dateTaken) == lastMonth{
                 lastMonthModels.append(model)
             }
         }
+        
+        print("--------")
+        print(allMonths)
+        print("last month models: \(lastMonthModels)")
+        
+        if allMonths.count <= 1{
+            print("set to emptyState")
+            emptyState = true
+            return
+        }
+        
         
         let applyPoints = lastMonthModels.compactMap{$0.applyPoint}
         let appointmentPoints = lastMonthModels.compactMap{$0.appointmentPoint}
@@ -133,7 +167,7 @@ struct SuggestionCardView: View {
         let consumeAvg = averagePoints(of: consumePoints)
         let exerciseAvg = averagePoints(of: exercisePoints)
         let otherAvg = averagePoints(of: otherPoints)
-                
+        
         if applyAvg <= okThreshold{
             applySuggestion = false
         }

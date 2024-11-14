@@ -22,7 +22,7 @@ struct CompareReportSheetView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 VStack(alignment: .leading) {
                     
@@ -39,41 +39,44 @@ struct CompareReportSheetView: View {
                     SelectDateView(selectedReport: $viewModel.selectedReportB, availableDates: viewModel.availableDates)
                         .padding()
                     
-                    ZStack {
-                        Button(action: {
-                            // Set the alert message if needed
-                            alertMessage = "You will not be able to access the report comparison due to difference of scalp area."
-                            showAlert = ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB).checkReportAccess(dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB)
-                            
-                            if !showAlert{
-                                navigateToReport = true
-                            }
-                        }) {
-                            Text("Compare")
-                                .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
-                        }
-                        .background(Color("PrimaryColor"))
-                        .foregroundStyle(Color("SecondaryColor"))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
-                        
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text("Compare Report Status"),
-                                message: Text(alertMessage),
-                                dismissButton: .default(Text("OK")) {
+                    VStack(alignment: .center){
+                        ZStack {
+                            Button(action: {
+                                // Set the alert message if needed
+                                alertMessage = "You will not be able to access the report comparison due to difference of scalp area."
+                                showAlert = ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB).checkReportAccess(dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB)
+                                
+                                if !showAlert{
+                                    navigateToReport = true
                                 }
-                            )
+                            }) {
+                                Text("Compare")
+                                    .frame(width: UIScreen.main.bounds.width * 374 / 430, height: UIScreen.main.bounds.height * 48 / 932)
+                            }
+                            .background(Color("PrimaryColor"))
+                            .foregroundStyle(Color("SecondaryColor"))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+                            
+                            .alert(isPresented: $showAlert) {
+                                Alert(
+                                    title: Text("Compare Report Status"),
+                                    message: Text(alertMessage),
+                                    dismissButton: .default(Text("OK")) {
+                                    }
+                                )
+                            }
+                            .disabled((viewModel.selectedReportA == nil) && (viewModel.selectedReportB == nil))
+                            
+                            
+                            NavigationLink(destination: CompareReportDetailSheetView(selectedReportA: viewModel.selectedReportA, selectedReportB: viewModel.selectedReportB, viewModel: ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB)), isActive: $navigateToReport) {
+                                EmptyView() // This is needed to create a link without visible content
+                            }
+                            
+                            
                         }
-                        .disabled((viewModel.selectedReportA == nil) && (viewModel.selectedReportB == nil))
-                        
-                        
-                        NavigationLink(destination: CompareReportDetailSheetView(selectedReportA: viewModel.selectedReportA, selectedReportB: viewModel.selectedReportB, viewModel: ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB)), isActive: $navigateToReport) {
-                            EmptyView() // This is needed to create a link without visible content
-                        }
-                        
-                        
                     }
+                    .frame(width: UIScreen.main.bounds.width)
                 }
                 .background(Color(.systemGray6))
                 .navigationTitle("Compare Reports")
@@ -86,6 +89,8 @@ struct CompareReportSheetView: View {
                     }
                 }
             }
+            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+//            .background(Color(.systemGray6))
         }
     }
     

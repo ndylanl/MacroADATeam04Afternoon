@@ -94,6 +94,7 @@ struct CompareReportDetailSheetView: View {
                 .font(.body)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                .padding(.bottom, 4)
                 
                 VStack(alignment: .leading){
                     HStack{

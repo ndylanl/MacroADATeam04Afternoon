@@ -23,8 +23,8 @@ struct WeekCircleView: View {
         .background(.white.opacity(0.8))
         .background(.ultraThinMaterial)
         .clipShape(Circle())
-//        .shadow(color: Color("PrimaryColor").opacity(0.7), radius: 4, x: 0, y: 3)
-        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
+        .shadow(color: Color("PrimaryColor").opacity(0.7), radius: 4, x: 0, y: 3)
+//        .shadow(color: Color.gray.opacity(0.5), radius: 2, x: 0, y: 2)
     }
     
     private func getCircleSize() -> CGFloat {

@@ -59,6 +59,7 @@ struct DashboardView: View {
                     
                     .edgesIgnoringSafeArea(.all)
                 }
+                .frame(width: UIScreen.main.bounds.width)
             }
 
             

@@ -50,6 +50,7 @@ struct MonthReportView: View {
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 .padding(.bottom, -24)
                 .onAppear{
+                    viewModel.fetchData(weekDate: date)
                     let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
                     renderedImage = renderer.uiImage
                 }

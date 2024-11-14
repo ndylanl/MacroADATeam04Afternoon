@@ -218,6 +218,7 @@ struct CompareReportDetailSheetView: View {
             InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
         })
         .onAppear{
+            viewModel.fetchData(dateReportA: selectedReportA, dateReportB: selectedReportB)
             let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
             renderedImage = renderer.uiImage
             viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)

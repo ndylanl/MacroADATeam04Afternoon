@@ -34,11 +34,12 @@ struct YourActivityCardView: View {
                 
                 Divider()
                 
+                SuggestionCardView()
                 
-                Text("You have no monthly results yet.")
-                    .padding([.top, .bottom, .trailing])
-                    .font(.title3)
-                    .foregroundStyle(Color("NeutralColor"))
+//                Text("You have no monthly results yet.")
+//                    .padding([.top, .bottom, .trailing])
+//                    .font(.title3)
+//                    .foregroundStyle(Color("NeutralColor"))
                 
                 AnyLayout(HStackLayout()){
                     

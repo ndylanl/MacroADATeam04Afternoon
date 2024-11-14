@@ -24,7 +24,7 @@ struct HeatMapBar2: View {
                     endPoint: .bottom
                 )
                 .padding(.bottom, 20)
-                .frame(width: 30, height: 240)
+                .frame(width: 20, height: 240)
             }
             
             VStack(alignment: .leading) {
@@ -46,7 +46,7 @@ struct HeatMapBar2: View {
             .padding(.bottom, 20)
             .foregroundStyle(Color.black)
         }
-        .padding(.leading, -220)
+        .padding(.leading, -240)
         
     }
 }

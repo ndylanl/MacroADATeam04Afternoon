@@ -39,10 +39,11 @@ struct InfoSubtractionSheetView: View {
                     
                     Spacer()
                 }
+                .padding(.horizontal)
                 .padding(.vertical, 42)
                 
             }
-            .frame(width: UIScreen.main.bounds.width * 374 / 430)
+            .frame(width: UIScreen.main.bounds.width)
             .navigationTitle("Subtraction")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{

@@ -34,6 +34,7 @@ struct CompareReportDetailSheetView: View {
                     Spacer()
                 }
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
+                .padding(.bottom, -40)
                 
                 TabView{
                     if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0] || viewModel.heatMapArray != [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]{

@@ -36,6 +36,7 @@ struct YourActivityCardView: View {
                 Divider()
                 
                 SuggestionCardView()
+                    .padding(.bottom, 4)
                 
 //                Text("You have no monthly results yet.")
 //                    .padding([.top, .bottom, .trailing])

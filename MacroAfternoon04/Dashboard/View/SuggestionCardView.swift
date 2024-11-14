@@ -151,6 +151,8 @@ struct SuggestionCardView: View {
             print("set to emptyState")
             emptyState = true
             return
+        } else {
+            emptyState = false
         }
         
         

@@ -162,7 +162,7 @@ struct SuggestionCardView: View {
         let exercisePoints = lastMonthModels.compactMap{$0.exercisePoint}
         let otherPoints = lastMonthModels.compactMap{$0.otherPoint}
         
-        let okThreshold = 85.00
+        let okThreshold = 90.00
         
         let applyAvg = averagePoints(of: applyPoints)
         let appointmentAvg = averagePoints(of: appointmentPoints)

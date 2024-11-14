@@ -51,7 +51,7 @@ class MonthlyReportViewModel: ObservableObject {
         fetchData(weekDate: selectedMonthYear)
     }
     
-    func checkMonthlyReportAccess() -> Bool{
+    func checkMonthlyReportAccess(date: Date) -> Bool{
         //return false
         let fetchRequest = FetchDescriptor<TrackProgressModel>(
             predicate: nil,
@@ -64,12 +64,21 @@ class MonthlyReportViewModel: ObservableObject {
             let day = calendar.component(.day, from: Date())
             let month = calendar.component(.month, from: Date())
             
-            if month != calendar.component(.month, from: models.last!.dateTaken){
+            var comparisonModels: [TrackProgressModel] = []
+            
+            for i in models{
+                if getMonth(from: i.dateTaken) == getMonth(from: date) {
+                    comparisonModels.append(i)
+                }
+            }
+            
+            
+            if month != calendar.component(.month, from: comparisonModels.last!.dateTaken){
                 return false
             }
             
             if day >= 28{
-                if weekOfMonth(for: Date()) == weekOfMonth(for: models[models.count - 1].dateTaken){
+                if weekOfMonth(for: Date()) == weekOfMonth(for: comparisonModels[comparisonModels.count - 1].dateTaken){
                     return false
                 }
             }

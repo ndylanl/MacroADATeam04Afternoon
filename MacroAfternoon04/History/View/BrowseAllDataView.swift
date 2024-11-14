@@ -27,11 +27,11 @@ struct BrowseAllDataView: View {
                 Section(header: Text(formattedDate(month, formatter: monthYearFormatter))) {
                     
                     
-                    if MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(){
+                    if MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month){
                         Button(action: {
                             // Set the alert message if needed
                             alertMessage = "The Monthly Report will be available at the end of the month."
-                            showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess()
+                            showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month)
                             
                             if !showAlert{
                                 navigateToMonthReport = true

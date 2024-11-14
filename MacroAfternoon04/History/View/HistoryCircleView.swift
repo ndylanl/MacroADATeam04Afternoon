@@ -99,7 +99,7 @@ struct HistoryCircleView: View {
                     Button(action: {
                         // Set the alert message if needed
                         alertMessage = "The Monthly Report will be available at the end of the month."
-                        showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear).checkMonthlyReportAccess()
+                        showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear).checkMonthlyReportAccess(date: selectedMonthYear)
                         
                         if !showAlert{
                             navigateToMonthReport = true

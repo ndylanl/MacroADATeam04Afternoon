@@ -118,7 +118,7 @@ class ComparisonResultViewModel: ObservableObject {
                 let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: modelB.scalpPositions)
                 
                 heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
-                print("HeatMapArray: \(heatMapArray)")
+                //print("HeatMapArray: \(heatMapArray)")
             } else {
                 mismatchScalpPositions = true
             }

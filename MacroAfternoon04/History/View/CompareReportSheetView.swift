@@ -26,13 +26,13 @@ struct CompareReportSheetView: View {
             VStack {
                 VStack(alignment: .leading) {
                     
-                    Text("Report A")
+                    Text("Report A (Older)")
                         .font(.title2).bold()
                         .padding()
                     SelectDateView(selectedReport: $viewModel.selectedReportA, availableDates: viewModel.availableDates)
                         .padding()
                     
-                    Text("Report B")
+                    Text("Report B (Newer)")
                         .font(.title2).bold()
                         .padding()
                     
@@ -45,6 +45,16 @@ struct CompareReportSheetView: View {
                                 // Set the alert message if needed
                                 alertMessage = "You will not be able to access the report comparison due to difference of scalp area."
                                 showAlert = ComparisonResultViewModel(modelContext: modelContext, dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB).checkReportAccess(dateReportA: viewModel.selectedReportA, dateReportB: viewModel.selectedReportB)
+                                
+                                if viewModel.selectedReportA == viewModel.selectedReportB{
+                                    showAlert = true
+                                    alertMessage = "You can not compare the same report."
+                                }
+                                
+                                if viewModel.selectedReportA! > viewModel.selectedReportB!{
+                                    showAlert = true
+                                    alertMessage = "Report A must be older than Report B."
+                                }
                                 
                                 if !showAlert{
                                     navigateToReport = true

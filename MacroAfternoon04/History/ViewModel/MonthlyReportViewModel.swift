@@ -177,7 +177,12 @@ class MonthlyReportViewModel: ObservableObject {
                 let heatMapArrayB = createArrayHeatMap(detections: detectionsB, scalpPositions: findMajorityScalpPosition(models: models)!)
                 
                 heatMapArray = differenceBetweenArrays(arrayA: heatMapArrayB, arrayB: heatMapArrayA)!
-                
+                print("""
+                --------------
+                HEATMAP ARRAY IN MONTH
+                --------------    
+                """)
+                print(heatMapArrayA)
                 mismatchScalpPositions = true
             }
             

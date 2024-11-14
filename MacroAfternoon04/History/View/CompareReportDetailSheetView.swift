@@ -36,7 +36,7 @@ struct CompareReportDetailSheetView: View {
                 .frame(width: UIScreen.main.bounds.width * 374 / 430)
                 
                 TabView{
-                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0]{
+                    if viewModel.heatMapArray != [0,0,0,0,0,0,0,0,0,0,0,0] || viewModel.heatMapArray != [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]{
                         
                         if let image = renderedImage {
                             HStack(spacing: 0){
@@ -54,6 +54,11 @@ struct CompareReportDetailSheetView: View {
                 .tabViewStyle(.page)
                 .padding(.bottom, -24)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .onAppear{
+                    viewModel.fetchData(dateReportA: selectedReportA, dateReportB: selectedReportB)
+                    let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
+                    renderedImage = renderer.uiImage
+                }
                 
                 VStack(alignment: .leading){
                     HStack{
@@ -218,11 +223,7 @@ struct CompareReportDetailSheetView: View {
             InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
         })
         .onAppear{
-            viewModel.fetchData(dateReportA: selectedReportA, dateReportB: selectedReportB)
-            let renderer = ImageRenderer(content: HeatmapView(data: createDepthData(originalValues: viewModel.heatMapArray, multiple: 4)))
-            renderedImage = renderer.uiImage
             viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)
-            
         }
     }
     

@@ -118,42 +118,46 @@ struct SuggestionCardView: View {
     func setSuggestions(){
         var lastMonthModels: [TrackProgressModel] = []
         
-        var lastMonth = getMonth(from: models[models.count - 1].dateTaken)
-        var allMonths: [Int] = []
-        
-        let calendar = Calendar.current
-        let day = calendar.component(.day, from: models[models.count - 1].dateTaken)
-        
-        if day >= 28{
-            if weekOfMonth(for: Date()) != weekOfMonth(for: models[models.count - 1].dateTaken){
+        if !models.isEmpty{
+            var lastMonth = getMonth(from: models[models.count - 1].dateTaken)
+            var allMonths: [Int] = []
+            
+            let calendar = Calendar.current
+            let day = calendar.component(.day, from: models[models.count - 1].dateTaken)
+            
+            if day >= 28{
+                if weekOfMonth(for: Date()) != weekOfMonth(for: models[models.count - 1].dateTaken){
+                    lastMonth -= 1
+                }
+            } else {
                 lastMonth -= 1
             }
-        } else {
-            lastMonth -= 1
-        }
-        
-        for model in models{
             
-            if !allMonths.contains(getMonth(from: model.dateTaken)){
-                allMonths.append(getMonth(from: model.dateTaken))
+            for model in models{
+                
+                if !allMonths.contains(getMonth(from: model.dateTaken)){
+                    allMonths.append(getMonth(from: model.dateTaken))
+                }
+                
+                if getMonth(from: model.dateTaken) == lastMonth{
+                    lastMonthModels.append(model)
+                }
             }
             
-            if getMonth(from: model.dateTaken) == lastMonth{
-                lastMonthModels.append(model)
+            
+            //        print("--------")
+            //        print(allMonths)
+            //        print("last month models: \(lastMonthModels)")
+            
+            if allMonths.count <= 1{
+                print("set to emptyState")
+                emptyState = true
+                return
+            } else {
+                emptyState = false
             }
-        }
-        
-        print("--------")
-        print(allMonths)
-        print("last month models: \(lastMonthModels)")
-        
-        if allMonths.count <= 1{
-            print("set to emptyState")
-            emptyState = true
-            return
-        } else {
-            emptyState = false
-        }
+            
+        } else { return }
         
         
         let applyPoints = lastMonthModels.compactMap{$0.applyPoint}

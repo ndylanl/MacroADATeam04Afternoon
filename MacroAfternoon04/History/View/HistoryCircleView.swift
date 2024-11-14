@@ -36,7 +36,8 @@ struct HistoryCircleView: View {
                     if !historyViewModel.trackProgress.isEmpty {
                         monthYearPickerButton
                         monthYearCircleView
-                            .padding(.top, UIScreen.main.bounds.height / 20)
+                            .padding(.trailing)
+                            .padding(.top, UIScreen.main.bounds.height / 24)
                         actionButtons
                             .padding(.top, UIScreen.main.bounds.height / 20)
                     } else {
@@ -125,6 +126,7 @@ struct HistoryCircleView: View {
                 }
             }
         }
+        .padding(.trailing)
         .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 370 / 932)
     }
     

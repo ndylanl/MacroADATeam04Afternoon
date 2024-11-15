@@ -14,6 +14,10 @@ struct CompareReportDetailSheetView: View {
     @StateObject var viewModel: ComparisonResultViewModel
     @EnvironmentObject var healthViewModel: HealthViewModel
     
+    @State var sleepData: String = ""
+    
+    @State var moveData: String = ""
+    
     @State private var isInfoSheetPresented = false
     
     @State private var renderedImage: UIImage?
@@ -134,14 +138,14 @@ struct CompareReportDetailSheetView: View {
                     .padding(.vertical)
                     .padding(.top, 4)
                     
-                    if Int(viewModel.sleepData) ?? 7 <= 6{
+                    if Double(sleepData) ?? 7.0 <= 6.0{
                         HStack{
                             Text("·")
                             Text("Have more sleep time")
                         }
                     }
                     
-                    if Int(viewModel.movementData) ?? 2001 <= 2000 {
+                    if Double(moveData) ?? 2001 <= 2000 {
                         HStack{
                             Text("·")
                             Text("Daily workout is recommended")
@@ -225,6 +229,13 @@ struct CompareReportDetailSheetView: View {
             .navigationTitle("Compare Reports")
             .background(Color(.systemGray6).ignoresSafeArea(.all))
         }
+        .onAppear{
+            viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)
+            sleepData = viewModel.sleepData
+            moveData = viewModel.movementData
+            print("sleepdata = :\(sleepData)")
+
+        }
         .background(Color(.systemGray6).ignoresSafeArea(.all))
         .sheet(isPresented: $isInfoSheetPresented) {
             InfoSubtractionSheetView(isPresented: $isInfoSheetPresented)
@@ -233,9 +244,7 @@ struct CompareReportDetailSheetView: View {
         .sheet(isPresented: $showingSleepAndMovementReport, content: {
             InfoSleepAndMovementSheetView(isPresented: $showingSleepAndMovementReport)
         })
-        .onAppear{
-            viewModel.setPersonalActivity(dateA: selectedReportA!, dateB: selectedReportB!, healthViewModel: healthViewModel)
-        }
+        
     }
     
     private func formattedDate(_ date: Date?) -> String {

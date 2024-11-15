@@ -45,6 +45,10 @@ class ComparisonResultViewModel: ObservableObject {
         
         sleepData = String(format: "%.1f", healthViewModel.averageSleep)
         movementData = String(format: "%.1f", healthViewModel.averageMovement)
+        
+        print("Set Data")
+        print(sleepData)
+        print(movementData)
     }
     
     func checkReportAccess(dateReportA: Date?, dateReportB: Date?) -> Bool{

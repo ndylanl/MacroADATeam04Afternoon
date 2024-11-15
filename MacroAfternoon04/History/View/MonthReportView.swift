@@ -91,9 +91,6 @@ struct MonthReportView: View {
                         Text("Hair growth can be better")
                     }
                     
-                    
-                    
-                    
                 }
                 .padding()
                 .background(.white)
@@ -133,14 +130,14 @@ struct MonthReportView: View {
                         .padding(.vertical)
                         
                         
-                        if Int(viewModel.sleepData) ?? 7 <= 6{
+                        if Double(viewModel.sleepData) ?? 7 <= 6 || viewModel.sleepData == ""{
                             HStack{
                                 Text("·")
                                 Text("Have more sleep time")
                             }
                         }
                         
-                        if Int(viewModel.movementData) ?? 2001 <= 2000 {
+                        if Double(viewModel.movementData) ?? 2001 <= 2000 {
                             HStack{
                                 Text("·")
                                 Text("Daily workout is recommended")

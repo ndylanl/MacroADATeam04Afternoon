@@ -100,6 +100,11 @@ struct HairGrowthProgressCardView: View {
         .onChange(of: selectedDay) { oldValue, newValue in
             checkButtonAvailability()
         }
+        .onChange(of: sheetDestination) { oldValue, newValue in
+            checkButtonAvailability()
+            checkRecentAvailability()
+            viewModel.fetchLastData()
+        }
         .sheet(item: $sheetDestination) { destination in
             switch destination {
             case .addProgress:

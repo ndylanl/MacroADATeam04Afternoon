@@ -14,6 +14,23 @@ class ReminderViewModel: ObservableObject {
     @Published var publishedRemindersCount = 0
     private var weeklyResetTimer: Timer?
     
+    func sortByTime(reminders: [ReminderModel]) -> [ReminderModel] {
+        let sortedDates = reminders.sorted {
+            let calendar = Calendar.current
+            let hour1 = calendar.component(.hour, from: $0.reminderTime)
+            let minute1 = calendar.component(.minute, from: $0.reminderTime)
+            
+            let hour2 = calendar.component(.hour, from: $1.reminderTime)
+            let minute2 = calendar.component(.minute, from: $1.reminderTime)
+            
+            if hour1 == hour2 {
+                return minute1 < minute2
+            }
+            return hour1 < hour2
+        }
+        
+        return sortedDates
+    }
     
     func deductPoints(for reminder: ReminderModel) {
         // Deduct 1 point from the corresponding category if the points are greater than 0
@@ -121,10 +138,8 @@ class ReminderViewModel: ObservableObject {
     func updateReminder(_ reminder: ReminderModel, isOn: Bool, context: ModelContext) {
         reminder.isReminderOn = isOn
         
-            if !isOn {
-                // Batalkan notifikasi
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
-            } else {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [reminder.id.uuidString])
+            if isOn {
                 // Jadwalkan notifikasi baru
                 scheduleReminderNotification(for: reminder)
             }
@@ -132,7 +147,7 @@ class ReminderViewModel: ObservableObject {
         saveContext(context: context)
     }
     
-    
+
     func saveReminder(_ reminder: ReminderModel, context: ModelContext) {
             // Insert new or updated reminder into the context
             context.insert(reminder)

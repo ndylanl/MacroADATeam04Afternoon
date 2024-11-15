@@ -145,12 +145,35 @@ struct AddReminderView: View {
                        
                     }
                 }
-                .navigationTitle(reminder == nil ? "Add Reminder" : "Edit Reminder") // Show appropriate title
+                .navigationTitle(reminder == nil ? "Add Reminder" : "Edit Reminder")
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading: Button("Cancel") {
                     presentationMode.wrappedValue.dismiss()
                 }, trailing: Button("Save") {
                     if let reminder = reminder {
+                        
+                        // try to make the date format
+//                        let alarmDate = time
+//                        let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: alarmDate)
+//                        let date = Calendar.current.date(from: dateComponents)!
+//                        reminder.reminderTime = date
+                        
+                        // try to save only hour n mins
+//                        let dateStart = Date.distantPast
+//                        var dateComponentStart = Calendar.current.dateComponents([.year, .month, .day], from: dateStart)
+//                        let alarmTime = time
+//                        dateComponentStart = Calendar.current.dateComponents([.hour, .minute], from: alarmTime)
+//                        let calendar = Calendar.current
+//                        let timeCreated = calendar.date (from: dateComponentStart)//dateComponentStart
+                        
+//                        let formatter = DateFormatter()
+//                        formatter.dateFormat = "HH:mm"
+//                        let date = Calendar.current.date(from: dateComponentStart)!
+//
+//                        let timeCreated = formatter.string(from: date)
+//                        reminder.reminderTime = timeCreated!
+                        
+//                        reminder.reminderTime = timeCreated
                         // Update existing reminder
                         reminder.label = label
                         reminder.reminderTime = time
@@ -163,8 +186,6 @@ struct AddReminderView: View {
                         reminderViewModel.updateReminder(reminder, isOn: reminder.isReminderOn, context: modelContext)
                         print("selected repeat option: \(selectedRepeatOptions)")
                         
-                        // check the published reminder status
-                        //reminderViewModel.checkReminderStatus(for: reminder)
                     } else {
                         // Insert a new reminder model into the SwiftData context
                         let newReminder = ReminderModel(
@@ -173,6 +194,7 @@ struct AddReminderView: View {
                             repeatOption: selectedRepeatOptions,
                             isReminderOn: true,
                             //reminderSound: sound,
+                            
                             category: category  // Initialize with selected category
                         )
                         modelContext.insert(newReminder)
@@ -186,7 +208,14 @@ struct AddReminderView: View {
                     // Dismiss the view
                     presentationMode.wrappedValue.dismiss()
                 })
+                
+//                func setTime(from date: Date) {
+//                    let formatter = DateFormatter()
+//                    formatter.dateFormat = "HH:mm"
+//                    self.timeCreated = formatter.string(from: date)
+//                }
             }
+            
         }
     }
 }

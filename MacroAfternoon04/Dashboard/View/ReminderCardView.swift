@@ -39,10 +39,10 @@ struct ReminderCardView: View {
                 } else {
                     // Filter reminders yang aktif dan sort berdasarkan waktu terdekat
                     let nextReminder = reminders
-                        .filter { $0.isReminderOn }
-                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow > $1.reminderTime.timeIntervalSinceNow })
+                        .filter { $0.isReminderOn && $0.reminderTime > Date()}
+                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
                         .first
-                    if nextReminder?.reminderTime ?? Date() < Date() {
+                    if nextReminder == nil {
                         let nextReminderOverflow = reminders
                             .filter { $0.isReminderOn }
                             .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })

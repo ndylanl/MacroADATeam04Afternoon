@@ -13,8 +13,11 @@ struct ReminderListView: View {
     @State private var selectedReminder: ReminderModel? = nil  // Track the selected reminder for editing
     @Environment(\.modelContext) private var modelContext // Fetch from SwiftData
     @Query private var reminders: [ReminderModel]         // Query reminders from SwiftData
+//    @Query(sort: \ReminderModel.reminderTime, order: .forward) var reminders: [ReminderModel]
     @ObservedObject var reminderViewModel = ReminderViewModel()
     @State var isSelected: Bool = false
+    
+    @State var sortedReminder: [ReminderModel] = []
     
     var body: some View {
         
@@ -32,8 +35,8 @@ struct ReminderListView: View {
                 }
             } else {
                 List {
-                    ForEach(reminders.sorted(by: { $0.reminderTime < $1.reminderTime })) { reminder in
-
+                    ForEach(sortedReminder) { reminder in
+                        
                         Button {
                                 selectedReminder = reminder
                                 isPresented = true
@@ -94,6 +97,9 @@ struct ReminderListView: View {
                     }
                     .onDelete(perform: deleteReminder) // Add swipe-to-delete functionality
                     //.listRowBackground(Color.clear)
+                    .onAppear {
+                        
+                    }
                 }
                 .frame(width: UIScreen.main.bounds.width)
                 .listStyle(.plain)
@@ -110,13 +116,20 @@ struct ReminderListView: View {
             // Pass the selected reminder for editing, or nil for adding a new one
             AddReminderView(reminder: $selectedReminder)
         }
+        .onAppear {
+            print(reminders)
+            sortedReminder = reminderViewModel.sortByTime(reminders: reminders)
+        }
+        .onChange(of: reminders) { _, _ in
+            sortedReminder = reminderViewModel.sortByTime(reminders: reminders)
+        }
     }
 
     
     // Function to handle deletion of reminders
     private func deleteReminder(at offsets: IndexSet) {
         for index in offsets {
-            let reminderToDelete = reminders[index]
+            let reminderToDelete = sortedReminder[index]
             modelContext.delete(reminderToDelete) // Remove from SwiftData context
         }
     }

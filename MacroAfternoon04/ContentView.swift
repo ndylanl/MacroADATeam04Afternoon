@@ -33,7 +33,7 @@ struct ContentView: View {
                 }
         } else {
             TabView(selection: $selectedTab) {
-                Tab("Home", systemImage: "square.grid.2x2.fill", value: 0) {
+                Tab("Dashboard", systemImage: "square.grid.2x2.fill", value: 0) {
                     DashboardView(showingAddProgressSheet: $showingAddProgressSheet, showingSleepAndMovementSheet: $showingSleepAndMovementSheet, selectedTab: $selectedTab, currentScalpPosition: $currentScalpPosition, selectedDay: $selectedDay)
                 }
                 

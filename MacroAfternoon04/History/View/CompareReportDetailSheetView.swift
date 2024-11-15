@@ -79,20 +79,25 @@ struct CompareReportDetailSheetView: View {
                     
                     HStack{
                         Text("●")
-                            .foregroundStyle(.red)
-                        Text("Hair growth can be better")
+                            .foregroundStyle(.blue)
+                        Text("Hair is growing")
                     }
                     .padding(.top, 4)
+                    
                     HStack{
                         Text("●")
                             .foregroundStyle(.green)
                         Text("Hair is stable")
                     }
+                    
+                    
                     HStack{
                         Text("●")
-                            .foregroundStyle(.blue)
-                        Text("Hair is growing")
+                            .foregroundStyle(.red)
+                        Text("Hair growth can be better")
                     }
+                    
+                    
                     
                 }
                 .padding()

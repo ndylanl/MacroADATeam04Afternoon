@@ -94,20 +94,25 @@ struct WeekReportView: View {
                         
                         HStack{
                             Text("●")
-                                .foregroundStyle(.red)
-                            Text("Hair is unhealthy")
+                                .foregroundStyle(.blue)
+                            Text("Hair is healthy")
                         }
                         .padding(.top, 4)
+                        
                         HStack{
                             Text("●")
                                 .foregroundStyle(.green)
                             Text("Hair is normal")
                         }
+                        
                         HStack{
                             Text("●")
-                                .foregroundStyle(.blue)
-                            Text("Hair is healthy")
+                                .foregroundStyle(.red)
+                            Text("Hair is unhealthy")
                         }
+                        
+                       
+                        
                     }
                     .padding()
                     .background(.white)

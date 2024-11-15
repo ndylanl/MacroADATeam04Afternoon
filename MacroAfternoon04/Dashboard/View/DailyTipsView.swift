@@ -19,7 +19,7 @@ struct DailyTipsView: View {
             VStack(alignment: .leading){
                 Text("Daily Tips")
                     .font(.body)
-                    .padding(.bottom, 5)
+//                    .padding(.bottom, 5)
                 
                 Divider()
 

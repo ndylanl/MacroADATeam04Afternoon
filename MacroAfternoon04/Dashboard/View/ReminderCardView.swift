@@ -30,7 +30,7 @@ struct ReminderCardView: View {
                     }
                     .font(.system(size: 24))
                     .foregroundStyle(Color("PrimaryColor"))
-                    
+                    .padding(.bottom, 2)
                     
                     Text("You have no reminders yet")
                         .font(.body)
@@ -38,10 +38,10 @@ struct ReminderCardView: View {
                 } else {
                     // Filter reminders yang aktif dan sort berdasarkan waktu terdekat
                     let nextReminder = reminders
-                        .filter { $0.isReminderOn }
-                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow > $1.reminderTime.timeIntervalSinceNow })
+                        .filter { $0.isReminderOn && $0.reminderTime > Date()}
+                        .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
                         .first
-                    if nextReminder?.reminderTime ?? Date() < Date() {
+                    if nextReminder == nil {
                         let nextReminderOverflow = reminders
                             .filter { $0.isReminderOn }
                             .sorted(by: { $0.reminderTime.timeIntervalSinceNow < $1.reminderTime.timeIntervalSinceNow })
@@ -60,6 +60,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             Text("\(nextReminders.reminderTime, style: .time)")
                                 .font(.body)
@@ -75,6 +76,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             
                             Text("You have no reminders yet")
@@ -95,6 +97,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             Text("\(nextReminders.reminderTime, style: .time)")
                                 .font(.body)
@@ -110,6 +113,7 @@ struct ReminderCardView: View {
                             }
                             .font(.system(size: 24))
                             .foregroundStyle(Color("PrimaryColor"))
+                            .padding(.bottom, 2)
                             
                             
                             Text("You have no reminders yet")

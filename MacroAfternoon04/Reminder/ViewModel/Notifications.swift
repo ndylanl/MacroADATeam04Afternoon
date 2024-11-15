@@ -18,7 +18,7 @@ func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, rep
             print("sapiman3", repeatOptions)
             for repeatOption in repeatOptions {
                 dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
-                print("dispatching notification ")
+                print("dispatching notification authorized")
             }
 
         case .denied:
@@ -28,6 +28,7 @@ func checkForPermissions(label: String, id: UUID, at hour: Int, minute: Int, rep
                 if didAllow {
                     for repeatOption in repeatOptions {
                         dispatchNotification(label: label, id: id, at: hour, minute: minute, repeatOption: repeatOption)
+                        print("dispatching notification notDetermined")
                     }
 
                 }
@@ -60,7 +61,7 @@ func setupNotificationActions() {
 }
 
 func dispatchNotification(label: String, id: UUID, at hour: Int, minute: Int, repeatOption: RepeatOption) {
-    let identifier = UUID().uuidString
+    let identifier = id.uuidString
     let title = "Serene"
     let body = "Reminder: \(label)!"
     let notificationCenter = UNUserNotificationCenter.current()
@@ -78,23 +79,29 @@ func dispatchNotification(label: String, id: UUID, at hour: Int, minute: Int, re
     var dateComponents = DateComponents()
     dateComponents.hour = hour
     dateComponents.minute = minute
-    
     // Set the weekday based on the repeat option
     switch repeatOption {
     case .monday:
         dateComponents.weekday = 2 // Monday
+        print("monday")
     case .tuesday:
         dateComponents.weekday = 3 // Tuesday
+        print("tuesday")
     case .wednesday:
         dateComponents.weekday = 4 // Wednesday
+        print("wednesday")
     case .thursday:
         dateComponents.weekday = 5 // Thursday
+        print("thursday")
     case .friday:
         dateComponents.weekday = 6 // Friday
+        print("friday")
     case .saturday:
         dateComponents.weekday = 7 // Saturday
+        print("saturday")
     case .sunday:
         dateComponents.weekday = 1 // Sunday
+        print("sunday")
     case .never:
         // If `never`, set a one-time trigger without repeating
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
@@ -110,17 +117,22 @@ func dispatchNotification(label: String, id: UUID, at hour: Int, minute: Int, re
         return
     }
     
-    // For other repeat options, create a repeating trigger
-    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-    
-    notificationCenter.add(request) { error in
-        if let error = error {
-            print("Error scheduling notification: \(error.localizedDescription)")
-        } else {
-            print("Repeating notification scheduled successfully!")
+    if repeatOption != .never {
+        print("dateComponents.weekday = \(String(describing: dateComponents.weekday))")
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        notificationCenter.add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            } else {
+                print("Repeating notification scheduled successfully!")
+            }
         }
     }
+        
+    // For other repeat options, create a repeating trigger
+    
 }
 
 

@@ -50,6 +50,7 @@ extension ReminderModel {
 class ReminderModel {
     @Attribute var id: UUID = UUID()
     @Attribute var label: String
+//    @Attribute var timeCreated: String 
     @Attribute var reminderTime: Date // The target time for the reminder
     @Attribute var repeatOption: [RepeatOption] 
     @Attribute var isReminderOn: Bool
@@ -75,7 +76,10 @@ class ReminderModel {
         self.category = category
         self.isActive = true
         self.lastResetDate = nil
+//        self.timeCreated = timeCreated
     }
+    
+    
 }
 
 

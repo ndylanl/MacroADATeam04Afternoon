@@ -53,7 +53,7 @@ func findMaxValueAndLabel(from multiArray: MLMultiArray) -> (maxValue: Double, l
 import UIKit
 import Vision
 
-func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.20) {
+func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold: Float = 0.175) {
     // Iterate through each image in hairPicture
     print("DETECT OBJECTS IN IMAGE")
     
@@ -65,7 +65,7 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
             
             do {
                 // Create a VNCoreMLModel from your ML model
-                guard let model = try? VNCoreMLModel(for: NewModel().model) else { return }
+                guard let model = try? VNCoreMLModel(for: LatestModel().model) else { return }
 
                 // Create a request for the model
                 let request = VNCoreMLRequest(model: model) { (request, error) in
@@ -78,12 +78,11 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
                             let boundingBox = observation.boundingBox
                             let label = observation.labels.first?.identifier ?? "Unknown"
 
-                            
                             return DetectedObject(id: UUID(), boundingBox: boundingBox, label: label)
                         }
                         
                         // Print detected objects for debugging
-                        if detectedObjects.count > 8 {
+                        if detectedObjects.count > 5 {
                             // Add filtered detected objects to trackProgress.detections
                             trackProgress.detections.append(detectedObjects)
                             print("No objects detected above confidence threshold.")
@@ -108,12 +107,12 @@ func detectObjectsInImage(trackProgress: TrackProgressModel, confidenceThreshold
 }
 
 
-func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.20) -> Bool {
+func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.175) -> Bool {
     var detectedObjects = 0
     
     do {
         // Create a VNCoreMLModel from your ML model
-        guard let model = try? VNCoreMLModel(for: NewModel().model) else { return false }
+        guard let model = try? VNCoreMLModel(for: LatestModel().model) else { return false }
         
         // Create a request for the model
         let request = VNCoreMLRequest(model: model) { (request, error) in
@@ -125,7 +124,7 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.20) -
                 }.count
                 
                 // Print detection status for debugging
-                if detectedObjects > 8 {
+                if detectedObjects > 5 {
                     print("TRUE: Detected \(detectedObjects) objects with sufficient confidence.")
                 } else {
                     print("FALSE: No objects detected above confidence threshold.")
@@ -142,7 +141,7 @@ func checkPicHasDetection(uiImage: UIImage, confidenceThreshold: Float = 0.20) -
     }
     
     // Return true if any objects were detected above the confidence threshold
-    return detectedObjects > 8
+    return detectedObjects > 5
 }
 
 

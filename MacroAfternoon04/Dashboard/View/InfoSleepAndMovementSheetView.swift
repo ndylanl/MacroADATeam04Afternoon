@@ -72,7 +72,7 @@ struct InfoSleepAndMovementSheetView: View {
                 
             }
             .frame(width: UIScreen.main.bounds.width * 374 / 430)
-            .navigationTitle("Subtraction")
+            .navigationTitle("Insights")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){

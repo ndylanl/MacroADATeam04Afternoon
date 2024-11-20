@@ -20,7 +20,7 @@ struct InfoSubtractionSheetView: View {
                     
                     Text("""
                     
-                    The topography shown on monthly report is the result of subtraction between the topography of the fourth and the first week of the month. 
+                    The heat map shown on monthly report is the result of subtraction between the heat map of the fourth and the first week of the month. 
                     
                     Our hair growth journey app is built on the foundation of advanced research, particularly the study by Kim et al. (2022), which developed a state-of-the-art system for hair follicle classification and hair loss severity estimation using Mask R-CNN technology. This technology, along with precise classification criteria, ensures users receive an accurate understanding of their hair condition.
                     
@@ -44,7 +44,7 @@ struct InfoSubtractionSheetView: View {
                 
             }
             .frame(width: UIScreen.main.bounds.width)
-            .navigationTitle("Subtraction")
+            .navigationTitle("Insights")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){

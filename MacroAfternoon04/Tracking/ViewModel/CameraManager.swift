@@ -54,32 +54,65 @@ class CameraManager: NSObject {
         }
     }
     
+//    private func configureSession() async {
+//        guard await isAuthorized,
+//              let ultraWideCamera = ultraWideCamera(), // Use the ultra-wide camera
+//              let deviceInput = try? AVCaptureDeviceInput(device: ultraWideCamera)
+//        else { return }
+//        
+//        captureSession.beginConfiguration()
+//        
+//        defer {
+//            self.captureSession.commitConfiguration()
+//        }
+//        
+//        let videoOutput = AVCaptureVideoDataOutput()
+//        
+//        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
+//        
+//        guard captureSession.canAddInput(deviceInput) else {
+//            return
+//        }
+//        
+//        guard captureSession.canAddOutput(videoOutput) else {
+//            return
+//        }
+//        
+//        captureSession.addInput(deviceInput)
+//        captureSession.addOutput(videoOutput)
+//    }
+
     private func configureSession() async {
-        guard await isAuthorized,
-              let ultraWideCamera = ultraWideCamera(), // Use the ultra-wide camera
-              let deviceInput = try? AVCaptureDeviceInput(device: ultraWideCamera)
-        else { return }
-        
+        guard await isAuthorized else { return }
+
         captureSession.beginConfiguration()
-        
         defer {
             self.captureSession.commitConfiguration()
         }
-        
+
         let videoOutput = AVCaptureVideoDataOutput()
-        
         videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
-        
-        guard captureSession.canAddInput(deviceInput) else {
+
+        guard let cameraDevice = selectCamera(),
+              let deviceInput = try? AVCaptureDeviceInput(device: cameraDevice) else {
             return
         }
-        
-        guard captureSession.canAddOutput(videoOutput) else {
-            return
-        }
-        
+
+        guard captureSession.canAddInput(deviceInput) else { return }
+        guard captureSession.canAddOutput(videoOutput) else { return }
+
         captureSession.addInput(deviceInput)
         captureSession.addOutput(videoOutput)
+    }
+
+    private func selectCamera() -> AVCaptureDevice? {
+        let deviceTypes: [AVCaptureDevice.DeviceType] = [.builtInUltraWideCamera, .builtInWideAngleCamera]
+        let discoverySession = AVCaptureDevice.DiscoverySession(
+            deviceTypes: UIDevice.current.userInterfaceIdiom == .phone ? [.builtInWideAngleCamera] : deviceTypes,
+            mediaType: .video,
+            position: .back
+        )
+        return discoverySession.devices.first
     }
     
     private func startSession() async {

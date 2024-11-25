@@ -141,7 +141,7 @@ class WeeklyReportViewModel: ObservableObject {
         
         print("currentPositions: \(String(describing: currentPositions))")
         
-        return currentPositions!
+        return currentPositions ?? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     }
     
     func createArrayHeatMap(photos: [Data], detections: [[DetectedObject]], scalpPositions: String) -> [Float] {

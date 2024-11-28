@@ -39,7 +39,7 @@ struct OnBoardingFirstPageView: View {
                         Text("Camera")
                             .bold()
                         
-                        Text("take photos of your hair treatment progress every week to track changes.")
+                        Text("Take photos of your hair treatment progress every week to track changes.")
                             .opacity(0.7)
                     }
                 }

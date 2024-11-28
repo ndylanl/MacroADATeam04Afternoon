@@ -223,7 +223,7 @@ struct PreCameraGuideView: View {
 //                    }
                     
                 } label: {
-                    Text("Take Photos Now")
+                    Text("Continue")
                 }
                 .foregroundStyle(.white)
                 .frame(width: frameWidth() - 56, height: 48)
@@ -232,21 +232,21 @@ struct PreCameraGuideView: View {
                 .padding(.horizontal)
                 .padding(.top)
                 
-                NavigationLink{
-                    // ISI INI NAVIGATE KE HEALTH ONBOARDING
-                    if !isOnBoardingComplete{
-                        OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
-                    }
-                    
-                } label: {
-                    if !isOnBoardingComplete{
-                        Text("Skip")
-                            .foregroundStyle(Color("PrimaryColor"))
-                    }
-                }
-                .frame(width: frameWidth() - 56, height: 48)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .padding(.horizontal)
+//                NavigationLink{
+//                    // ISI INI NAVIGATE KE HEALTH ONBOARDING
+//                    if !isOnBoardingComplete{
+//                        OnBoardingSecondPageView(isOnBoardingComplete: $isOnBoardingComplete, selectedDay: $selectedDay)
+//                    }
+//                    
+//                } label: {
+//                    if !isOnBoardingComplete{
+//                        Text("Skip")
+//                            .foregroundStyle(Color("PrimaryColor"))
+//                    }
+//                }
+//                .frame(width: frameWidth() - 56, height: 48)
+//                .clipShape(RoundedRectangle(cornerRadius: 12))
+//                .padding(.horizontal)
                 
                 .sheet(isPresented: $showingAddProgressSheet, onDismiss: {
                     

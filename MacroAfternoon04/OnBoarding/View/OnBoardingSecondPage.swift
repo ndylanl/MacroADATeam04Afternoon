@@ -56,7 +56,7 @@ struct OnBoardingSecondPageView: View {
                 }
                 
             } label: {
-                Text("Enable Access Now")
+                Text("Continue")
             }
             .frame(maxWidth: .infinity)
             .padding()
@@ -76,22 +76,22 @@ struct OnBoardingSecondPageView: View {
                 
                 navigateToThirdOnBoarding = true
             } label: {
-                Text("Later on Settings")
+//                Text("Later on Settings")
             }
             .frame(maxWidth: .infinity)
             .padding()
             .foregroundStyle(Color("PrimaryColor"))
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            
+            .disabled(true)
             .navigationDestination(isPresented: $navigateToThirdOnBoarding, destination: {
                 OnBoardingThirdPageView(isOnBoardingComplete: $isOnBoardingComplete)
             })
-            //            .onAppear {
-            //                // Set default to true if not already set
-            //                if UserDefaults.standard.object(forKey: "shouldRequestAuthorization") == nil {
-            //                    UserDefaults.standard.set(true, forKey: "shouldRequestAuthorization")
-            //                }
-            //            }
+                        .onAppear {
+                            // Set default to true if not already set
+                            if UserDefaults.standard.object(forKey: "shouldRequestAuthorization") == nil {
+                                UserDefaults.standard.set(true, forKey: "shouldRequestAuthorization")
+                            }
+                        }
         }
         .padding()
         .frame(width: UIScreen.main.bounds.width)

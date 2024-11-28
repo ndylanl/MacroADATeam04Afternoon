@@ -108,7 +108,7 @@ class CameraManager: NSObject {
     private func selectCamera() -> AVCaptureDevice? {
         let deviceTypes: [AVCaptureDevice.DeviceType] = [.builtInUltraWideCamera, .builtInWideAngleCamera]
         let discoverySession = AVCaptureDevice.DiscoverySession(
-            deviceTypes: UIDevice.current.userInterfaceIdiom == .phone ? [.builtInWideAngleCamera] : deviceTypes,
+            deviceTypes: UIDevice.current.userInterfaceIdiom == .phone ? [.builtInUltraWideCamera] : deviceTypes,
             mediaType: .video,
             position: .back
         )

@@ -27,46 +27,55 @@ struct BrowseAllDataView: View {
                 Section(header: Text(formattedDate(month, formatter: monthYearFormatter))) {
                     
                     
-                    if MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month){
-                        Button(action: {
-                            // Set the alert message if needed
-                            alertMessage = "The Monthly Report will be available at the end of the month."
-                            showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month)
-                            
-                            if !showAlert{
-                                navigateToMonthReport = true
-                            }
-                        }) {
-                            VStack(alignment: .leading) {
-                                Text("Monthly Report")
-                                    .bold()
-                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
-                                    .font(.caption)
-                                    .foregroundStyle(Color("NeutralColor"))
-                            }
-                        }
-                        .alert(isPresented: $showAlert) {
-                            Alert(
-                                title: Text("Monthly Report Status"),
-                                message: Text(alertMessage),
-                                dismissButton: .default(Text("OK")) {
-                                }
-                            )
-                        }
-                        
-                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month)), isActive: $navigateToMonthReport) {
-                            EmptyView() // This is needed to create a link without visible content
-                        }
-                        .isHidden(true, remove: true)
-                    }else{
-                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
-                            VStack(alignment: .leading) {
-                                Text("Monthly Report")
-                                    .bold()
-                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
-                                    .font(.caption)
-                                    .foregroundStyle(Color("NeutralColor"))
-                            }
+//                    if MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month){
+//                        Button(action: {
+//                            // Set the alert message if needed
+//                            alertMessage = "The Monthly Report will be available at the end of the month."
+//                            showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month).checkMonthlyReportAccess(date: month)
+//                            
+//                            if !showAlert{
+//                                navigateToMonthReport = true
+//                            }
+//                        }) {
+//                            VStack(alignment: .leading) {
+//                                Text("Monthly Report")
+//                                    .bold()
+//                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+//                                    .font(.caption)
+//                                    .foregroundStyle(Color("NeutralColor"))
+//                            }
+//                        }
+//                        .alert(isPresented: $showAlert) {
+//                            Alert(
+//                                title: Text("Monthly Report Status"),
+//                                message: Text(alertMessage),
+//                                dismissButton: .default(Text("OK")) {
+//                                }
+//                            )
+//                        }
+//                        
+//                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month)), isActive: $navigateToMonthReport) {
+//                            EmptyView() // This is needed to create a link without visible content
+//                        }
+//                        .isHidden(true, remove: true)
+//                    }else{
+//                        NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
+//                            VStack(alignment: .leading) {
+//                                Text("Monthly Report")
+//                                    .bold()
+//                                Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+//                                    .font(.caption)
+//                                    .foregroundStyle(Color("NeutralColor"))
+//                            }
+//                        }
+//                    }
+                    NavigationLink(destination: MonthReportView(date: month, viewModel: MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: month))) {
+                        VStack(alignment: .leading) {
+                            Text("Monthly Report")
+                                .bold()
+                            Text(formattedDate(endOfMonth(for: month), formatter: dayMonthYearFormatter))
+                                .font(.caption)
+                                .foregroundStyle(Color("NeutralColor"))
                         }
                     }
 

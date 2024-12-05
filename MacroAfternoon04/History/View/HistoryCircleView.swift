@@ -94,9 +94,11 @@ struct HistoryCircleView: View {
                         alertMessage = "The Monthly Report will be available at the end of the month."
                         showAlert = MonthlyReportViewModel(modelContext: modelContext, selectedMonthYear: selectedMonthYear).checkMonthlyReportAccess(date: selectedMonthYear)
                         
-                        if !showAlert{
-                            navigateToMonthReport = true
-                        }
+//                        if !showAlert{
+//                            navigateToMonthReport = true
+//                        }
+                        showAlert = false
+                        navigateToMonthReport = true
                     }) {
                         MonthCircleView(nameOfTheMonth: formattedDate(selectedMonthYear, formatter: monthFormatter))
                             .padding()

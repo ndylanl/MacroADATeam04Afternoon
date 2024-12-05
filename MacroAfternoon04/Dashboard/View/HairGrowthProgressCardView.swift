@@ -136,6 +136,10 @@ struct HairGrowthProgressCardView: View {
                 daysLeft = Calendar.current.dateComponents([.day], from: today, to: selectedDayDate).day ?? 6
             }
         }
+        
+        // buat showcase
+        isButtonEnabled = true
+
     }
     
     func checkRecentAvailability() {
